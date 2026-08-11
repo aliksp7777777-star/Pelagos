@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PELAGOS — Yacht & Boat Experiences</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #080808;
+      color: #f5f1e8;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    header {
+      padding: 35px 0;
+      text-align: center;
+      border-bottom: 1px solid #292929;
+    }
+
+    .logo {
+      font-family: Georgia, serif;
+      font-size: 42px;
+      letter-spacing: 8px;
+      color: #d6b878;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: #aaa;
+    }
+
+    .hero {
+      padding: 90px 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: Georgia, serif;
+      font-size: 42px;
+      font-weight: normal;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      color: #aaa;
+      font-size: 17px;
+      line-height: 1.6;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 35px;
+      padding: 15px 30px;
+      border: 1px solid #d6b878;
+      color: #d6b878;
+      text-decoration: none;
+      border-radius: 30px;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background: #d6b878;
+      color: #080808;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: Georgia, serif;
+      font-size: 32px;
+      font-weight: normal;
+      margin-bottom: 40px;
+    }
+
+    .boats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding-bottom: 80px;
+    }
+
+    .boat {
+      border: 1px solid #292929;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .boat-image {
+      height: 190px;
+      background: linear-gradient(135deg, #222, #080808);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      font-size: 14px;
+    }
+
+    .boat-info {
+      padding: 22px;
+    }
+
+    .boat h3 {
+      font-family: Georgia, serif;
+      font-size: 24px;
+      font-weight: normal;
+      color: #d6b878;
+      margin-bottom: 10px;
+    }
+
+    .boat p {
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .price {
+      margin-top: 18px;
+      color: #f5f1e8;
+      font-size: 18px;
+    }
+
+    .contact {
+      text-align: center;
+      padding: 70px 0;
+      border-top: 1px solid #292929;
+    }
+
+    .contact p {
+      color: #999;
+      margin-top: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid #292929;
+      color: #666;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .logo {
+        font-size: 32px;
+      }
+
+      .hero {
+        padding: 65px 0;
+      }
+
+      .hero h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <div class="logo">PELAGOS</div>
+      <div class="subtitle">PRIVATE YACHT & BOAT EXPERIENCES</div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+
+        <h1>Яхты и катера<br>Санкт-Петербурга</h1>
+
+        <p>
+          Прогулки по Неве, каналам и Финскому заливу.
+          Красивые маршруты, закаты, развод мостов и особенные моменты на воде.
+        </p>
+
+        <a class="button" href="https://t.me/PelagosBoatsBot">
+          Забронировать
+        </a>
+
+      </div>
+    </section>
+
+
+    <section>
+      <div class="container">
+
+        <h2 class="section-title">Наш флот</h2>
+
+        <div class="boats">
+
+          <div class="boat">
+            <div class="boat-image">
+              ФОТО ЯХТЫ
+            </div>
+
+            <div class="boat-info">
+              <h3>Эль Чапа</h3>
+
+              <p>
+                Просторная моторная яхта для прогулок,
+                романтических вечеров и особых событий.
+              </p>
+
+              <div class="price">
+                от 14 000 ₽ / час
+              </div>
+            </div>
+          </div>
+
+
+          <div class="boat">
+            <div class="boat-image">
+              ФОТО ЯХТЫ
+            </div>
+
+            <div class="boat-info">
+              <h3>МотоМото</h3>
+
+              <p>
+                Катер для компании и динамичных прогулок
+                по Петербургу и Финскому заливу.
+              </p>
+
+              <div class="price">
+                от 10 000 ₽ / час
+              </div>
+            </div>
+          </div>
+
+
+          <div class="boat">
+            <div class="boat-image">
+              ФОТО ЯХТЫ
+            </div>
+
+            <div class="boat-info">
+              <h3>Атлантика</h3>
+
+              <p>
+                Стильная яхта для красивых прогулок,
+                фотосессий и мероприятий.
+              </p>
+
+              <div class="price">
+                от 16 000 ₽ / час
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <section class="contact">
+      <div class="container">
+
+        <h2 class="section-title">
+          Ваше время на воде
+        </h2>
+
+        <p>
+          Санкт-Петербург · Нева · Финский залив
+        </p>
+
+        <a class="button" href="https://t.me/PelagosBoatsBot">
+          Связаться с Pelagos
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer>
+    © 2026 PELAGOS · PRIVATE YACHT & BOAT EXPERIENCES
+  </footer>
+
+</body>
+</html>
