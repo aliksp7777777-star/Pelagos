@@ -1,171 +1,374 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-  <title>PELAGOS — Yacht & Boat Experiences</title>
+  <title>PELAGOS — Яхты и катера Санкт-Петербурга</title>
 
   <style>
+    :root {
+      --bg: #070707;
+      --card: #101010;
+      --card-soft: #151515;
+      --line: #262626;
+      --text: #f4efe6;
+      --muted: #a7a39c;
+      --gold: #d8b76d;
+      --gold-soft: #b9954f;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    body {
-      background: #080808;
-      color: #f5f1e8;
-      font-family: Arial, sans-serif;
+    html {
+      scroll-behavior: smooth;
     }
 
-    .container {
-      width: 90%;
-      max-width: 1100px;
-      margin: auto;
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      width: min(100% - 28px, 980px);
+      margin: 0 auto;
     }
 
     header {
-      padding: 35px 0;
+      padding: 28px 0 24px;
+      border-bottom: 1px solid var(--line);
       text-align: center;
-      border-bottom: 1px solid #292929;
     }
 
-    .logo {
+    .brand {
       font-family: Georgia, serif;
-      font-size: 42px;
+      font-size: 38px;
       letter-spacing: 8px;
-      color: #d6b878;
+      color: var(--gold);
     }
 
-    .subtitle {
+    .tagline {
       margin-top: 8px;
       font-size: 10px;
-      letter-spacing: 4px;
-      color: #aaa;
+      letter-spacing: 3px;
+      color: var(--muted);
     }
 
     .hero {
-      padding: 90px 0;
+      padding: 58px 0 42px;
       text-align: center;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
     }
 
     .hero h1 {
       font-family: Georgia, serif;
-      font-size: 42px;
+      font-size: clamp(34px, 8vw, 58px);
+      line-height: 1.02;
       font-weight: normal;
-      margin-bottom: 20px;
+      max-width: 760px;
+      margin: 0 auto;
     }
 
     .hero p {
-      color: #aaa;
-      font-size: 17px;
-      line-height: 1.6;
       max-width: 650px;
-      margin: auto;
+      margin: 22px auto 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 16px;
     }
 
-    .button {
-      display: inline-block;
-      margin-top: 35px;
-      padding: 15px 30px;
-      border: 1px solid #d6b878;
-      color: #d6b878;
+    .primary-btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 52px;
+      padding: 0 28px;
+      margin-top: 28px;
+      border: 1px solid var(--gold);
+      border-radius: 999px;
       text-decoration: none;
-      border-radius: 30px;
-      transition: 0.3s;
+      color: var(--gold);
+      font-weight: 600;
     }
 
-    .button:hover {
-      background: #d6b878;
-      color: #080808;
+    .section {
+      padding: 26px 0 64px;
     }
 
     .section-title {
-      text-align: center;
       font-family: Georgia, serif;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: normal;
-      margin-bottom: 40px;
+      margin-bottom: 22px;
     }
 
-    .boats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      padding-bottom: 80px;
-    }
-
-    .boat {
-      border: 1px solid #292929;
-      border-radius: 16px;
+    .boat-card {
       overflow: hidden;
-      background: #111;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
     }
 
-    .boat-image {
-      height: 190px;
-      background: linear-gradient(135deg, #222, #080808);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #777;
+    .boat-cover {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+    }
+
+    .boat-cover img {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .price-badge {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      background: rgba(5, 5, 5, 0.82);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(216, 183, 109, 0.5);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 600;
       font-size: 14px;
     }
 
-    .boat-info {
+    .boat-content {
       padding: 22px;
     }
 
-    .boat h3 {
+    .boat-topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .boat-name {
       font-family: Georgia, serif;
-      font-size: 24px;
+      font-size: 32px;
       font-weight: normal;
-      color: #d6b878;
-      margin-bottom: 10px;
     }
 
-    .boat p {
-      color: #999;
-      line-height: 1.5;
+    .capacity {
+      color: var(--gold);
+      white-space: nowrap;
+      font-size: 14px;
+      padding-top: 7px;
     }
 
-    .price {
-      margin-top: 18px;
-      color: #f5f1e8;
-      font-size: 18px;
+    .intro {
+      margin-top: 16px;
+      color: var(--muted);
+      line-height: 1.65;
     }
 
-    .contact {
-      text-align: center;
-      padding: 70px 0;
-      border-top: 1px solid #292929;
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 20px;
     }
 
-    .contact p {
-      color: #999;
-      margin-top: 15px;
+    .fact {
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--card-soft);
+      border: 1px solid var(--line);
     }
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      border-top: 1px solid #292929;
-      color: #666;
+    .fact strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .fact span {
+      color: var(--muted);
       font-size: 13px;
     }
 
-    @media (max-width: 600px) {
-      .logo {
-        font-size: 32px;
+    .story {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .story h3,
+    .amenities h3,
+    .location h3,
+    .gallery-title {
+      font-family: Georgia, serif;
+      font-size: 24px;
+      font-weight: normal;
+      margin-bottom: 14px;
+    }
+
+    .story p {
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .gallery {
+      margin-top: 28px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .gallery-grid img {
+      aspect-ratio: 1 / 1;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .gallery-grid img:first-child {
+      grid-column: 1 / -1;
+      aspect-ratio: 16 / 10;
+    }
+
+    .amenities {
+      margin-top: 30px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .chip {
+      padding: 10px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card-soft);
+      color: #d4d0c9;
+      font-size: 13px;
+    }
+
+    .uses {
+      margin-top: 28px;
+    }
+
+    .uses-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .use {
+      padding: 14px 15px;
+      background: var(--card-soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: #d6d2cc;
+    }
+
+    .location {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: var(--card-soft);
+    }
+
+    .location p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .text-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(216, 183, 109, 0.35);
+    }
+
+    .booking {
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 20px;
+      border: 1px solid rgba(216, 183, 109, 0.35);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(216, 183, 109, 0.08),
+          rgba(216, 183, 109, 0.02)
+        );
+      text-align: center;
+    }
+
+    .booking-price {
+      font-family: Georgia, serif;
+      font-size: 31px;
+      color: var(--gold);
+    }
+
+    .booking-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .booking .primary-btn {
+      width: 100%;
+      margin-top: 20px;
+      background: var(--gold);
+      color: #080808;
+    }
+
+    footer {
+      padding: 30px 0 44px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      color: #6f6b65;
+      font-size: 12px;
+    }
+
+    @media (min-width: 760px) {
+      .boat-card {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
       }
 
-      .hero {
-        padding: 65px 0;
+      .boat-cover {
+        aspect-ratio: auto;
+        min-height: 100%;
       }
 
-      .hero h1 {
-        font-size: 34px;
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .gallery-grid img:first-child {
+        grid-column: span 2;
       }
     }
   </style>
@@ -174,118 +377,193 @@
 <body>
 
   <header>
-    <div class="container">
-      <div class="logo">PELAGOS</div>
-      <div class="subtitle">PRIVATE YACHT & BOAT EXPERIENCES</div>
+    <div class="wrap">
+      <div class="brand">PELAGOS</div>
+      <div class="tagline">PRIVATE YACHT & BOAT EXPERIENCES</div>
     </div>
   </header>
 
   <main>
 
     <section class="hero">
-      <div class="container">
+      <div class="wrap">
+        <div class="eyebrow">Санкт-Петербург</div>
 
-        <h1>Яхты и катера<br>Санкт-Петербурга</h1>
+        <h1>
+          Яхты и катера<br>
+          для особенных моментов
+        </h1>
 
         <p>
           Прогулки по Неве, каналам и Финскому заливу.
-          Красивые маршруты, закаты, развод мостов и особенные моменты на воде.
+          Подбираем атмосферу под ваш вечер — от спокойной прогулки
+          до встречи заката на воде.
         </p>
 
-        <a class="button" href="https://t.me/PelagosBoatsBot">
-          Забронировать
+        <a class="primary-btn" href="#fleet">
+          Смотреть флот
         </a>
-
       </div>
     </section>
 
 
-    <section>
-      <div class="container">
+    <section class="section" id="fleet">
+      <div class="wrap">
 
         <h2 class="section-title">Наш флот</h2>
 
-        <div class="boats">
+        <article class="boat-card">
 
-          <div class="boat">
-            <div class="boat-image">
-              ФОТО ЯХТЫ
-            </div>
+          <div class="boat-cover">
+            <img src="elchapa-cover.jpg" alt="Катер Эль Чапа в Санкт-Петербурге">
 
-            <div class="boat-info">
-              <h3>Эль Чапа</h3>
-
-              <p>
-                Просторная моторная яхта для прогулок,
-                романтических вечеров и особых событий.
-              </p>
-
-              <div class="price">
-                от 14 000 ₽ / час
-              </div>
+            <div class="price-badge">
+              14 000 ₽ / час
             </div>
           </div>
 
 
-          <div class="boat">
-            <div class="boat-image">
-              ФОТО ЯХТЫ
-            </div>
+          <div class="boat-content">
 
-            <div class="boat-info">
-              <h3>МотоМото</h3>
+            <div class="boat-topline">
+              <div>
+                <div class="boat-name">Эль Чапа</div>
+              </div>
 
-              <p>
-                Катер для компании и динамичных прогулок
-                по Петербургу и Финскому заливу.
-              </p>
-
-              <div class="price">
-                от 10 000 ₽ / час
+              <div class="capacity">
+                до 11 гостей
               </div>
             </div>
-          </div>
+
+            <p class="intro">
+              Американский Chaparral — большой, комфортный и созданный
+              для прогулок по Петербургу и Финскому заливу.
+            </p>
 
 
-          <div class="boat">
-            <div class="boat-image">
-              ФОТО ЯХТЫ
+            <div class="facts">
+
+              <div class="fact">
+                <strong>Капитан</strong>
+                <span>прогулки лично</span>
+              </div>
+
+              <div class="fact">
+                <strong>Формат</strong>
+                <span>прогулки и события</span>
+              </div>
+
+              <div class="fact">
+                <strong>Вместимость</strong>
+                <span>до 11 гостей</span>
+              </div>
+
+              <div class="fact">
+                <strong>Стоимость</strong>
+                <span>14 000 ₽ / час</span>
+              </div>
+
             </div>
 
-            <div class="boat-info">
-              <h3>Атлантика</h3>
+
+            <div class="story">
+              <h3>История Эль Чапы</h3>
 
               <p>
-                Стильная яхта для красивых прогулок,
-                фотосессий и мероприятий.
+                Эль Чапа — мой катер и место, с которого началась вся эта история.
+                На нём одинаково хорошо идти по солнечной Неве, уходить в залив
+                на закате или встречать вечерний город в тумане и огнях.
+                Я сам капитан этого катера и веду прогулки лично.
+                Для меня это не просто аренда, а возможность показать Петербург
+                таким, каким его редко видят с берега.
               </p>
+            </div>
 
-              <div class="price">
-                от 16 000 ₽ / час
+
+            <div class="gallery">
+              <div class="gallery-title">Галерея</div>
+
+              <div class="gallery-grid">
+                <img src="elchapa-aerial.jpg" alt="Эль Чапа — вид сверху">
+                <img src="elchapa-bow.jpg" alt="Носовая зона катера Эль Чапа">
+                <img src="elchapa-table.jpg" alt="Зона отдыха со столом">
+                <img src="elchapa-details.jpg" alt="Пледы и детали Эль Чапы">
+                <img src="elchapa-toilet.jpg" alt="Туалет на катере Эль Чапа">
               </div>
             </div>
+
+
+            <div class="amenities">
+              <h3>На борту</h3>
+
+              <div class="chips">
+                <div class="chip">Просторная палуба</div>
+                <div class="chip">Кожаные сиденья</div>
+                <div class="chip">Hertz Bluetooth</div>
+                <div class="chip">Отопление</div>
+                <div class="chip">Тент</div>
+                <div class="chip">Пледы</div>
+                <div class="chip">Бокалы</div>
+                <div class="chip">Туалет</div>
+              </div>
+            </div>
+
+
+            <div class="uses">
+              <h3 class="gallery-title">Подходит для</h3>
+
+              <div class="uses-list">
+                <div class="use">Прогулок с друзьями</div>
+                <div class="use">Свиданий</div>
+                <div class="use">Дней рождений</div>
+                <div class="use">Фотосессий</div>
+                <div class="use">Вечерних выходов в залив</div>
+                <div class="use">Спокойных прогулок по центру</div>
+              </div>
+            </div>
+
+
+            <div class="location">
+              <h3>Место посадки</h3>
+
+              <p>
+                Пристань<br>
+                Набережная реки Фонтанки, 51/53
+              </p>
+
+              <a
+                class="text-link"
+                href="https://yandex.ru/maps/org/pristan_naberezhnaya_reki_fontanki_51_53/11364047852?si=crh6zat8bvqdkku7ryp9104xdg"
+                target="_blank"
+                rel="noopener"
+              >
+                Открыть на карте →
+              </a>
+            </div>
+
+
+            <div class="booking">
+
+              <div class="booking-price">
+                14 000 ₽ / час
+              </div>
+
+              <div class="booking-note">
+                Напишите нам — уточним свободное время и детали прогулки.
+              </div>
+
+              <a
+                class="primary-btn"
+                href="https://t.me/pelagosclub"
+              >
+                Забронировать Эль Чапу
+              </a>
+
+            </div>
+
           </div>
 
-        </div>
-
-      </div>
-    </section>
-
-
-    <section class="contact">
-      <div class="container">
-
-        <h2 class="section-title">
-          Ваше время на воде
-        </h2>
-
-        <p>
-          Санкт-Петербург · Нева · Финский залив
-        </p>
-
-        <a class="button" href="https://t.me/PelagosBoatsBot">
-          Связаться с Pelagos
-        </a>
+        </article>
 
       </div>
     </section>
@@ -294,7 +572,9 @@
 
 
   <footer>
-    © 2026 PELAGOS · PRIVATE YACHT & BOAT EXPERIENCES
+    <div class="wrap">
+      © 2026 PELAGOS · Санкт-Петербург
+    </div>
   </footer>
 
 </body>
