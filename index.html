@@ -6,6 +6,8 @@
 
   <title>PELAGOS — Яхты и катера Санкт-Петербурга</title>
 
+  <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
+
   <style>
     :root {
       --bg: #070707;
@@ -15,7 +17,6 @@
       --text: #f4efe6;
       --muted: #a7a39c;
       --gold: #d8b76d;
-      --gold-soft: #b9954f;
     }
 
     * {
@@ -35,6 +36,10 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    body.modal-open {
+      overflow: hidden;
+    }
+
     img {
       display: block;
       width: 100%;
@@ -42,6 +47,12 @@
 
     a {
       color: inherit;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
     }
 
     .wrap {
@@ -111,6 +122,8 @@
       text-decoration: none;
       color: var(--gold);
       font-weight: 600;
+      background: transparent;
+      cursor: pointer;
     }
 
     .section {
@@ -233,13 +246,15 @@
       margin-top: 30px;
     }
 
-    .chips {
+    .chips,
+    .uses-list {
       display: flex;
       flex-wrap: wrap;
       gap: 9px;
     }
 
-    .chip {
+    .chip,
+    .use {
       padding: 10px 13px;
       border-radius: 999px;
       border: 1px solid var(--line);
@@ -250,22 +265,6 @@
 
     .uses {
       margin-top: 30px;
-    }
-
-    .uses-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-    }
-
-    .use {
-      padding: 11px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: var(--card-soft);
-      color: #d6d2cc;
-      font-size: 14px;
-      line-height: 1.2;
     }
 
     .location {
@@ -294,12 +293,11 @@
       padding: 24px;
       border-radius: 20px;
       border: 1px solid rgba(216, 183, 109, 0.35);
-      background:
-        linear-gradient(
-          180deg,
-          rgba(216, 183, 109, 0.08),
-          rgba(216, 183, 109, 0.02)
-        );
+      background: linear-gradient(
+        180deg,
+        rgba(216, 183, 109, 0.08),
+        rgba(216, 183, 109, 0.02)
+      );
       text-align: center;
     }
 
@@ -313,6 +311,7 @@
       margin-top: 8px;
       color: var(--muted);
       font-size: 14px;
+      line-height: 1.5;
     }
 
     .booking .primary-btn {
@@ -328,6 +327,133 @@
       text-align: center;
       color: #6f6b65;
       font-size: 12px;
+    }
+
+    /* Форма бронирования */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: flex-end;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(7px);
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-height: 92vh;
+      overflow-y: auto;
+      background: #0d0d0d;
+      border: 1px solid #282828;
+      border-radius: 26px 26px 0 0;
+      padding: 18px 18px calc(28px + env(safe-area-inset-bottom));
+    }
+
+    .modal-handle {
+      width: 42px;
+      height: 4px;
+      margin: 0 auto 18px;
+      border-radius: 99px;
+      background: #414141;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .modal-head h2 {
+      font-family: Georgia, serif;
+      font-size: 30px;
+      font-weight: normal;
+    }
+
+    .modal-head p {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--card-soft);
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #d8d3ca;
+      font-size: 13px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid #303030;
+      border-radius: 14px;
+      padding: 14px 15px;
+      background: #151515;
+      color: var(--text);
+      outline: none;
+      font-size: 16px;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: rgba(216, 183, 109, 0.7);
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      min-height: 56px;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #080808;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .form-help {
+      margin-top: 12px;
+      color: #77736d;
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: center;
     }
 
     @media (min-width: 760px) {
@@ -347,6 +473,16 @@
 
       .gallery-grid img:first-child {
         grid-column: span 2;
+      }
+
+      .modal {
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-sheet {
+        max-width: 520px;
+        border-radius: 26px;
       }
     }
   </style>
@@ -500,15 +636,16 @@
               </div>
 
               <div class="booking-note">
-                Напишите нам — уточним свободное время и детали прогулки.
+                Выберите дату и время — подготовим заявку на прогулку.
               </div>
 
-              <a
+              <button
                 class="primary-btn"
-                href="https://t.me/pelagosclub"
+                type="button"
+                onclick="openBooking()"
               >
                 Забронировать Эль Чапу
-              </a>
+              </button>
 
             </div>
 
@@ -527,6 +664,204 @@
       © 2026 PELAGOS · Санкт-Петербург
     </div>
   </footer>
+
+
+  <!-- Форма бронирования -->
+
+  <div class="modal" id="bookingModal">
+
+    <div class="modal-sheet">
+
+      <div class="modal-handle"></div>
+
+      <div class="modal-head">
+        <div>
+          <h2>Забронировать</h2>
+          <p>Эль Чапа · 14 000 ₽ / час</p>
+        </div>
+
+        <button
+          class="close-btn"
+          type="button"
+          onclick="closeBooking()"
+          aria-label="Закрыть"
+        >
+          ×
+        </button>
+      </div>
+
+
+      <form id="bookingForm">
+
+        <div class="form-grid">
+
+          <div class="two-cols">
+
+            <div class="field">
+              <label for="date">Дата *</label>
+              <input id="date" type="date" required>
+            </div>
+
+            <div class="field">
+              <label for="time">Время *</label>
+              <input id="time" type="time" required>
+            </div>
+
+          </div>
+
+
+          <div class="field">
+            <label for="guests">Количество гостей *</label>
+            <input
+              id="guests"
+              type="number"
+              min="1"
+              max="11"
+              inputmode="numeric"
+              placeholder="Например, 6"
+              required
+            >
+          </div>
+
+
+          <div class="field">
+            <label for="name">Ваше имя *</label>
+            <input
+              id="name"
+              type="text"
+              autocomplete="name"
+              placeholder="Как к вам обращаться?"
+              required
+            >
+          </div>
+
+
+          <div class="field">
+            <label for="contact">Телефон или Telegram *</label>
+            <input
+              id="contact"
+              type="text"
+              placeholder="+7... или @username"
+              required
+            >
+          </div>
+
+
+          <div class="field">
+            <label for="comment">Комментарий</label>
+            <textarea
+              id="comment"
+              placeholder="Например: хотим встретить закат в заливе"
+            ></textarea>
+          </div>
+
+        </div>
+
+
+        <button class="submit-btn" type="submit">
+          Отправить заявку
+        </button>
+
+        <div class="form-help">
+          После нажатия откроется Telegram с подготовленной заявкой.
+          Вам останется только отправить сообщение.
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    const modal = document.getElementById("bookingModal");
+    const form = document.getElementById("bookingForm");
+    const dateInput = document.getElementById("date");
+
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+
+    dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+    function openBooking() {
+      modal.classList.add("active");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeBooking() {
+      modal.classList.remove("active");
+      document.body.classList.remove("modal-open");
+    }
+
+    modal.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        closeBooking();
+      }
+    });
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const guests = document.getElementById("guests").value;
+      const name = document.getElementById("name").value.trim();
+      const contact = document.getElementById("contact").value.trim();
+      const comment = document.getElementById("comment").value.trim();
+
+      const formattedDate = formatDate(date);
+
+      let message =
+`Новая заявка PELAGOS
+
+Катер: Эль Чапа
+Дата: ${formattedDate}
+Время: ${time}
+Гостей: ${guests}
+
+Имя: ${name}
+Контакт: ${contact}`;
+
+      if (comment) {
+        message += `
+
+Комментарий:
+${comment}`;
+      }
+
+      const telegramUrl =
+        "https://t.me/pelagosclub?text=" +
+        encodeURIComponent(message);
+
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(telegramUrl);
+      } else {
+        window.location.href = telegramUrl;
+      }
+    });
+
+    function formatDate(value) {
+      if (!value) return "";
+
+      const parts = value.split("-");
+
+      if (parts.length !== 3) {
+        return value;
+      }
+
+      return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+  </script>
 
 </body>
 </html>
