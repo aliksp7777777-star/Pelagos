@@ -186,31 +186,6 @@
       line-height: 1.65;
     }
 
-    .facts {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .fact {
-      padding: 14px;
-      border-radius: 14px;
-      background: var(--card-soft);
-      border: 1px solid var(--line);
-    }
-
-    .fact strong {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .fact span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
     .story {
       margin-top: 28px;
       padding-top: 24px;
@@ -274,20 +249,23 @@
     }
 
     .uses {
-      margin-top: 28px;
+      margin-top: 30px;
     }
 
     .uses-list {
-      display: grid;
-      gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
     }
 
     .use {
-      padding: 14px 15px;
-      background: var(--card-soft);
+      padding: 11px 14px;
+      border-radius: 999px;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      background: var(--card-soft);
       color: #d6d2cc;
+      font-size: 14px;
+      line-height: 1.2;
     }
 
     .location {
@@ -426,9 +404,7 @@
           <div class="boat-content">
 
             <div class="boat-topline">
-              <div>
-                <div class="boat-name">Эль Чапа</div>
-              </div>
+              <div class="boat-name">Эль Чапа</div>
 
               <div class="capacity">
                 до 11 гостей
@@ -440,8 +416,6 @@
               для прогулок по Петербургу и Финскому заливу.
             </p>
 
-
-            
 
             <div class="story">
               <h3>История Эль Чапы</h3>
@@ -490,12 +464,12 @@
               <h3 class="gallery-title">Подходит для</h3>
 
               <div class="uses-list">
-                <div class="use">Прогулок с друзьями</div>
+                <div class="use">С друзьями</div>
                 <div class="use">Свиданий</div>
                 <div class="use">Дней рождений</div>
                 <div class="use">Фотосессий</div>
-                <div class="use">Вечерних выходов в залив</div>
-                <div class="use">Спокойных прогулок по центру</div>
+                <div class="use">Закатов в заливе</div>
+                <div class="use">Прогулок по центру</div>
               </div>
             </div>
 
