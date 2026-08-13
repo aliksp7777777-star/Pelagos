@@ -17,6 +17,8 @@
       --text: #f4efe6;
       --muted: #a7a39c;
       --gold: #d8b76d;
+      --success: #79c98b;
+      --error: #e37c7c;
     }
 
     * {
@@ -53,6 +55,11 @@
 
     button {
       cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: default;
+      opacity: 0.65;
     }
 
     .wrap {
@@ -498,6 +505,30 @@
       text-align: center;
     }
 
+    .form-status {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .form-status.success {
+      display: block;
+      color: var(--success);
+      border: 1px solid rgba(121,201,139,.35);
+      background: rgba(121,201,139,.08);
+    }
+
+    .form-status.error {
+      display: block;
+      color: var(--error);
+      border: 1px solid rgba(227,124,124,.35);
+      background: rgba(227,124,124,.08);
+    }
+
     footer {
       padding: 30px 0 44px;
       border-top: 1px solid var(--line);
@@ -596,7 +627,6 @@
     </div>
   </footer>
 
-
   <!-- КАРТОЧКА ЭЛЬ ЧАПЫ -->
 
   <div class="modal" id="boatModal">
@@ -611,7 +641,6 @@
         </button>
       </div>
 
-
       <div class="boat-detail-cover">
         <img src="elchapa-cover.jpg" alt="Катер Эль Чапа">
 
@@ -619,7 +648,6 @@
           14 000 ₽ / час
         </div>
       </div>
-
 
       <div class="detail-content">
 
@@ -631,12 +659,10 @@
           </div>
         </div>
 
-
         <p class="detail-intro">
           Американский Chaparral — большой, комфортный и созданный
           для прогулок по Петербургу и Финскому заливу.
         </p>
-
 
         <div class="story">
           <h3 class="block-title">История Эль Чапы</h3>
@@ -651,7 +677,6 @@
           </p>
         </div>
 
-
         <div class="gallery">
           <h3 class="block-title">Галерея</h3>
 
@@ -663,7 +688,6 @@
             <img src="elchapa-toilet.jpg" alt="">
           </div>
         </div>
-
 
         <div class="amenities">
           <h3 class="block-title">На борту</h3>
@@ -680,7 +704,6 @@
           </div>
         </div>
 
-
         <div class="uses">
           <h3 class="block-title">Подходит для</h3>
 
@@ -693,7 +716,6 @@
             <div class="use">Прогулок по центру</div>
           </div>
         </div>
-
 
         <div class="location">
           <h3 class="block-title">Место посадки</h3>
@@ -711,7 +733,6 @@
             Открыть на карте →
           </a>
         </div>
-
 
         <div class="booking">
 
@@ -739,7 +760,6 @@
 
   </div>
 
-
   <!-- ФОРМА БРОНИРОВАНИЯ -->
 
   <div class="booking-modal" id="bookingModal">
@@ -761,7 +781,6 @@
 
       </div>
 
-
       <form id="bookingForm">
 
         <div class="form-grid">
@@ -780,7 +799,6 @@
 
           </div>
 
-
           <div class="field">
             <label for="guests">Количество гостей *</label>
 
@@ -794,7 +812,6 @@
             >
           </div>
 
-
           <div class="field">
             <label for="name">Ваше имя *</label>
 
@@ -805,7 +822,6 @@
               required
             >
           </div>
-
 
           <div class="field">
             <label for="contact">Телефон или Telegram *</label>
@@ -818,7 +834,6 @@
             >
           </div>
 
-
           <div class="field">
             <label for="comment">Комментарий</label>
 
@@ -830,14 +845,22 @@
 
         </div>
 
-
-        <button class="submit-btn" type="submit">
+        <button
+          class="submit-btn"
+          id="submitBtn"
+          type="submit"
+        >
           Отправить заявку
         </button>
 
         <div class="form-help">
-          После заполнения откроется Telegram с готовым текстом заявки.
+          Заявка будет отправлена напрямую менеджеру PELAGOS.
         </div>
+
+        <div
+          class="form-status"
+          id="formStatus"
+        ></div>
 
       </form>
 
@@ -845,9 +868,11 @@
 
   </div>
 
-
   <script>
     const tg = window.Telegram?.WebApp;
+
+    const WORKER_URL =
+      "https://pelagos-booking.aliks-p7777777.workers.dev";
 
     if (tg) {
       tg.ready();
@@ -858,6 +883,8 @@
     const bookingModal = document.getElementById("bookingModal");
     const bookingForm = document.getElementById("bookingForm");
     const dateInput = document.getElementById("date");
+    const submitBtn = document.getElementById("submitBtn");
+    const formStatus = document.getElementById("formStatus");
 
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -866,30 +893,28 @@
 
     dateInput.min = `${yyyy}-${mm}-${dd}`;
 
-
     function openBoat() {
       boatModal.classList.add("active");
       document.body.classList.add("locked");
     }
-
 
     function closeBoat() {
       boatModal.classList.remove("active");
       document.body.classList.remove("locked");
     }
 
-
     function openBooking() {
       bookingModal.classList.add("active");
-    }
 
+      formStatus.className = "form-status";
+      formStatus.textContent = "";
+    }
 
     function closeBooking() {
       bookingModal.classList.remove("active");
     }
 
-
-    bookingForm.addEventListener("submit", function(event) {
+    bookingForm.addEventListener("submit", async function(event) {
       event.preventDefault();
 
       const date = document.getElementById("date").value;
@@ -899,40 +924,98 @@
       const contact = document.getElementById("contact").value.trim();
       const comment = document.getElementById("comment").value.trim();
 
-      const formattedDate = formatDate(date);
-
-      let text =
-`Здравствуйте!
-
-Хочу забронировать катер Эль Чапа.
-
-Дата: ${formattedDate}
-Время: ${time}
-Количество гостей: ${guests}
-
-Имя: ${name}
-Контакт: ${contact}`;
-
-      if (comment) {
-        text += `
-
-Комментарий:
-${comment}`;
+      if (!date || !time || !guests || !name || !contact) {
+        showStatus(
+          "error",
+          "Заполните все обязательные поля."
+        );
+        return;
       }
 
-      const url =
-        "https://t.me/share/url?url=" +
-        encodeURIComponent("https://t.me/pelagosclub") +
-        "&text=" +
-        encodeURIComponent(text);
+      const formattedDate = formatDate(date);
 
-      if (tg && tg.openTelegramLink) {
-        tg.openTelegramLink(url);
-      } else {
-        window.location.href = url;
+      const bookingData = {
+        boat: "Эль Чапа",
+        price: "14 000 ₽ / час",
+        date: formattedDate,
+        time: time,
+        guests: guests,
+        name: name,
+        contact: contact,
+        comment: comment || "—"
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Отправляем...";
+
+      formStatus.className = "form-status";
+      formStatus.textContent = "";
+
+      try {
+        const response = await fetch(WORKER_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(bookingData)
+        });
+
+        let result = null;
+
+        try {
+          result = await response.json();
+        } catch (jsonError) {
+          result = null;
+        }
+
+        if (!response.ok || !result || !result.success) {
+          throw new Error(
+            result?.error || "Не удалось отправить заявку"
+          );
+        }
+
+        showStatus(
+          "success",
+          "✓ Заявка отправлена! Мы свяжемся с вами для подтверждения."
+        );
+
+        if (tg?.HapticFeedback) {
+          tg.HapticFeedback.notificationOccurred("success");
+        }
+
+        bookingForm.reset();
+        dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+        setTimeout(function() {
+          closeBooking();
+          closeBoat();
+
+          formStatus.className = "form-status";
+          formStatus.textContent = "";
+        }, 2500);
+
+      } catch (error) {
+        console.error("PELAGOS booking error:", error);
+
+        showStatus(
+          "error",
+          "Не удалось отправить заявку. Попробуйте ещё раз."
+        );
+
+        if (tg?.HapticFeedback) {
+          tg.HapticFeedback.notificationOccurred("error");
+        }
+
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Отправить заявку";
       }
     });
 
+    function showStatus(type, message) {
+      formStatus.className = `form-status ${type}`;
+      formStatus.textContent = message;
+    }
 
     function formatDate(value) {
       if (!value) return "";
@@ -942,13 +1025,11 @@ ${comment}`;
       return `${parts[2]}.${parts[1]}.${parts[0]}`;
     }
 
-
     boatModal.addEventListener("click", function(event) {
       if (event.target === boatModal) {
         closeBoat();
       }
     });
-
 
     bookingModal.addEventListener("click", function(event) {
       if (event.target === bookingModal) {
