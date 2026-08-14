@@ -70,10 +70,6 @@
       margin: 0 auto;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
     header {
       padding: 27px 0 23px;
       border-bottom: 1px solid var(--line-soft);
@@ -93,10 +89,6 @@
       font-size: 10px;
       letter-spacing: 3px;
     }
-
-    /* =========================
-       HERO
-    ========================= */
 
     .hero {
       padding: 44px 0 32px;
@@ -127,10 +119,6 @@
       font-size: 15px;
       line-height: 1.6;
     }
-
-    /* =========================
-       КАТАЛОГ
-    ========================= */
 
     .catalog-section {
       padding: 4px 0 56px;
@@ -251,10 +239,6 @@
       line-height: 1.3;
       font-weight: 700;
     }
-
-    /* =========================
-       КАРТОЧКА КАТЕРА
-    ========================= */
 
     .modal {
       position: fixed;
@@ -395,10 +379,6 @@
       line-height: 1.72;
     }
 
-    /* =========================
-       ГАЛЕРЕЯ В КАРТОЧКЕ
-    ========================= */
-
     .gallery-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -412,9 +392,7 @@
       border-radius: 11px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      transition:
-        transform .18s ease,
-        opacity .18s ease;
+      transition: transform .18s ease, opacity .18s ease;
     }
 
     .gallery-grid img:active {
@@ -426,10 +404,6 @@
       grid-column: 1 / -1;
       aspect-ratio: 16 / 10;
     }
-
-    /* =========================
-       ОСНАЩЕНИЕ
-    ========================= */
 
     .chips {
       display: flex;
@@ -446,10 +420,6 @@
       font-size: 12px;
     }
 
-    /* =========================
-       ЛОКАЦИЯ
-    ========================= */
-
     .location {
       padding: 18px;
       border: 1px solid var(--line);
@@ -463,10 +433,6 @@
       color: var(--gold);
       text-decoration: none;
     }
-
-    /* =========================
-       БРОНИРОВАНИЕ В КАРТОЧКЕ
-    ========================= */
 
     .booking {
       padding: 22px;
@@ -487,9 +453,25 @@
       font-size: 29px;
     }
 
+    .price-disclaimer {
+      max-width: 430px;
+      margin: 10px auto 0;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: rgba(216,183,109,.06);
+      color: #aaa59d;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .price-disclaimer strong {
+      color: #c9c3b8;
+      font-weight: 600;
+    }
+
     .booking-note {
       max-width: 430px;
-      margin: 8px auto 0;
+      margin: 12px auto 0;
       color: var(--muted);
       font-size: 13px;
       line-height: 1.5;
@@ -517,10 +499,6 @@
       font-size: 14px;
       line-height: 1.65;
     }
-
-    /* =========================
-       ФОРМА ЗАЯВКИ
-    ========================= */
 
     .booking-modal {
       position: fixed;
@@ -776,10 +754,6 @@
       color: var(--danger);
     }
 
-    /* =========================
-       НОВЫЙ LIGHTBOX
-    ========================= */
-
     .lightbox {
       position: fixed;
       inset: 0;
@@ -801,14 +775,6 @@
       touch-action: none;
       background: #000;
     }
-
-    /*
-      В track ВСЕГДА находятся три фото:
-      предыдущее — текущее — следующее.
-
-      Поэтому при свайпе следующий кадр
-      уже находится рядом и чёрного провала нет.
-    */
 
     .lightbox-track {
       position: absolute;
@@ -889,7 +855,6 @@
     }
 
     @media (min-width: 760px) {
-
       .fleet-grid {
         grid-template-columns: repeat(3, 1fr);
       }
@@ -929,7 +894,6 @@
 <main>
 
   <section class="hero">
-
     <div class="wrap">
 
       <div class="eyebrow">
@@ -948,37 +912,25 @@
       </p>
 
     </div>
-
   </section>
 
   <section class="catalog-section">
-
     <div
       class="wrap"
       id="catalog"
     ></div>
-
   </section>
 
 </main>
 
 <footer>
-
   <div class="wrap">
     © 2026 PELAGOS · Санкт-Петербург
   </div>
-
 </footer>
 
 
-<!-- =========================
-     КАРТОЧКА КАТЕРА
-========================= -->
-
-<div
-  class="modal"
-  id="boatModal"
->
+<div class="modal" id="boatModal">
 
   <div class="boat-modal-card">
 
@@ -1034,6 +986,12 @@
           id="detailBookingPrice"
         ></div>
 
+        <div class="price-disclaimer">
+          Стоимость может меняться в зависимости от дня недели,
+          времени суток, праздничных дней и повышенного тарифа.
+          <strong>Актуальную стоимость подтвердит менеджер PELAGOS.</strong>
+        </div>
+
         <div class="booking-note">
           Укажите желаемую дату и примерное время.
           Менеджер проверит доступность катера.
@@ -1057,14 +1015,7 @@
 </div>
 
 
-<!-- =========================
-     ФОРМА ЗАЯВКИ
-========================= -->
-
-<div
-  class="booking-modal"
-  id="bookingModal"
->
+<div class="booking-modal" id="bookingModal">
 
   <div class="booking-sheet">
 
@@ -1124,7 +1075,6 @@
 
         </div>
 
-
         <div class="field">
 
           <label for="time">
@@ -1143,7 +1093,6 @@
 
         </div>
 
-
         <div class="field">
 
           <label for="guests">
@@ -1160,7 +1109,6 @@
 
         </div>
 
-
         <div class="field">
 
           <label for="name">
@@ -1175,7 +1123,6 @@
           >
 
         </div>
-
 
         <div class="field">
 
@@ -1192,7 +1139,6 @@
 
         </div>
 
-
         <div class="field">
 
           <label for="comment">
@@ -1208,7 +1154,6 @@
 
       </div>
 
-
       <button
         class="submit-btn"
         id="submitButton"
@@ -1217,18 +1162,16 @@
         Отправить заявку
       </button>
 
-
       <div class="booking-disclaimer">
 
         <strong>
           Отправка заявки не подтверждает бронирование.
         </strong>
 
-        Катер, дата и время считаются подтверждёнными
+        Катер, дата, время и стоимость считаются подтверждёнными
         только после ответа менеджера PELAGOS.
 
       </div>
-
 
       <div
         class="form-status"
@@ -1241,10 +1184,6 @@
 
 </div>
 
-
-<!-- =========================
-     ПОЛНОЭКРАННАЯ ГАЛЕРЕЯ
-========================= -->
 
 <div
   class="lightbox"
@@ -1307,30 +1246,18 @@
 
 <script>
 
-  /* =========================
-     WORKER
-  ========================= */
-
   const WORKER_URL =
     "https://pelagos-booking.aliks-p7777777.workers.dev/";
 
 
-  /* =========================
-     КАТЕРА
-  ========================= */
-
   const boats = [
-
-    /* =========================
-       ФРАНЧЕСКО
-    ========================= */
 
     {
       id: "francesco",
       category: "budget",
 
       name: "Франческо",
-      price: "7 500 ₽ / час",
+      price: "от 7 500 ₽ / час",
       guests: 6,
 
       cover: "./francesco-cover.jpg",
@@ -1366,16 +1293,12 @@
     },
 
 
-    /* =========================
-       СЕЛЕСТЕ
-    ========================= */
-
     {
       id: "celeste",
       category: "budget",
 
       name: "Селесте",
-      price: "7 500 ₽ / час",
+      price: "от 7 500 ₽ / час",
       guests: 6,
 
       cover: "./celeste-cover.jpg",
@@ -1415,16 +1338,12 @@
     },
 
 
-    /* =========================
-       МАГНУМ
-    ========================= */
-
     {
       id: "magnum",
       category: "budget",
 
       name: "Магнум",
-      price: "7 500 ₽ / час",
+      price: "от 7 500 ₽ / час",
       guests: 5,
 
       cover: "./magnum-cover.jpg",
@@ -1460,68 +1379,65 @@
     },
 
 
-    /* =========================
-       ПОКА БЕЗ КАРТОЧЕК
-    ========================= */
+    {
+      id: "ladoga",
+      category: "budget",
 
- {
-  id: "ladoga",
-  category: "budget",
+      name: "Ладога",
+      price: "от 8 500 ₽ / час",
+      guests: 11,
 
-  name: "Ладога",
-  price: "от 8 500 ₽ / час",
-  guests: 11,
+      cover: "./ladoga-cover.jpg",
 
-  cover: "./ladoga-cover.jpg",
+      intro:
+        "Уютный прогулочный теплоход с просторным салоном и панорамной крышей для отдыха на воде в любую погоду.",
 
-  intro:
-    "Уютный прогулочный теплоход с просторным салоном и панорамной крышей для отдыха на воде в любую погоду.",
+      story:
+        "«Ладога» — формат для тех случаев, когда хочется не просто прокатиться по Петербургу, а собраться за большим столом и провести время вместе. Просторный салон, панорамная крыша и большие сдвижные окна позволяют смотреть на город практически из любой точки теплохода. Здесь комфортно проводить семейные праздники, дни рождения, встречи с друзьями или просто неспешно гулять по рекам и каналам большой компанией. А в хорошую погоду можно выйти на открытую кормовую палубу и смотреть на Петербург прямо с воды.",
 
-  story:
-    "«Ладога» — формат для тех случаев, когда хочется не просто прокатиться по Петербургу, а собраться за большим столом и провести время вместе. Просторный салон, панорамная крыша и большие сдвижные окна позволяют смотреть на город практически из любой точки теплохода. Здесь комфортно проводить семейные праздники, дни рождения, встречи с друзьями или просто неспешно гулять по рекам и каналам большой компанией. А в хорошую погоду можно выйти на открытую кормовую палубу и смотреть на Петербург прямо с воды.",
+      amenities: [
+        "Панорамная крыша",
+        "Просторный салон",
+        "Сдвижные окна",
+        "Отопление",
+        "Туалет с раковиной",
+        "Холодильник",
+        "Чайник",
+        "Большой стол",
+        "Стол на палубе",
+        "Посуда",
+        "Фужеры и стаканы",
+        "Bluetooth-аудиосистема",
+        "Телевизор",
+        "Микрофон",
+        "Розетка 220 В",
+        "Пледы",
+        "Место для курения",
+        "Мангал +2 000 ₽"
+      ],
 
-  amenities: [
-    "Панорамная крыша",
-    "Просторный салон",
-    "Сдвижные окна",
-    "Отопление",
-    "Туалет с раковиной",
-    "Холодильник",
-    "Чайник",
-    "Большой стол",
-    "Стол на палубе",
-    "Посуда",
-    "Фужеры и стаканы",
-    "Bluetooth-аудиосистема",
-    "Телевизор",
-    "Микрофон",
-    "Розетка 220 В",
-    "Пледы",
-    "Место для курения",
-    "Мангал +2 000 ₽"
-  ],
+      pier:
+        "Санкт-Петербург, набережная реки Мойки, 11",
 
-  pier:
-    "Санкт-Петербург, набережная реки Мойки, 11",
+      map:
+        "https://yandex.ru/maps/org/98351377075?si=crh6zat8bvqdkku7ryp9104xdg",
 
-  map:
-    "https://yandex.ru/maps/org/98351377075?si=crh6zat8bvqdkku7ryp9104xdg",
+      gallery: [
+        "./ladoga-cover.jpg",
+        "./ladoga-deck.jpg",
+        "./ladoga-side-city.jpg",
+        "./ladoga-salon.jpg",
+        "./ladoga-interior.jpg",
+        "./ladoga-toilet.jpg"
+      ]
+    },
 
-  gallery: [
-    "./ladoga-cover.jpg",
-    "./ladoga-deck.jpg",
-    "./ladoga-side-city.jpg",
-    "./ladoga-salon.jpg",
-    "./ladoga-interior.jpg",
-    "./ladoga-toilet.jpg"
-  ]
-},
 
     {
       id: "motomoto",
       category: "budget",
       name: "МотоМото",
-      price: "10 000 ₽ / час",
+      price: "от 10 000 ₽ / час",
       guests: 9,
       cover: "",
       intro: "",
@@ -1536,7 +1452,7 @@
       id: "theodor",
       category: "budget",
       name: "Теодор",
-      price: "10 000 ₽ / час",
+      price: "от 10 000 ₽ / час",
       guests: 7,
       cover: "",
       intro: "",
@@ -1551,7 +1467,7 @@
       id: "hollander",
       category: "budget",
       name: "Голландец",
-      price: "11 000 ₽ / час",
+      price: "от 11 000 ₽ / час",
       guests: 11,
       cover: "",
       intro: "",
@@ -1566,7 +1482,7 @@
       id: "jerry",
       category: "budget",
       name: "Джерри",
-      price: "11 000 ₽ / час",
+      price: "от 11 000 ₽ / час",
       guests: 9,
       cover: "",
       intro: "",
@@ -1581,7 +1497,7 @@
       id: "amigo",
       category: "budget",
       name: "Амиго",
-      price: "11 000 ₽ / час",
+      price: "от 11 000 ₽ / час",
       guests: 8,
       cover: "",
       intro: "",
@@ -1596,7 +1512,7 @@
       id: "hector",
       category: "budget",
       name: "Гектор",
-      price: "12 000 ₽ / час",
+      price: "от 12 000 ₽ / час",
       guests: 9,
       cover: "",
       intro: "",
@@ -1611,7 +1527,7 @@
       id: "venezia",
       category: "middle",
       name: "Венеция",
-      price: "13 000 ₽ / час",
+      price: "от 13 000 ₽ / час",
       guests: 9,
       cover: "",
       intro: "",
@@ -1623,16 +1539,12 @@
     },
 
 
-    /* =========================
-       ЭЛЬ ЧАПА
-    ========================= */
-
     {
       id: "elchapa",
       category: "middle",
 
       name: "Эль Чапа",
-      price: "14 000 ₽ / час",
+      price: "от 14 000 ₽ / час",
       guests: 11,
 
       cover: "./elchapa-cover.jpg",
@@ -1674,7 +1586,7 @@
       id: "monroe",
       category: "middle",
       name: "Монро",
-      price: "14 000 ₽ / час",
+      price: "от 14 000 ₽ / час",
       guests: 11,
       cover: "",
       intro: "",
@@ -1704,7 +1616,7 @@
       id: "silver",
       category: "middle",
       name: "Силвер",
-      price: "15 000 ₽ / час",
+      price: "от 15 000 ₽ / час",
       guests: 8,
       cover: "",
       intro: "",
@@ -1719,7 +1631,7 @@
       id: "atlantica",
       category: "middle",
       name: "Атлантика",
-      price: "16 000 ₽ / час",
+      price: "от 16 000 ₽ / час",
       guests: 11,
       cover: "",
       intro: "",
@@ -1764,7 +1676,7 @@
       id: "venissa",
       category: "middle",
       name: "Venissa",
-      price: "18 000 ₽ / час",
+      price: "от 18 000 ₽ / час",
       guests: 11,
       cover: "",
       intro: "",
@@ -1854,7 +1766,7 @@
       id: "montferrand",
       category: "premium",
       name: "Montferrand",
-      price: "28 000 ₽ / час",
+      price: "от 28 000 ₽ / час",
       guests: 10,
       cover: "",
       intro: "",
@@ -1869,7 +1781,7 @@
       id: "venezia-nord",
       category: "premium",
       name: "Venezia Nord",
-      price: "28 000 ₽ / час",
+      price: "от 28 000 ₽ / час",
       guests: 10,
       cover: "",
       intro: "",
@@ -1884,7 +1796,7 @@
       id: "viaggio",
       category: "premium",
       name: "Viaggio",
-      price: "28 000 ₽ / час",
+      price: "от 28 000 ₽ / час",
       guests: 10,
       cover: "",
       intro: "",
@@ -1929,7 +1841,7 @@
       id: "monaco",
       category: "premium",
       name: "Монако",
-      price: "30 000 ₽ / час",
+      price: "от 30 000 ₽ / час",
       guests: 10,
       cover: "",
       intro: "",
@@ -1943,48 +1855,34 @@
   ];
 
 
-  /* =========================
-     РАЗДЕЛЫ
-  ========================= */
-
   const categories = [
 
     {
       id: "budget",
-
       title:
         "Катера от 7 000 ₽ до 12 000 ₽/час",
-
       subtitle:
         "Компактные и комфортные варианты для прогулок по Петербургу"
     },
 
     {
       id: "middle",
-
       title:
         "Катера от 13 000 ₽ до 20 000 ₽/час",
-
       subtitle:
         "Просторные катера для компаний, событий и красивых выходов на воду"
     },
 
     {
       id: "premium",
-
       title:
         "Катера и яхты от 20 000 ₽ до 40 000 ₽/час",
-
       subtitle:
         "Премиальные варианты для особенных событий и больших компаний"
     }
 
   ];
 
-
-  /* =========================
-     TELEGRAM
-  ========================= */
 
   const tg =
     window.Telegram?.WebApp;
@@ -1994,10 +1892,6 @@
     tg.expand();
   }
 
-
-  /* =========================
-     DOM
-  ========================= */
 
   const catalog =
     document.getElementById("catalog");
@@ -2045,10 +1939,6 @@
     document.getElementById("lightboxCounter");
 
 
-  /* =========================
-     STATE
-  ========================= */
-
   let selectedBoat = null;
 
   let lightboxImages = [];
@@ -2061,10 +1951,6 @@
   let dragging = false;
   let sliderAnimating = false;
 
-
-  /* =========================
-     МИНИМАЛЬНАЯ ДАТА
-  ========================= */
 
   const today = new Date();
 
@@ -2085,124 +1971,109 @@
     `${yyyy}-${mm}-${dd}`;
 
 
-  /* =========================
-     КАТАЛОГ
-  ========================= */
-
   function renderCatalog() {
 
     catalog.innerHTML = "";
 
-    categories.forEach(
-      category => {
+    categories.forEach(category => {
 
-        const boatsInCategory =
-          boats.filter(
-            boat =>
-              boat.category === category.id
-          );
+      const boatsInCategory =
+        boats.filter(
+          boat =>
+            boat.category === category.id
+        );
 
-        const section =
-          document.createElement("section");
+      const section =
+        document.createElement("section");
 
-        section.className =
-          "category";
+      section.className =
+        "category";
 
-        section.innerHTML = `
+      section.innerHTML = `
 
-          <div class="category-head">
+        <div class="category-head">
 
-            <h2 class="category-title">
-              ${category.title}
-            </h2>
+          <h2 class="category-title">
+            ${category.title}
+          </h2>
 
-            <div class="category-subtitle">
-              ${category.subtitle}
+          <div class="category-subtitle">
+            ${category.subtitle}
+          </div>
+
+        </div>
+
+        <div
+          class="fleet-grid"
+          id="grid-${category.id}"
+        ></div>
+
+      `;
+
+      catalog.appendChild(section);
+
+      const grid =
+        section.querySelector(
+          `#grid-${category.id}`
+        );
+
+      boatsInCategory.forEach(boat => {
+
+        const card =
+          document.createElement("button");
+
+        card.type = "button";
+
+        card.className =
+          "fleet-card";
+
+        card.onclick =
+          () => openBoat(boat.id);
+
+        card.innerHTML = `
+
+          <div class="fleet-card-image">
+
+            ${
+              boat.cover
+
+              ? `
+                <img
+                  src="${boat.cover}"
+                  alt="${boat.name}"
+                >
+              `
+
+              : createPlaceholder(
+                  boat.name
+                )
+            }
+
+          </div>
+
+          <div class="fleet-card-body">
+
+            <div class="fleet-card-name">
+              ${boat.name}
+            </div>
+
+            <div class="fleet-card-guests">
+              до ${boat.guests} гостей
+            </div>
+
+            <div class="fleet-card-price">
+              ${boat.price}
             </div>
 
           </div>
 
-          <div
-            class="fleet-grid"
-            id="grid-${category.id}"
-          ></div>
-
         `;
 
-        catalog.appendChild(
-          section
-        );
+        grid.appendChild(card);
 
-        const grid =
-          section.querySelector(
-            `#grid-${category.id}`
-          );
+      });
 
-        boatsInCategory.forEach(
-          boat => {
-
-            const card =
-              document.createElement("button");
-
-            card.type =
-              "button";
-
-            card.className =
-              "fleet-card";
-
-            card.onclick =
-              () => openBoat(
-                boat.id
-              );
-
-            card.innerHTML = `
-
-              <div class="fleet-card-image">
-
-                ${
-                  boat.cover
-
-                  ? `
-                    <img
-                      src="${boat.cover}"
-                      alt="${boat.name}"
-                    >
-                  `
-
-                  : createPlaceholder(
-                      boat.name
-                    )
-                }
-
-              </div>
-
-              <div class="fleet-card-body">
-
-                <div class="fleet-card-name">
-                  ${boat.name}
-                </div>
-
-                <div class="fleet-card-guests">
-                  до ${boat.guests} гостей
-                </div>
-
-                <div class="fleet-card-price">
-                  ${boat.price}
-                </div>
-
-              </div>
-
-            `;
-
-            grid.appendChild(
-              card
-            );
-
-          }
-        );
-
-      }
-    );
+    });
 
   }
 
@@ -2228,10 +2099,6 @@
 
   }
 
-
-  /* =========================
-     ОТКРЫТИЕ КАТЕРА
-  ========================= */
 
   function openBoat(id) {
 
@@ -2329,10 +2196,6 @@
 
   }
 
-
-  /* =========================
-     ДЕТАЛИ КАТЕРА
-  ========================= */
 
   function renderBoatDetails(boat) {
 
@@ -2528,10 +2391,6 @@
   }
 
 
-  /* =========================
-     ФОРМА
-  ========================= */
-
   function openBooking() {
 
     if (!selectedBoat) {
@@ -2571,10 +2430,6 @@
 
   }
 
-
-  /* =========================
-     LIGHTBOX
-  ========================= */
 
   function openLightboxFromEncoded(
     encodedGallery,
@@ -2730,12 +2585,6 @@
   }
 
 
-  /*
-    Центр — это -33.333333%.
-    Переход к предыдущему — 0%.
-    Переход к следующему — -66.666666%.
-  */
-
   function resetTrackInstant() {
 
     lightboxTrack.classList.remove(
@@ -2846,10 +2695,6 @@
   }
 
 
-  /* =========================
-     TOUCH START
-  ========================= */
-
   lightboxStage.addEventListener(
 
     "touchstart",
@@ -2891,10 +2736,6 @@
   );
 
 
-  /* =========================
-     TOUCH MOVE
-  ========================= */
-
   lightboxStage.addEventListener(
 
     "touchmove",
@@ -2935,13 +2776,6 @@
         window.innerWidth || 390;
 
 
-      /*
-        33.333% трека = ширина одного экрана.
-
-        Переводим движение пальца
-        в процент от общей ширины track.
-      */
-
       const deltaPercent =
         (deltaX / width) *
         33.333333;
@@ -2951,10 +2785,6 @@
         -33.333333 +
         deltaPercent;
 
-
-      /*
-        Немного ограничиваем перетягивание.
-      */
 
       position =
         Math.max(
@@ -2977,10 +2807,6 @@
 
   );
 
-
-  /* =========================
-     TOUCH END
-  ========================= */
 
   lightboxStage.addEventListener(
 
@@ -3066,10 +2892,6 @@
 
   );
 
-
-  /* =========================
-     ОТПРАВКА ЗАЯВКИ
-  ========================= */
 
   bookingForm.addEventListener(
 
@@ -3219,7 +3041,7 @@
 
         formStatus.textContent =
 
-          "Заявка отправлена. Менеджер проверит доступность катера и подтвердит дату и время прогулки.";
+          "Заявка отправлена. Менеджер проверит доступность катера, актуальную стоимость, дату и время прогулки.";
 
 
         submitButton.textContent =
@@ -3284,10 +3106,6 @@
   );
 
 
-  /* =========================
-     ДАТА
-  ========================= */
-
   function formatDate(value) {
 
     if (!value) {
@@ -3301,10 +3119,6 @@
 
   }
 
-
-  /* =========================
-     ЗАКРЫТИЕ ПО ФОНУ
-  ========================= */
 
   boatModal.addEventListener(
 
@@ -3345,10 +3159,6 @@
 
   );
 
-
-  /* =========================
-     ЗАПУСК
-  ========================= */
 
   renderCatalog();
 
