@@ -43,6 +43,7 @@
       color: var(--text);
       font-family: Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
+      overscroll-behavior-y: none;
     }
 
     body.locked {
@@ -167,6 +168,10 @@
       color: var(--text);
       text-align: left;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    .fleet-card:active {
+      transform: scale(.985);
     }
 
     .fleet-card-image {
@@ -388,6 +393,14 @@
       border-radius: 11px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      transition:
+        transform .18s ease,
+        opacity .18s ease;
+    }
+
+    .gallery-grid img:active {
+      transform: scale(.975);
+      opacity: .88;
     }
 
     .gallery-grid img:first-child {
@@ -738,31 +751,29 @@
       font-size: 12px;
     }
 
-    /* LIGHTBOX */
+    /* ПОЛНОЭКРАННАЯ ГАЛЕРЕЯ */
 
     .lightbox {
       position: fixed;
       inset: 0;
       z-index: 20000;
       display: none;
-      background: rgba(0,0,0,.97);
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
+      background: rgba(0,0,0,.985);
     }
 
     .lightbox.active {
-      display: flex;
+      display: block;
     }
 
     .lightbox-stage {
-      position: relative;
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      touch-action: pan-y;
+      overflow: hidden;
+      touch-action: none;
     }
 
     .lightbox-image {
@@ -772,53 +783,72 @@
       height: auto;
       object-fit: contain;
       user-select: none;
+      -webkit-user-select: none;
       -webkit-user-drag: none;
+      will-change: transform, opacity;
+      transform: translate3d(0,0,0);
+      opacity: 1;
+    }
+
+    .lightbox-image.animating {
+      transition:
+        transform .30s cubic-bezier(.22,.61,.36,1),
+        opacity .26s ease;
     }
 
     .lightbox-close {
       position: absolute;
       top: calc(14px + env(safe-area-inset-top));
       right: 14px;
-      z-index: 5;
+      z-index: 10;
       width: 44px;
       height: 44px;
       border: 1px solid rgba(255,255,255,.2);
       border-radius: 50%;
-      background: rgba(20,20,20,.75);
+      background: rgba(20,20,20,.78);
       color: white;
       font-size: 26px;
+      backdrop-filter: blur(10px);
     }
 
     .lightbox-counter {
       position: absolute;
-      top: calc(24px + env(safe-area-inset-top));
+      top: calc(26px + env(safe-area-inset-top));
       left: 50%;
+      z-index: 10;
       transform: translateX(-50%);
-      color: rgba(255,255,255,.78);
+      color: rgba(255,255,255,.8);
       font-size: 13px;
-      z-index: 5;
+      pointer-events: none;
     }
 
     .lightbox-arrow {
       position: absolute;
       top: 50%;
+      z-index: 8;
       transform: translateY(-50%);
-      width: 44px;
+      width: 42px;
       height: 54px;
       border: 0;
       border-radius: 14px;
-      background: rgba(20,20,20,.55);
-      color: white;
+      background: rgba(20,20,20,.45);
+      color: rgba(255,255,255,.92);
       font-size: 28px;
-      z-index: 4;
+      backdrop-filter: blur(8px);
     }
 
     .lightbox-arrow.prev {
-      left: 10px;
+      left: 8px;
     }
 
     .lightbox-arrow.next {
-      right: 10px;
+      right: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .lightbox-arrow {
+        opacity: .45;
+      }
     }
 
     @media (min-width: 760px) {
@@ -1157,7 +1187,7 @@
 </div>
 
 
-<!-- LIGHTBOX -->
+<!-- ПОЛНОЭКРАННАЯ ГАЛЕРЕЯ -->
 
 <div
   class="lightbox"
@@ -1194,6 +1224,7 @@
       class="lightbox-image"
       id="lightboxImage"
       alt=""
+      draggable="false"
     >
 
     <button
@@ -1255,20 +1286,51 @@
       ]
     },
 
+
     {
       id: "celeste",
       category: "budget",
+
       name: "Селесте",
       price: "7 500 ₽ / час",
       guests: 6,
-      cover: "",
-      intro: "",
-      story: "",
-      amenities: [],
-      pier: "",
-      map: "",
-      gallery: []
+
+      cover: "./celeste-cover.jpg",
+
+      intro:
+        "Небольшой и очень уютный катер для спокойных прогулок по Петербургу в красивой компании.",
+
+      story:
+        "«Селесте» — про мягкий свет вечернего города, бокалы на столике, любимую музыку и ощущение полного отдыха на воде. Компактный формат делает его особенно уютным для прогулок вдвоём или небольшой компанией. Здесь приятно неспешно идти по рекам и каналам, разговаривать, слушать музыку и просто смотреть на Петербург с воды.",
+
+      amenities: [
+        "Туалет",
+        "Всепогодный тент",
+        "Бокалы",
+        "Тёплые пледы",
+        "Холодильник",
+        "Музыка Bluetooth",
+        "Столик",
+        "Отопление",
+        "Зарядные устройства"
+      ],
+
+      pier:
+        "Набережная реки Мойки, 97",
+
+      map:
+        "https://yandex.ru/maps/org/244096886574?si=crh6zat8bvqdkku7ryp9104xdg",
+
+      gallery: [
+        "./celeste-cover.jpg",
+        "./celeste-aerial.jpg",
+        "./celeste-interior.jpg",
+        "./celeste-side.jpg",
+        "./celeste-top.jpg",
+        "./celeste-side-2.jpg"
+      ]
     },
+
 
     {
       id: "magnum",
@@ -1404,6 +1466,7 @@
       map: "",
       gallery: []
     },
+
 
     {
       id: "elchapa",
@@ -1719,6 +1782,7 @@
 
   ];
 
+
   const categories = [
 
     {
@@ -1800,7 +1864,11 @@
   let lightboxIndex = 0;
 
   let touchStartX = 0;
-  let touchEndX = 0;
+  let touchCurrentX = 0;
+  let touchStartY = 0;
+
+  let isDragging = false;
+  let lightboxAnimating = false;
 
 
   const today =
@@ -2331,6 +2399,8 @@
     lightboxIndex =
       Number(index) || 0;
 
+    resetLightboxImage();
+
     updateLightbox();
 
     lightbox.classList.add(
@@ -2350,6 +2420,8 @@
       "active"
     );
 
+    resetLightboxImage();
+
     if (
       !boatModal.classList.contains(
         "active"
@@ -2364,6 +2436,21 @@
       );
 
     }
+
+  }
+
+
+  function resetLightboxImage() {
+
+    lightboxImage.classList.remove(
+      "animating"
+    );
+
+    lightboxImage.style.transform =
+      "translate3d(0,0,0)";
+
+    lightboxImage.style.opacity =
+      "1";
 
   }
 
@@ -2384,50 +2471,111 @@
   }
 
 
-  function showNextImage() {
+  function animateToImage(direction) {
 
     if (
+      lightboxAnimating ||
       !lightboxImages.length
     ) {
       return;
     }
 
-    lightboxIndex++;
+    lightboxAnimating = true;
 
-    if (
-      lightboxIndex >=
-      lightboxImages.length
-    ) {
+    const exitX =
+      direction > 0
+        ? "-110%"
+        : "110%";
 
-      lightboxIndex = 0;
+    const enterX =
+      direction > 0
+        ? "110%"
+        : "-110%";
 
-    }
+    lightboxImage.classList.add(
+      "animating"
+    );
 
-    updateLightbox();
+    lightboxImage.style.transform =
+      `translate3d(${exitX},0,0)`;
+
+    lightboxImage.style.opacity =
+      ".22";
+
+    setTimeout(() => {
+
+      lightboxIndex += direction;
+
+      if (
+        lightboxIndex >=
+        lightboxImages.length
+      ) {
+        lightboxIndex = 0;
+      }
+
+      if (
+        lightboxIndex < 0
+      ) {
+        lightboxIndex =
+          lightboxImages.length - 1;
+      }
+
+      lightboxImage.classList.remove(
+        "animating"
+      );
+
+      lightboxImage.style.transform =
+        `translate3d(${enterX},0,0)`;
+
+      lightboxImage.style.opacity =
+        ".25";
+
+      updateLightbox();
+
+      requestAnimationFrame(() => {
+
+        requestAnimationFrame(() => {
+
+          lightboxImage.classList.add(
+            "animating"
+          );
+
+          lightboxImage.style.transform =
+            "translate3d(0,0,0)";
+
+          lightboxImage.style.opacity =
+            "1";
+
+        });
+
+      });
+
+      setTimeout(() => {
+
+        lightboxAnimating =
+          false;
+
+        lightboxImage.classList.remove(
+          "animating"
+        );
+
+      }, 320);
+
+    }, 285);
+
+  }
+
+
+  function showNextImage() {
+
+    animateToImage(1);
 
   }
 
 
   function showPrevImage() {
 
-    if (
-      !lightboxImages.length
-    ) {
-      return;
-    }
-
-    lightboxIndex--;
-
-    if (
-      lightboxIndex < 0
-    ) {
-
-      lightboxIndex =
-        lightboxImages.length - 1;
-
-    }
-
-    updateLightbox();
+    animateToImage(-1);
 
   }
 
@@ -2438,8 +2586,97 @@
 
     function(event) {
 
+      if (
+        lightboxAnimating
+      ) {
+        return;
+      }
+
+      const touch =
+        event.touches[0];
+
       touchStartX =
-        event.changedTouches[0].screenX;
+        touch.clientX;
+
+      touchCurrentX =
+        touch.clientX;
+
+      touchStartY =
+        touch.clientY;
+
+      isDragging =
+        true;
+
+      lightboxImage.classList.remove(
+        "animating"
+      );
+
+    },
+
+    {
+      passive: true
+    }
+
+  );
+
+
+  lightboxStage.addEventListener(
+
+    "touchmove",
+
+    function(event) {
+
+      if (
+        !isDragging ||
+        lightboxAnimating
+      ) {
+        return;
+      }
+
+      const touch =
+        event.touches[0];
+
+      touchCurrentX =
+        touch.clientX;
+
+      const deltaX =
+        touchCurrentX -
+        touchStartX;
+
+      const deltaY =
+        touch.clientY -
+        touchStartY;
+
+      if (
+        Math.abs(deltaY) >
+        Math.abs(deltaX) * 1.25
+      ) {
+        return;
+      }
+
+      const resistance =
+        .82;
+
+      const translate =
+        deltaX * resistance;
+
+      const screenWidth =
+        window.innerWidth || 390;
+
+      const progress =
+        Math.min(
+          Math.abs(deltaX) /
+          screenWidth,
+          .65
+        );
+
+      lightboxImage.style.transform =
+        `translate3d(${translate}px,0,0)`;
+
+      lightboxImage.style.opacity =
+        String(
+          1 - progress * .45
+        );
 
     },
 
@@ -2454,33 +2691,99 @@
 
     "touchend",
 
-    function(event) {
-
-      touchEndX =
-        event.changedTouches[0].screenX;
-
-      const distance =
-        touchEndX - touchStartX;
+    function() {
 
       if (
-        Math.abs(distance) < 45
+        !isDragging ||
+        lightboxAnimating
       ) {
         return;
       }
 
+      isDragging =
+        false;
+
+      const deltaX =
+        touchCurrentX -
+        touchStartX;
+
+      const threshold =
+        Math.min(
+          75,
+          window.innerWidth * .18
+        );
+
       if (
-        distance < 0
+        Math.abs(deltaX) >=
+        threshold
       ) {
 
-        showNextImage();
+        if (
+          deltaX < 0
+        ) {
+          animateToImage(1);
+        }
 
+        else {
+          animateToImage(-1);
+        }
+
+        return;
       }
 
-      else {
+      lightboxImage.classList.add(
+        "animating"
+      );
 
-        showPrevImage();
+      lightboxImage.style.transform =
+        "translate3d(0,0,0)";
 
-      }
+      lightboxImage.style.opacity =
+        "1";
+
+      setTimeout(() => {
+
+        lightboxImage.classList.remove(
+          "animating"
+        );
+
+      }, 310);
+
+    },
+
+    {
+      passive: true
+    }
+
+  );
+
+
+  lightboxStage.addEventListener(
+
+    "touchcancel",
+
+    function() {
+
+      isDragging =
+        false;
+
+      lightboxImage.classList.add(
+        "animating"
+      );
+
+      lightboxImage.style.transform =
+        "translate3d(0,0,0)";
+
+      lightboxImage.style.opacity =
+        "1";
+
+      setTimeout(() => {
+
+        lightboxImage.classList.remove(
+          "animating"
+        );
+
+      }, 310);
 
     },
 
@@ -2744,8 +3047,7 @@
     function(event) {
 
       if (
-        event.target === lightbox ||
-        event.target === lightboxStage
+        event.target === lightbox
       ) {
 
         closeLightbox();
