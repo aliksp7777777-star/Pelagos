@@ -351,7 +351,6 @@
     .story,
     .gallery,
     .amenities,
-    .uses,
     .location,
     .booking {
       margin-top: 29px;
@@ -387,6 +386,8 @@
       aspect-ratio: 1 / 1;
       object-fit: cover;
       border-radius: 11px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .gallery-grid img:first-child {
@@ -394,15 +395,13 @@
       aspect-ratio: 16 / 10;
     }
 
-    .chips,
-    .uses-list {
+    .chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .chip,
-    .use {
+    .chip {
       padding: 9px 12px;
       border: 1px solid var(--line);
       border-radius: 999px;
@@ -464,9 +463,7 @@
       font-weight: 700;
     }
 
-    /* ==========================
-       ФОРМА ЗАЯВКИ
-       ========================== */
+    /* ФОРМА */
 
     .booking-modal {
       position: fixed;
@@ -486,15 +483,12 @@
       width: 100%;
       max-height: calc(100vh - 72px);
       overflow-y: auto;
-
       padding:
         12px
         14px
         calc(24px + env(safe-area-inset-bottom));
-
       border: 1px solid var(--line);
       border-radius: 24px 24px 0 0;
-
       background: #0d0d0d;
     }
 
@@ -534,10 +528,8 @@
     .availability-note {
       margin-bottom: 18px;
       padding: 12px 13px;
-
       border: 1px solid rgba(216,183,109,.27);
       border-radius: 13px;
-
       background: rgba(216,183,109,.055);
     }
 
@@ -568,86 +560,53 @@
     .field label {
       display: block;
       margin-bottom: 6px;
-
       color: #d7d2ca;
-
       font-size: 12px;
       line-height: 1.3;
     }
 
-    /*
-      ВСЕ ОБЫЧНЫЕ ПОЛЯ
-      СТРОГО ОДИНАКОВЫЕ
-    */
-
     .field input {
       display: block;
-
       width: 100% !important;
-
       height: 48px !important;
       min-height: 48px !important;
       max-height: 48px !important;
-
       margin: 0 !important;
-
       padding: 0 13px !important;
-
       border: 1px solid #303030 !important;
       border-radius: 13px !important;
-
       background: #151515 !important;
       color: var(--text) !important;
-
       font-size: 15px !important;
       line-height: 48px !important;
-
       text-align: left;
-
       outline: none;
-
       box-sizing: border-box !important;
     }
-
-    /*
-      FIX ДЛЯ IPHONE / TELEGRAM WEBVIEW
-      Именно date/time iOS пытался делать выше.
-    */
 
     .field input[type="date"],
     .field input[type="time"] {
       display: block !important;
-
       width: 100% !important;
-
       height: 48px !important;
       min-height: 48px !important;
       max-height: 48px !important;
-
       padding-top: 0 !important;
       padding-bottom: 0 !important;
-
       line-height: 48px !important;
-
       -webkit-appearance: none !important;
       appearance: none !important;
-
       color-scheme: dark;
-
       background: #151515 !important;
-
       overflow: hidden;
     }
 
     .field input[type="date"]::-webkit-date-and-time-value,
     .field input[type="time"]::-webkit-date-and-time-value {
       height: 48px !important;
-
       line-height: 48px !important;
-
       padding: 0 !important;
       margin: 0 !important;
-
       text-align: left !important;
     }
 
@@ -655,9 +614,7 @@
     .field input[type="time"]::-webkit-datetime-edit {
       padding: 0 !important;
       margin: 0 !important;
-
       height: 48px !important;
-
       line-height: 48px !important;
     }
 
@@ -670,10 +627,8 @@
     .field input[type="date"]::-webkit-calendar-picker-indicator,
     .field input[type="time"]::-webkit-calendar-picker-indicator {
       opacity: .65;
-
       width: 18px;
       height: 18px;
-
       margin: 0 !important;
       padding: 0 !important;
     }
@@ -682,31 +637,19 @@
       border-color: rgba(216,183,109,.62) !important;
     }
 
-    /*
-      ТОЛЬКО КОММЕНТАРИЙ БОЛЬШЕ
-    */
-
     .field textarea {
       display: block;
-
       width: 100%;
-
       height: 92px;
       min-height: 92px;
-
       padding: 12px 13px;
-
       border: 1px solid #303030;
       border-radius: 13px;
-
       background: #151515;
       color: var(--text);
-
       font-size: 15px;
       line-height: 1.4;
-
       outline: none;
-
       resize: vertical;
     }
 
@@ -716,11 +659,8 @@
 
     .field-hint {
       display: block;
-
       margin-top: 6px;
-
       color: #706d67;
-
       font-size: 10px;
       line-height: 1.4;
     }
@@ -728,15 +668,11 @@
     .submit-btn {
       width: 100%;
       height: 54px;
-
       margin-top: 18px;
-
       border: 0;
       border-radius: 999px;
-
       background: var(--gold);
       color: #080808;
-
       font-size: 16px;
       font-weight: 700;
     }
@@ -747,14 +683,10 @@
 
     .booking-disclaimer {
       max-width: 440px;
-
       margin: 11px auto 0;
-
       color: #77736d;
-
       font-size: 10.5px;
       line-height: 1.5;
-
       text-align: center;
     }
 
@@ -765,32 +697,24 @@
 
     .form-status {
       display: none;
-
       margin-top: 13px;
       padding: 12px;
-
       border-radius: 13px;
-
       font-size: 12px;
       line-height: 1.5;
-
       text-align: center;
     }
 
     .form-status.success {
       display: block;
-
       border: 1px solid rgba(121,200,145,.38);
-
       background: rgba(121,200,145,.09);
       color: var(--success);
     }
 
     .form-status.error {
       display: block;
-
       border: 1px solid rgba(224,122,122,.38);
-
       background: rgba(224,122,122,.09);
       color: var(--danger);
     }
@@ -798,26 +722,103 @@
     .coming-soon {
       margin-top: 26px;
       padding: 18px;
-
       border: 1px solid var(--line);
       border-radius: 17px;
-
       background: var(--card2);
       color: var(--muted);
-
       font-size: 14px;
       line-height: 1.65;
     }
 
     footer {
       padding: 29px 0 42px;
-
       border-top: 1px solid var(--line-soft);
-
       color: #6f6b65;
-
       text-align: center;
       font-size: 12px;
+    }
+
+    /* LIGHTBOX */
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: none;
+      background: rgba(0,0,0,.97);
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: pan-y;
+    }
+
+    .lightbox-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: calc(14px + env(safe-area-inset-top));
+      right: 14px;
+      z-index: 5;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 50%;
+      background: rgba(20,20,20,.75);
+      color: white;
+      font-size: 26px;
+    }
+
+    .lightbox-counter {
+      position: absolute;
+      top: calc(24px + env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      z-index: 5;
+    }
+
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 54px;
+      border: 0;
+      border-radius: 14px;
+      background: rgba(20,20,20,.55);
+      color: white;
+      font-size: 28px;
+      z-index: 4;
+    }
+
+    .lightbox-arrow.prev {
+      left: 10px;
+    }
+
+    .lightbox-arrow.next {
+      right: 10px;
     }
 
     @media (min-width: 760px) {
@@ -828,13 +829,9 @@
 
       .boat-modal-card {
         max-width: 720px;
-
         min-height: auto;
-
         margin: 30px auto;
-
         overflow: hidden;
-
         border: 1px solid var(--line);
         border-radius: 24px;
       }
@@ -847,10 +844,8 @@
       .booking-sheet {
         max-width: 520px;
         max-height: 90vh;
-
         border-radius: 25px;
       }
-
     }
   </style>
 </head>
@@ -858,26 +853,15 @@
 <body>
 
 <header>
-
   <div class="wrap">
-
-    <div class="brand">
-      PELAGOS
-    </div>
-
-    <div class="tagline">
-      PRIVATE YACHT & BOAT EXPERIENCES
-    </div>
-
+    <div class="brand">PELAGOS</div>
+    <div class="tagline">PRIVATE YACHT & BOAT EXPERIENCES</div>
   </div>
-
 </header>
-
 
 <main>
 
   <section class="hero">
-
     <div class="wrap">
 
       <div class="eyebrow">
@@ -896,28 +880,21 @@
       </p>
 
     </div>
-
   </section>
 
-
   <section class="catalog-section">
-
     <div
       class="wrap"
       id="catalog"
     ></div>
-
   </section>
 
 </main>
 
-
 <footer>
-
   <div class="wrap">
     © 2026 PELAGOS · Санкт-Петербург
   </div>
-
 </footer>
 
 
@@ -947,12 +924,10 @@
 
     </div>
 
-
     <div
       class="boat-detail-cover"
       id="detailCover"
     ></div>
-
 
     <div class="detail-content">
 
@@ -970,15 +945,12 @@
 
       </div>
 
-
       <p
         class="detail-intro"
         id="detailIntro"
       ></p>
 
-
       <div id="dynamicDetails"></div>
-
 
       <div class="booking">
 
@@ -1021,7 +993,6 @@
 
     <div class="sheet-handle"></div>
 
-
     <div class="sheet-head">
 
       <div class="sheet-title-wrap">
@@ -1034,7 +1005,6 @@
 
       </div>
 
-
       <button
         class="close-btn"
         type="button"
@@ -1044,7 +1014,6 @@
       </button>
 
     </div>
-
 
     <div class="availability-note">
 
@@ -1060,12 +1029,9 @@
 
     </div>
 
-
     <form id="bookingForm">
 
       <div class="form-grid">
-
-        <!-- ДАТА -->
 
         <div class="field">
 
@@ -1080,9 +1046,6 @@
           >
 
         </div>
-
-
-        <!-- ВРЕМЯ -->
 
         <div class="field">
 
@@ -1102,9 +1065,6 @@
 
         </div>
 
-
-        <!-- ГОСТИ -->
-
         <div class="field">
 
           <label for="guests">
@@ -1121,9 +1081,6 @@
 
         </div>
 
-
-        <!-- ИМЯ -->
-
         <div class="field">
 
           <label for="name">
@@ -1138,9 +1095,6 @@
           >
 
         </div>
-
-
-        <!-- КОНТАКТ -->
 
         <div class="field">
 
@@ -1157,9 +1111,6 @@
 
         </div>
 
-
-        <!-- ПОЖЕЛАНИЯ -->
-
         <div class="field">
 
           <label for="comment">
@@ -1175,7 +1126,6 @@
 
       </div>
 
-
       <button
         class="submit-btn"
         id="submitButton"
@@ -1183,7 +1133,6 @@
       >
         Отправить заявку
       </button>
-
 
       <div class="booking-disclaimer">
 
@@ -1195,7 +1144,6 @@
         только после ответа менеджера PELAGOS.
 
       </div>
-
 
       <div
         class="form-status"
@@ -1209,64 +1157,103 @@
 </div>
 
 
-<script>
+<!-- LIGHTBOX -->
 
-  const BASE_URL =
-    "https://aliksp7777777-star.github.io/Pelagos/";
+<div
+  class="lightbox"
+  id="lightbox"
+>
+
+  <div
+    class="lightbox-stage"
+    id="lightboxStage"
+  >
+
+    <button
+      class="lightbox-close"
+      type="button"
+      onclick="closeLightbox()"
+    >
+      ×
+    </button>
+
+    <div
+      class="lightbox-counter"
+      id="lightboxCounter"
+    ></div>
+
+    <button
+      class="lightbox-arrow prev"
+      type="button"
+      onclick="showPrevImage()"
+    >
+      ‹
+    </button>
+
+    <img
+      class="lightbox-image"
+      id="lightboxImage"
+      alt=""
+    >
+
+    <button
+      class="lightbox-arrow next"
+      type="button"
+      onclick="showNextImage()"
+    >
+      ›
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
 
   const WORKER_URL =
     "https://pelagos-booking.aliks-p7777777.workers.dev/";
 
-
   const boats = [
 
     {
-  id: "francesco",
-  category: "budget",
+      id: "francesco",
+      category: "budget",
 
-  name: "Франческо",
-  price: "7 500 ₽ / час",
-  guests: 6,
+      name: "Франческо",
+      price: "7 500 ₽ / час",
+      guests: 6,
 
-  cover: "./francesco-cover.jpg",
+      cover: "./francesco-cover.jpg",
 
-  intro:
-    "Компактный, быстрый и очень стильный Chaparral для прогулок по Петербургу.",
+      intro:
+        "Компактный, быстрый и очень стильный Chaparral для прогулок по Петербургу.",
 
-  story:
-    "«Франческо» — про скорость, лёгкость и красивые выходы по воде без лишнего шума. Он отлично подходит для свиданий, прогулок вдвоём или небольшой компанией, когда хочется просто включить музыку, уйти от городского ритма и посмотреть на Петербург с другой стороны. Благодаря своему характеру и динамике этот катер особенно приятно чувствует себя на вечерней Неве и открытой воде в хорошую погоду.",
+      story:
+        "«Франческо» — про скорость, лёгкость и красивые выходы по воде без лишнего шума. Он отлично подходит для свиданий, прогулок вдвоём или небольшой компанией, когда хочется просто включить музыку, уйти от городского ритма и посмотреть на Петербург с другой стороны. Благодаря своему характеру и динамике этот катер особенно приятно чувствует себя на вечерней Неве и открытой воде в хорошую погоду.",
 
-  amenities: [
-    "Музыка Bluetooth",
-    "Пледы",
-    "Зонты",
-    "Стеклянные бокалы",
-    "Тент от дождя"
-  ],
+      amenities: [
+        "Музыка Bluetooth",
+        "Пледы",
+        "Зонты",
+        "Бокалы",
+        "Тент от дождя"
+      ],
 
-  uses: [
-    "Свидания",
-    "Прогулки вдвоём",
-    "Небольшие компании",
-    "Вечерняя Нева",
-    "Прогулки от 1 часа"
-  ],
+      pier:
+        "Санкт-Петербург, набережная канала Грибоедова, 61",
 
-  pier:
-    "Санкт-Петербург, набережная канала Грибоедова, 61",
+      map:
+        "https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
 
-  map:
-    "https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
-
-  gallery: [
-    "./francesco-aerial-rear.jpg",
-    "./francesco-aerial-front.jpg",
-    "./francesco-aerial-side.jpg",
-    "./francesco-bow.jpg",
-    "./francesco-side.jpg"
-  ]
-},
-
+      gallery: [
+        "./francesco-aerial-rear.jpg",
+        "./francesco-aerial-front.jpg",
+        "./francesco-aerial-side.jpg",
+        "./francesco-bow.jpg",
+        "./francesco-side.jpg"
+      ]
+    },
 
     {
       id: "celeste",
@@ -1278,12 +1265,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "magnum",
@@ -1295,12 +1280,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "ladoga",
@@ -1312,12 +1295,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "motomoto",
@@ -1329,12 +1310,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "theodor",
@@ -1346,12 +1325,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "hollander",
@@ -1363,12 +1340,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "jerry",
@@ -1380,12 +1355,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "amigo",
@@ -1397,12 +1370,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "hector",
@@ -1414,12 +1385,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "venezia",
@@ -1431,12 +1400,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "elchapa",
@@ -1446,8 +1413,7 @@
       price: "14 000 ₽ / час",
       guests: 11,
 
-      cover:
-        BASE_URL + "elchapa-cover.jpg",
+      cover: "./elchapa-cover.jpg",
 
       intro:
         "Американский Chaparral — большой, комфортный и созданный для прогулок по Петербургу и Финскому заливу.",
@@ -1466,15 +1432,6 @@
         "Туалет"
       ],
 
-      uses: [
-        "Прогулки с друзьями",
-        "Свидания",
-        "Дни рождения",
-        "Фотосессии",
-        "Закаты в заливе",
-        "Прогулки по центру"
-      ],
-
       pier:
         "Набережная реки Фонтанки, 51/53",
 
@@ -1482,14 +1439,13 @@
         "https://yandex.ru/maps/org/pristan_naberezhnaya_reki_fontanki_51_53/11364047852?si=crh6zat8bvqdkku7ryp9104xdg",
 
       gallery: [
-        BASE_URL + "elchapa-aerial.jpg",
-        BASE_URL + "elchapa-bow.jpg",
-        BASE_URL + "elchapa-table.jpg",
-        BASE_URL + "elchapa-details.jpg",
-        BASE_URL + "elchapa-toilet.jpg"
+        "./elchapa-aerial.jpg",
+        "./elchapa-bow.jpg",
+        "./elchapa-table.jpg",
+        "./elchapa-details.jpg",
+        "./elchapa-toilet.jpg"
       ]
     },
-
 
     {
       id: "monroe",
@@ -1501,12 +1457,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "byzantium",
@@ -1518,12 +1472,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "silver",
@@ -1535,12 +1487,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "atlantica",
@@ -1552,12 +1502,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "blueberry",
@@ -1569,12 +1517,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "blackberry",
@@ -1586,12 +1532,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "venissa",
@@ -1603,12 +1547,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "modena",
@@ -1620,12 +1562,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "yalta",
@@ -1637,12 +1577,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "beluga",
@@ -1654,12 +1592,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "cloudberry",
@@ -1671,12 +1607,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "livadia",
@@ -1688,12 +1622,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "montferrand",
@@ -1705,12 +1637,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "venezia-nord",
@@ -1722,12 +1652,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "viaggio",
@@ -1739,12 +1667,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "bangkok",
@@ -1756,12 +1682,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "amsterdam",
@@ -1773,12 +1697,10 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
     },
-
 
     {
       id: "monaco",
@@ -1790,7 +1712,6 @@
       intro: "",
       story: "",
       amenities: [],
-      uses: [],
       pier: "",
       map: "",
       gallery: []
@@ -1798,35 +1719,28 @@
 
   ];
 
-
   const categories = [
 
     {
       id: "budget",
-
       title:
         "Катера от 7 000 ₽ до 12 000 ₽/час",
-
       subtitle:
         "Компактные и комфортные варианты для прогулок по Петербургу"
     },
 
     {
       id: "middle",
-
       title:
         "Катера от 13 000 ₽ до 20 000 ₽/час",
-
       subtitle:
         "Просторные катера для компаний, событий и красивых выходов на воду"
     },
 
     {
       id: "premium",
-
       title:
         "Катера и яхты от 20 000 ₽ до 40 000 ₽/час",
-
       subtitle:
         "Премиальные варианты для особенных событий и больших компаний"
     }
@@ -1837,13 +1751,9 @@
   const tg =
     window.Telegram?.WebApp;
 
-
   if (tg) {
-
     tg.ready();
-
     tg.expand();
-
   }
 
 
@@ -1871,8 +1781,26 @@
   const guestsInput =
     document.getElementById("guests");
 
+  const lightbox =
+    document.getElementById("lightbox");
+
+  const lightboxImage =
+    document.getElementById("lightboxImage");
+
+  const lightboxCounter =
+    document.getElementById("lightboxCounter");
+
+  const lightboxStage =
+    document.getElementById("lightboxStage");
+
 
   let selectedBoat = null;
+
+  let lightboxImages = [];
+  let lightboxIndex = 0;
+
+  let touchStartX = 0;
+  let touchEndX = 0;
 
 
   const today =
@@ -1891,7 +1819,6 @@
       today.getDate()
     ).padStart(2, "0");
 
-
   dateInput.min =
     `${yyyy}-${mm}-${dd}`;
 
@@ -1899,7 +1826,6 @@
   function renderCatalog() {
 
     catalog.innerHTML = "";
-
 
     categories.forEach(
       category => {
@@ -1910,14 +1836,11 @@
               boat.category === category.id
           );
 
-
         const section =
           document.createElement("section");
 
-
         section.className =
           "category";
-
 
         section.innerHTML = `
 
@@ -1940,15 +1863,12 @@
 
         `;
 
-
         catalog.appendChild(section);
-
 
         const grid =
           section.querySelector(
             `#grid-${category.id}`
           );
-
 
         boatsInCategory.forEach(
           boat => {
@@ -1956,20 +1876,16 @@
             const card =
               document.createElement("button");
 
-
             card.type =
               "button";
 
-
             card.className =
               "fleet-card";
-
 
             card.onclick =
               () => openBoat(
                 boat.id
               );
-
 
             card.innerHTML = `
 
@@ -1992,7 +1908,6 @@
 
               </div>
 
-
               <div class="fleet-card-body">
 
                 <div class="fleet-card-name">
@@ -2010,7 +1925,6 @@
               </div>
 
             `;
-
 
             grid.appendChild(card);
 
@@ -2053,47 +1967,39 @@
           boat.id === id
       );
 
-
     if (!selectedBoat) {
       return;
     }
-
 
     document.getElementById(
       "modalTopTitle"
     ).textContent =
       selectedBoat.name;
 
-
     document.getElementById(
       "detailName"
     ).textContent =
       selectedBoat.name;
-
 
     document.getElementById(
       "detailCapacity"
     ).textContent =
       `до ${selectedBoat.guests} гостей`;
 
-
     document.getElementById(
       "detailBookingPrice"
     ).textContent =
       selectedBoat.price;
-
 
     document.getElementById(
       "bookingButton"
     ).textContent =
       `Оставить заявку на ${selectedBoat.name}`;
 
-
     const detailCover =
       document.getElementById(
         "detailCover"
       );
-
 
     detailCover.innerHTML = `
 
@@ -2118,12 +2024,10 @@
 
     `;
 
-
     const intro =
       document.getElementById(
         "detailIntro"
       );
-
 
     intro.textContent =
 
@@ -2131,21 +2035,17 @@
 
       `Катер ${selectedBoat.name}. До ${selectedBoat.guests} гостей. Подробное описание скоро появится в каталоге.`;
 
-
     renderBoatDetails(
       selectedBoat
     );
-
 
     boatModal.classList.add(
       "active"
     );
 
-
     document.body.classList.add(
       "locked"
     );
-
 
     boatModal.scrollTop = 0;
 
@@ -2159,9 +2059,7 @@
         "dynamicDetails"
       );
 
-
     let html = "";
-
 
     if (boat.story) {
 
@@ -2183,13 +2081,19 @@
 
     }
 
-
     if (
       Array.isArray(
         boat.gallery
       ) &&
       boat.gallery.length
     ) {
+
+      const galleryJson =
+        encodeURIComponent(
+          JSON.stringify(
+            boat.gallery
+          )
+        );
 
       html += `
 
@@ -2204,11 +2108,12 @@
             ${
 
               boat.gallery.map(
-                image => `
+                (image, index) => `
 
                   <img
                     src="${image}"
                     alt="${boat.name}"
+                    onclick="openLightboxFromEncoded('${galleryJson}', ${index})"
                   >
 
                 `
@@ -2223,7 +2128,6 @@
       `;
 
     }
-
 
     if (
       Array.isArray(
@@ -2263,47 +2167,6 @@
       `;
 
     }
-
-
-    if (
-      Array.isArray(
-        boat.uses
-      ) &&
-      boat.uses.length
-    ) {
-
-      html += `
-
-        <div class="uses">
-
-          <h3 class="block-title">
-            Подходит для
-          </h3>
-
-          <div class="uses-list">
-
-            ${
-
-              boat.uses.map(
-                item => `
-
-                  <div class="use">
-                    ${item}
-                  </div>
-
-                `
-              ).join("")
-
-            }
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
 
     if (boat.pier) {
 
@@ -2345,7 +2208,6 @@
 
     }
 
-
     if (!boat.story) {
 
       html += `
@@ -2365,7 +2227,6 @@
 
     }
 
-
     container.innerHTML =
       html;
 
@@ -2377,7 +2238,6 @@
     boatModal.classList.remove(
       "active"
     );
-
 
     document.body.classList.remove(
       "locked"
@@ -2392,25 +2252,20 @@
       return;
     }
 
-
     document.getElementById(
       "bookingBoatInfo"
     ).textContent =
 
       `${selectedBoat.name} · ${selectedBoat.price}`;
 
-
     guestsInput.max =
       selectedBoat.guests;
-
 
     formStatus.className =
       "form-status";
 
-
     formStatus.textContent =
       "";
-
 
     bookingModal.classList.add(
       "active"
@@ -2428,6 +2283,214 @@
   }
 
 
+  function openLightboxFromEncoded(
+    encodedGallery,
+    index
+  ) {
+
+    try {
+
+      const images =
+        JSON.parse(
+          decodeURIComponent(
+            encodedGallery
+          )
+        );
+
+      openLightbox(
+        images,
+        index
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Gallery error:",
+        error
+      );
+
+    }
+
+  }
+
+
+  function openLightbox(images, index) {
+
+    if (
+      !images ||
+      !images.length
+    ) {
+      return;
+    }
+
+    lightboxImages =
+      images;
+
+    lightboxIndex =
+      Number(index) || 0;
+
+    updateLightbox();
+
+    lightbox.classList.add(
+      "active"
+    );
+
+    document.body.classList.add(
+      "locked"
+    );
+
+  }
+
+
+  function closeLightbox() {
+
+    lightbox.classList.remove(
+      "active"
+    );
+
+    if (
+      !boatModal.classList.contains(
+        "active"
+      ) &&
+      !bookingModal.classList.contains(
+        "active"
+      )
+    ) {
+
+      document.body.classList.remove(
+        "locked"
+      );
+
+    }
+
+  }
+
+
+  function updateLightbox() {
+
+    const image =
+      lightboxImages[
+        lightboxIndex
+      ];
+
+    lightboxImage.src =
+      image;
+
+    lightboxCounter.textContent =
+      `${lightboxIndex + 1} / ${lightboxImages.length}`;
+
+  }
+
+
+  function showNextImage() {
+
+    if (
+      !lightboxImages.length
+    ) {
+      return;
+    }
+
+    lightboxIndex++;
+
+    if (
+      lightboxIndex >=
+      lightboxImages.length
+    ) {
+
+      lightboxIndex = 0;
+
+    }
+
+    updateLightbox();
+
+  }
+
+
+  function showPrevImage() {
+
+    if (
+      !lightboxImages.length
+    ) {
+      return;
+    }
+
+    lightboxIndex--;
+
+    if (
+      lightboxIndex < 0
+    ) {
+
+      lightboxIndex =
+        lightboxImages.length - 1;
+
+    }
+
+    updateLightbox();
+
+  }
+
+
+  lightboxStage.addEventListener(
+
+    "touchstart",
+
+    function(event) {
+
+      touchStartX =
+        event.changedTouches[0].screenX;
+
+    },
+
+    {
+      passive: true
+    }
+
+  );
+
+
+  lightboxStage.addEventListener(
+
+    "touchend",
+
+    function(event) {
+
+      touchEndX =
+        event.changedTouches[0].screenX;
+
+      const distance =
+        touchEndX - touchStartX;
+
+      if (
+        Math.abs(distance) < 45
+      ) {
+        return;
+      }
+
+      if (
+        distance < 0
+      ) {
+
+        showNextImage();
+
+      }
+
+      else {
+
+        showPrevImage();
+
+      }
+
+    },
+
+    {
+      passive: true
+    }
+
+  );
+
+
   bookingForm.addEventListener(
 
     "submit",
@@ -2436,47 +2499,39 @@
 
       event.preventDefault();
 
-
       if (!selectedBoat) {
         return;
       }
-
 
       const date =
         document.getElementById(
           "date"
         ).value;
 
-
       const time =
         document.getElementById(
           "time"
         ).value;
-
 
       const guests =
         document.getElementById(
           "guests"
         ).value;
 
-
       const name =
         document.getElementById(
           "name"
         ).value.trim();
-
 
       const contact =
         document.getElementById(
           "contact"
         ).value.trim();
 
-
       const comment =
         document.getElementById(
           "comment"
         ).value.trim();
-
 
       const payload = {
 
@@ -2506,22 +2561,17 @@
 
       };
 
-
       submitButton.disabled =
         true;
-
 
       submitButton.textContent =
         "Отправляем...";
 
-
       formStatus.className =
         "form-status";
 
-
       formStatus.textContent =
         "";
-
 
       try {
 
@@ -2551,10 +2601,8 @@
 
           );
 
-
         const result =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -2571,19 +2619,15 @@
 
         }
 
-
         formStatus.className =
           "form-status success";
-
 
         formStatus.textContent =
 
           "Заявка отправлена. Менеджер проверит доступность катера и подтвердит дату и время прогулки.";
 
-
         submitButton.textContent =
           "Заявка отправлена ✓";
-
 
         setTimeout(
 
@@ -2595,14 +2639,11 @@
 
             closeBoat();
 
-
             submitButton.disabled =
               false;
 
-
             submitButton.textContent =
               "Отправить заявку";
-
 
             formStatus.className =
               "form-status";
@@ -2615,7 +2656,6 @@
 
       }
 
-
       catch (error) {
 
         console.error(
@@ -2623,19 +2663,15 @@
           error
         );
 
-
         formStatus.className =
           "form-status error";
-
 
         formStatus.textContent =
 
           "Не удалось отправить заявку. Попробуйте ещё раз.";
 
-
         submitButton.disabled =
           false;
-
 
         submitButton.textContent =
           "Отправить заявку";
@@ -2653,10 +2689,8 @@
       return "";
     }
 
-
     const parts =
       value.split("-");
-
 
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
 
@@ -2695,6 +2729,26 @@
       ) {
 
         closeBooking();
+
+      }
+
+    }
+
+  );
+
+
+  lightbox.addEventListener(
+
+    "click",
+
+    function(event) {
+
+      if (
+        event.target === lightbox ||
+        event.target === lightboxStage
+      ) {
+
+        closeLightbox();
 
       }
 
