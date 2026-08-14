@@ -70,6 +70,10 @@
       margin: 0 auto;
     }
 
+    /* =========================
+       HEADER
+    ========================= */
+
     header {
       padding: 27px 0 23px;
       border-bottom: 1px solid var(--line-soft);
@@ -89,6 +93,10 @@
       font-size: 10px;
       letter-spacing: 3px;
     }
+
+    /* =========================
+       HERO
+    ========================= */
 
     .hero {
       padding: 44px 0 32px;
@@ -120,6 +128,10 @@
       line-height: 1.6;
     }
 
+    /* =========================
+       КАТАЛОГ
+    ========================= */
+
     .catalog-section {
       padding: 4px 0 56px;
     }
@@ -137,7 +149,7 @@
     }
 
     .category-title {
-      max-width: 640px;
+      max-width: 650px;
       font-family: Georgia, serif;
       font-size: clamp(22px, 5.5vw, 29px);
       line-height: 1.18;
@@ -168,6 +180,7 @@
       color: var(--text);
       text-align: left;
       -webkit-tap-highlight-color: transparent;
+      transition: transform .15s ease;
     }
 
     .fleet-card:active {
@@ -239,6 +252,10 @@
       font-weight: 700;
     }
 
+    /* =========================
+       КАРТОЧКА КАТЕРА
+    ========================= */
+
     .modal {
       position: fixed;
       inset: 0;
@@ -297,9 +314,7 @@
       position: relative;
       aspect-ratio: 4 / 3;
       overflow: hidden;
-      background:
-        radial-gradient(circle at 30% 20%, #242424, transparent 55%),
-        #101010;
+      background: #101010;
     }
 
     .boat-detail-cover img {
@@ -380,6 +395,10 @@
       line-height: 1.72;
     }
 
+    /* =========================
+       ГАЛЕРЕЯ В КАРТОЧКЕ
+    ========================= */
+
     .gallery-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -408,6 +427,10 @@
       aspect-ratio: 16 / 10;
     }
 
+    /* =========================
+       ОСНАЩЕНИЕ
+    ========================= */
+
     .chips {
       display: flex;
       flex-wrap: wrap;
@@ -423,6 +446,10 @@
       font-size: 12px;
     }
 
+    /* =========================
+       ЛОКАЦИЯ
+    ========================= */
+
     .location {
       padding: 18px;
       border: 1px solid var(--line);
@@ -436,6 +463,10 @@
       color: var(--gold);
       text-decoration: none;
     }
+
+    /* =========================
+       БРОНИРОВАНИЕ В КАРТОЧКЕ
+    ========================= */
 
     .booking {
       padding: 22px;
@@ -476,7 +507,20 @@
       font-weight: 700;
     }
 
-    /* ФОРМА */
+    .coming-soon {
+      margin-top: 26px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: var(--card2);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* =========================
+       ФОРМА ЗАЯВКИ
+    ========================= */
 
     .booking-modal {
       position: fixed;
@@ -732,26 +776,9 @@
       color: var(--danger);
     }
 
-    .coming-soon {
-      margin-top: 26px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 17px;
-      background: var(--card2);
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    footer {
-      padding: 29px 0 42px;
-      border-top: 1px solid var(--line-soft);
-      color: #6f6b65;
-      text-align: center;
-      font-size: 12px;
-    }
-
-    /* ПОЛНОЭКРАННАЯ ГАЛЕРЕЯ */
+    /* =========================
+       НОВЫЙ LIGHTBOX
+    ========================= */
 
     .lightbox {
       position: fixed;
@@ -759,7 +786,8 @@
       z-index: 20000;
       display: none;
       overflow: hidden;
-      background: rgba(0,0,0,.985);
+      background: #000;
+      touch-action: none;
     }
 
     .lightbox.active {
@@ -769,43 +797,69 @@
     .lightbox-stage {
       position: absolute;
       inset: 0;
+      overflow: hidden;
+      touch-action: none;
+      background: #000;
+    }
+
+    /*
+      В track ВСЕГДА находятся три фото:
+      предыдущее — текущее — следующее.
+
+      Поэтому при свайпе следующий кадр
+      уже находится рядом и чёрного провала нет.
+    */
+
+    .lightbox-track {
+      position: absolute;
+      inset: 0;
+      width: 300%;
+      height: 100%;
+      display: flex;
+      transform: translate3d(-33.333333%, 0, 0);
+      will-change: transform;
+      touch-action: none;
+    }
+
+    .lightbox-track.animating {
+      transition:
+        transform .28s cubic-bezier(.22,.61,.36,1);
+    }
+
+    .lightbox-slide {
+      flex: 0 0 33.333333%;
+      width: 33.333333%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      touch-action: none;
+      background: #000;
     }
 
-    .lightbox-image {
+    .lightbox-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
       max-width: 100%;
       max-height: 100%;
-      width: auto;
-      height: auto;
       object-fit: contain;
       user-select: none;
       -webkit-user-select: none;
       -webkit-user-drag: none;
-      will-change: transform, opacity;
-      transform: translate3d(0,0,0);
-      opacity: 1;
-    }
-
-    .lightbox-image.animating {
-      transition:
-        transform .30s cubic-bezier(.22,.61,.36,1),
-        opacity .26s ease;
+      pointer-events: none;
     }
 
     .lightbox-close {
       position: absolute;
       top: calc(14px + env(safe-area-inset-top));
       right: 14px;
-      z-index: 10;
+      z-index: 20;
       width: 44px;
       height: 44px;
       border: 1px solid rgba(255,255,255,.2);
       border-radius: 50%;
-      background: rgba(20,20,20,.78);
+      background: rgba(20,20,20,.72);
       color: white;
       font-size: 26px;
       backdrop-filter: blur(10px);
@@ -813,42 +867,25 @@
 
     .lightbox-counter {
       position: absolute;
-      top: calc(26px + env(safe-area-inset-top));
+      top: calc(27px + env(safe-area-inset-top));
       left: 50%;
-      z-index: 10;
+      z-index: 20;
       transform: translateX(-50%);
-      color: rgba(255,255,255,.8);
-      font-size: 13px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(20,20,20,.38);
+      color: rgba(255,255,255,.88);
+      font-size: 12px;
+      backdrop-filter: blur(8px);
       pointer-events: none;
     }
 
-    .lightbox-arrow {
-      position: absolute;
-      top: 50%;
-      z-index: 8;
-      transform: translateY(-50%);
-      width: 42px;
-      height: 54px;
-      border: 0;
-      border-radius: 14px;
-      background: rgba(20,20,20,.45);
-      color: rgba(255,255,255,.92);
-      font-size: 28px;
-      backdrop-filter: blur(8px);
-    }
-
-    .lightbox-arrow.prev {
-      left: 8px;
-    }
-
-    .lightbox-arrow.next {
-      right: 8px;
-    }
-
-    @media (max-width: 600px) {
-      .lightbox-arrow {
-        opacity: .45;
-      }
+    footer {
+      padding: 29px 0 42px;
+      border-top: 1px solid var(--line-soft);
+      color: #6f6b65;
+      text-align: center;
+      font-size: 12px;
     }
 
     @media (min-width: 760px) {
@@ -892,6 +929,7 @@
 <main>
 
   <section class="hero">
+
     <div class="wrap">
 
       <div class="eyebrow">
@@ -910,25 +948,32 @@
       </p>
 
     </div>
+
   </section>
 
   <section class="catalog-section">
+
     <div
       class="wrap"
       id="catalog"
     ></div>
+
   </section>
 
 </main>
 
 <footer>
+
   <div class="wrap">
     © 2026 PELAGOS · Санкт-Петербург
   </div>
+
 </footer>
 
 
-<!-- КАРТОЧКА КАТЕРА -->
+<!-- =========================
+     КАРТОЧКА КАТЕРА
+========================= -->
 
 <div
   class="modal"
@@ -1012,7 +1057,9 @@
 </div>
 
 
-<!-- ФОРМА -->
+<!-- =========================
+     ФОРМА ЗАЯВКИ
+========================= -->
 
 <div
   class="booking-modal"
@@ -1052,9 +1099,9 @@
       </div>
 
       <div class="availability-note-text">
-        Выберите удобное примерное время старта.
-        После заявки менеджер проверит расписание
-        и подтвердит слот или предложит ближайший.
+        Выберите удобное для вас примерное время старта.
+        После отправки заявки менеджер проверит расписание
+        и подтвердит свободный слот или предложит ближайший.
       </div>
 
     </div>
@@ -1077,6 +1124,7 @@
 
         </div>
 
+
         <div class="field">
 
           <label for="time">
@@ -1095,6 +1143,7 @@
 
         </div>
 
+
         <div class="field">
 
           <label for="guests">
@@ -1111,6 +1160,7 @@
 
         </div>
 
+
         <div class="field">
 
           <label for="name">
@@ -1125,6 +1175,7 @@
           >
 
         </div>
+
 
         <div class="field">
 
@@ -1141,6 +1192,7 @@
 
         </div>
 
+
         <div class="field">
 
           <label for="comment">
@@ -1156,6 +1208,7 @@
 
       </div>
 
+
       <button
         class="submit-btn"
         id="submitButton"
@@ -1163,6 +1216,7 @@
       >
         Отправить заявку
       </button>
+
 
       <div class="booking-disclaimer">
 
@@ -1174,6 +1228,7 @@
         только после ответа менеджера PELAGOS.
 
       </div>
+
 
       <div
         class="form-status"
@@ -1187,7 +1242,9 @@
 </div>
 
 
-<!-- ПОЛНОЭКРАННАЯ ГАЛЕРЕЯ -->
+<!-- =========================
+     ПОЛНОЭКРАННАЯ ГАЛЕРЕЯ
+========================= -->
 
 <div
   class="lightbox"
@@ -1212,28 +1269,36 @@
       id="lightboxCounter"
     ></div>
 
-    <button
-      class="lightbox-arrow prev"
-      type="button"
-      onclick="showPrevImage()"
-    >
-      ‹
-    </button>
-
-    <img
-      class="lightbox-image"
-      id="lightboxImage"
-      alt=""
-      draggable="false"
+    <div
+      class="lightbox-track"
+      id="lightboxTrack"
     >
 
-    <button
-      class="lightbox-arrow next"
-      type="button"
-      onclick="showNextImage()"
-    >
-      ›
-    </button>
+      <div class="lightbox-slide">
+        <img
+          id="lightboxPrev"
+          alt=""
+          draggable="false"
+        >
+      </div>
+
+      <div class="lightbox-slide">
+        <img
+          id="lightboxCurrent"
+          alt=""
+          draggable="false"
+        >
+      </div>
+
+      <div class="lightbox-slide">
+        <img
+          id="lightboxNext"
+          alt=""
+          draggable="false"
+        >
+      </div>
+
+    </div>
 
   </div>
 
@@ -1242,10 +1307,23 @@
 
 <script>
 
+  /* =========================
+     WORKER
+  ========================= */
+
   const WORKER_URL =
     "https://pelagos-booking.aliks-p7777777.workers.dev/";
 
+
+  /* =========================
+     КАТЕРА
+  ========================= */
+
   const boats = [
+
+    /* =========================
+       ФРАНЧЕСКО
+    ========================= */
 
     {
       id: "francesco",
@@ -1261,7 +1339,7 @@
         "Компактный, быстрый и очень стильный Chaparral для прогулок по Петербургу.",
 
       story:
-        "«Франческо» — про скорость, лёгкость и красивые выходы по воде без лишнего шума. Он отлично подходит для свиданий, прогулок вдвоём или небольшой компанией, когда хочется просто включить музыку, уйти от городского ритма и посмотреть на Петербург с другой стороны. Благодаря своему характеру и динамике этот катер особенно приятно чувствует себя на вечерней Неве и открытой воде в хорошую погоду.",
+        "«Франческо» — про скорость, лёгкость и красивые выходы по воде без лишнего шума. Он отлично подходит для прогулок вдвоём или небольшой компанией, когда хочется просто включить музыку, уйти от городского ритма и посмотреть на Петербург с другой стороны. Благодаря своему характеру и динамике этот катер особенно приятно чувствует себя на вечерней Неве и открытой воде в хорошую погоду.",
 
       amenities: [
         "Музыка Bluetooth",
@@ -1278,6 +1356,7 @@
         "https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
 
       gallery: [
+        "./francesco-cover.jpg",
         "./francesco-aerial-rear.jpg",
         "./francesco-aerial-front.jpg",
         "./francesco-aerial-side.jpg",
@@ -1286,6 +1365,10 @@
       ]
     },
 
+
+    /* =========================
+       СЕЛЕСТЕ
+    ========================= */
 
     {
       id: "celeste",
@@ -1332,20 +1415,54 @@
     },
 
 
+    /* =========================
+       МАГНУМ
+    ========================= */
+
     {
       id: "magnum",
       category: "budget",
+
       name: "Магнум",
       price: "7 500 ₽ / час",
       guests: 5,
-      cover: "",
-      intro: "",
-      story: "",
-      amenities: [],
-      pier: "",
-      map: "",
-      gallery: []
+
+      cover: "./magnum-cover.jpg",
+
+      intro:
+        "Компактный и очень стильный катер для прогулок по Петербургу в хорошей компании.",
+
+      story:
+        "«Магнум» — про лёгкость, красивую музыку, вечерний город и спокойные прогулки без спешки. Он отлично подходит для небольших компаний и уютных выходов по каналам и Неве. Отдельную атмосферу здесь создаёт капитан — душевный, внимательный и умеющий сделать прогулку по-настоящему комфортной и живой.",
+
+      amenities: [
+        "Музыка Bluetooth",
+        "Пледы",
+        "Зонты",
+        "Бокалы",
+        "Тент от дождя"
+      ],
+
+      pier:
+        "Санкт-Петербург, набережная канала Грибоедова, 61",
+
+      map:
+        "https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
+
+      gallery: [
+        "./magnum-cover.jpg",
+        "./magnum-top.jpg",
+        "./magnum-rear.jpg",
+        "./magnum-aerial.jpg",
+        "./magnum-side.jpg",
+        "./magnum-city.jpg"
+      ]
     },
+
+
+    /* =========================
+       ПОКА БЕЗ КАРТОЧЕК
+    ========================= */
 
     {
       id: "ladoga",
@@ -1468,6 +1585,10 @@
     },
 
 
+    /* =========================
+       ЭЛЬ ЧАПА
+    ========================= */
+
     {
       id: "elchapa",
       category: "middle",
@@ -1509,6 +1630,7 @@
         "./elchapa-toilet.jpg"
       ]
     },
+
 
     {
       id: "monroe",
@@ -1783,34 +1905,48 @@
   ];
 
 
+  /* =========================
+     РАЗДЕЛЫ
+  ========================= */
+
   const categories = [
 
     {
       id: "budget",
+
       title:
         "Катера от 7 000 ₽ до 12 000 ₽/час",
+
       subtitle:
         "Компактные и комфортные варианты для прогулок по Петербургу"
     },
 
     {
       id: "middle",
+
       title:
         "Катера от 13 000 ₽ до 20 000 ₽/час",
+
       subtitle:
         "Просторные катера для компаний, событий и красивых выходов на воду"
     },
 
     {
       id: "premium",
+
       title:
         "Катера и яхты от 20 000 ₽ до 40 000 ₽/час",
+
       subtitle:
         "Премиальные варианты для особенных событий и больших компаний"
     }
 
   ];
 
+
+  /* =========================
+     TELEGRAM
+  ========================= */
 
   const tg =
     window.Telegram?.WebApp;
@@ -1820,6 +1956,10 @@
     tg.expand();
   }
 
+
+  /* =========================
+     DOM
+  ========================= */
 
   const catalog =
     document.getElementById("catalog");
@@ -1848,31 +1988,47 @@
   const lightbox =
     document.getElementById("lightbox");
 
-  const lightboxImage =
-    document.getElementById("lightboxImage");
+  const lightboxStage =
+    document.getElementById("lightboxStage");
+
+  const lightboxTrack =
+    document.getElementById("lightboxTrack");
+
+  const lightboxPrev =
+    document.getElementById("lightboxPrev");
+
+  const lightboxCurrent =
+    document.getElementById("lightboxCurrent");
+
+  const lightboxNext =
+    document.getElementById("lightboxNext");
 
   const lightboxCounter =
     document.getElementById("lightboxCounter");
 
-  const lightboxStage =
-    document.getElementById("lightboxStage");
 
+  /* =========================
+     STATE
+  ========================= */
 
   let selectedBoat = null;
 
   let lightboxImages = [];
   let lightboxIndex = 0;
 
-  let touchStartX = 0;
-  let touchCurrentX = 0;
-  let touchStartY = 0;
+  let swipeStartX = 0;
+  let swipeStartY = 0;
+  let swipeCurrentX = 0;
 
-  let isDragging = false;
-  let lightboxAnimating = false;
+  let dragging = false;
+  let sliderAnimating = false;
 
 
-  const today =
-    new Date();
+  /* =========================
+     МИНИМАЛЬНАЯ ДАТА
+  ========================= */
+
+  const today = new Date();
 
   const yyyy =
     today.getFullYear();
@@ -1890,6 +2046,10 @@
   dateInput.min =
     `${yyyy}-${mm}-${dd}`;
 
+
+  /* =========================
+     КАТАЛОГ
+  ========================= */
 
   function renderCatalog() {
 
@@ -1931,7 +2091,9 @@
 
         `;
 
-        catalog.appendChild(section);
+        catalog.appendChild(
+          section
+        );
 
         const grid =
           section.querySelector(
@@ -1994,7 +2156,9 @@
 
             `;
 
-            grid.appendChild(card);
+            grid.appendChild(
+              card
+            );
 
           }
         );
@@ -2026,6 +2190,10 @@
 
   }
 
+
+  /* =========================
+     ОТКРЫТИЕ КАТЕРА
+  ========================= */
 
   function openBoat(id) {
 
@@ -2064,6 +2232,7 @@
     ).textContent =
       `Оставить заявку на ${selectedBoat.name}`;
 
+
     const detailCover =
       document.getElementById(
         "detailCover"
@@ -2092,6 +2261,7 @@
 
     `;
 
+
     const intro =
       document.getElementById(
         "detailIntro"
@@ -2103,9 +2273,11 @@
 
       `Катер ${selectedBoat.name}. До ${selectedBoat.guests} гостей. Подробное описание скоро появится в каталоге.`;
 
+
     renderBoatDetails(
       selectedBoat
     );
+
 
     boatModal.classList.add(
       "active"
@@ -2120,6 +2292,10 @@
   }
 
 
+  /* =========================
+     ДЕТАЛИ КАТЕРА
+  ========================= */
+
   function renderBoatDetails(boat) {
 
     const container =
@@ -2128,6 +2304,7 @@
       );
 
     let html = "";
+
 
     if (boat.story) {
 
@@ -2148,6 +2325,7 @@
       `;
 
     }
+
 
     if (
       Array.isArray(
@@ -2174,7 +2352,6 @@
           <div class="gallery-grid">
 
             ${
-
               boat.gallery.map(
                 (image, index) => `
 
@@ -2186,7 +2363,6 @@
 
                 `
               ).join("")
-
             }
 
           </div>
@@ -2196,6 +2372,7 @@
       `;
 
     }
+
 
     if (
       Array.isArray(
@@ -2215,7 +2392,6 @@
           <div class="chips">
 
             ${
-
               boat.amenities.map(
                 item => `
 
@@ -2225,7 +2401,6 @@
 
                 `
               ).join("")
-
             }
 
           </div>
@@ -2235,6 +2410,7 @@
       `;
 
     }
+
 
     if (boat.pier) {
 
@@ -2251,7 +2427,6 @@
           </p>
 
           ${
-
             boat.map
 
             ? `
@@ -2267,7 +2442,6 @@
             `
 
             : ""
-
           }
 
         </div>
@@ -2275,6 +2449,7 @@
       `;
 
     }
+
 
     if (!boat.story) {
 
@@ -2295,6 +2470,7 @@
 
     }
 
+
     container.innerHTML =
       html;
 
@@ -2314,6 +2490,10 @@
   }
 
 
+  /* =========================
+     ФОРМА
+  ========================= */
+
   function openBooking() {
 
     if (!selectedBoat) {
@@ -2326,14 +2506,17 @@
 
       `${selectedBoat.name} · ${selectedBoat.price}`;
 
+
     guestsInput.max =
       selectedBoat.guests;
+
 
     formStatus.className =
       "form-status";
 
     formStatus.textContent =
       "";
+
 
     bookingModal.classList.add(
       "active"
@@ -2350,6 +2533,10 @@
 
   }
 
+
+  /* =========================
+     LIGHTBOX
+  ========================= */
 
   function openLightboxFromEncoded(
     encodedGallery,
@@ -2384,10 +2571,13 @@
   }
 
 
-  function openLightbox(images, index) {
+  function openLightbox(
+    images,
+    index
+  ) {
 
     if (
-      !images ||
+      !Array.isArray(images) ||
       !images.length
     ) {
       return;
@@ -2399,9 +2589,14 @@
     lightboxIndex =
       Number(index) || 0;
 
-    resetLightboxImage();
+    lightboxIndex =
+      normalizeIndex(
+        lightboxIndex
+      );
 
-    updateLightbox();
+    renderLightboxSlides();
+
+    resetTrackInstant();
 
     lightbox.classList.add(
       "active"
@@ -2420,50 +2615,76 @@
       "active"
     );
 
-    resetLightboxImage();
+    dragging =
+      false;
 
-    if (
-      !boatModal.classList.contains(
-        "active"
-      ) &&
-      !bookingModal.classList.contains(
-        "active"
-      )
-    ) {
+    sliderAnimating =
+      false;
 
-      document.body.classList.remove(
-        "locked"
-      );
-
-    }
-
-  }
-
-
-  function resetLightboxImage() {
-
-    lightboxImage.classList.remove(
+    lightboxTrack.classList.remove(
       "animating"
     );
 
-    lightboxImage.style.transform =
-      "translate3d(0,0,0)";
-
-    lightboxImage.style.opacity =
-      "1";
+    resetTrackInstant();
 
   }
 
 
-  function updateLightbox() {
+  function normalizeIndex(index) {
 
-    const image =
+    const length =
+      lightboxImages.length;
+
+    if (!length) {
+      return 0;
+    }
+
+    return (
+      (index % length) +
+      length
+    ) % length;
+
+  }
+
+
+  function getPreviousIndex() {
+
+    return normalizeIndex(
+      lightboxIndex - 1
+    );
+
+  }
+
+
+  function getNextIndex() {
+
+    return normalizeIndex(
+      lightboxIndex + 1
+    );
+
+  }
+
+
+  function renderLightboxSlides() {
+
+    if (!lightboxImages.length) {
+      return;
+    }
+
+    lightboxPrev.src =
+      lightboxImages[
+        getPreviousIndex()
+      ];
+
+    lightboxCurrent.src =
       lightboxImages[
         lightboxIndex
       ];
 
-    lightboxImage.src =
-      image;
+    lightboxNext.src =
+      lightboxImages[
+        getNextIndex()
+      ];
 
     lightboxCounter.textContent =
       `${lightboxIndex + 1} / ${lightboxImages.length}`;
@@ -2471,114 +2692,125 @@
   }
 
 
-  function animateToImage(direction) {
+  /*
+    Центр — это -33.333333%.
+    Переход к предыдущему — 0%.
+    Переход к следующему — -66.666666%.
+  */
+
+  function resetTrackInstant() {
+
+    lightboxTrack.classList.remove(
+      "animating"
+    );
+
+    lightboxTrack.style.transform =
+      "translate3d(-33.333333%, 0, 0)";
+
+  }
+
+
+  function goNext() {
 
     if (
-      lightboxAnimating ||
-      !lightboxImages.length
+      sliderAnimating ||
+      lightboxImages.length < 2
     ) {
       return;
     }
 
-    lightboxAnimating = true;
+    sliderAnimating =
+      true;
 
-    const exitX =
-      direction > 0
-        ? "-110%"
-        : "110%";
-
-    const enterX =
-      direction > 0
-        ? "110%"
-        : "-110%";
-
-    lightboxImage.classList.add(
+    lightboxTrack.classList.add(
       "animating"
     );
 
-    lightboxImage.style.transform =
-      `translate3d(${exitX},0,0)`;
-
-    lightboxImage.style.opacity =
-      ".22";
+    lightboxTrack.style.transform =
+      "translate3d(-66.666666%, 0, 0)";
 
     setTimeout(() => {
 
-      lightboxIndex += direction;
+      lightboxIndex =
+        getNextIndex();
 
-      if (
-        lightboxIndex >=
-        lightboxImages.length
-      ) {
-        lightboxIndex = 0;
-      }
+      renderLightboxSlides();
 
-      if (
-        lightboxIndex < 0
-      ) {
-        lightboxIndex =
-          lightboxImages.length - 1;
-      }
+      resetTrackInstant();
 
-      lightboxImage.classList.remove(
-        "animating"
-      );
-
-      lightboxImage.style.transform =
-        `translate3d(${enterX},0,0)`;
-
-      lightboxImage.style.opacity =
-        ".25";
-
-      updateLightbox();
-
-      requestAnimationFrame(() => {
-
-        requestAnimationFrame(() => {
-
-          lightboxImage.classList.add(
-            "animating"
-          );
-
-          lightboxImage.style.transform =
-            "translate3d(0,0,0)";
-
-          lightboxImage.style.opacity =
-            "1";
-
-        });
-
-      });
-
-      setTimeout(() => {
-
-        lightboxAnimating =
-          false;
-
-        lightboxImage.classList.remove(
-          "animating"
-        );
-
-      }, 320);
+      sliderAnimating =
+        false;
 
     }, 285);
 
   }
 
 
-  function showNextImage() {
+  function goPrevious() {
 
-    animateToImage(1);
+    if (
+      sliderAnimating ||
+      lightboxImages.length < 2
+    ) {
+      return;
+    }
+
+    sliderAnimating =
+      true;
+
+    lightboxTrack.classList.add(
+      "animating"
+    );
+
+    lightboxTrack.style.transform =
+      "translate3d(0%, 0, 0)";
+
+    setTimeout(() => {
+
+      lightboxIndex =
+        getPreviousIndex();
+
+      renderLightboxSlides();
+
+      resetTrackInstant();
+
+      sliderAnimating =
+        false;
+
+    }, 285);
 
   }
 
 
-  function showPrevImage() {
+  function returnToCenter() {
 
-    animateToImage(-1);
+    sliderAnimating =
+      true;
+
+    lightboxTrack.classList.add(
+      "animating"
+    );
+
+    lightboxTrack.style.transform =
+      "translate3d(-33.333333%, 0, 0)";
+
+    setTimeout(() => {
+
+      lightboxTrack.classList.remove(
+        "animating"
+      );
+
+      sliderAnimating =
+        false;
+
+    }, 285);
 
   }
 
+
+  /* =========================
+     TOUCH START
+  ========================= */
 
   lightboxStage.addEventListener(
 
@@ -2587,7 +2819,8 @@
     function(event) {
 
       if (
-        lightboxAnimating
+        sliderAnimating ||
+        lightboxImages.length < 2
       ) {
         return;
       }
@@ -2595,19 +2828,19 @@
       const touch =
         event.touches[0];
 
-      touchStartX =
+      swipeStartX =
         touch.clientX;
 
-      touchCurrentX =
+      swipeCurrentX =
         touch.clientX;
 
-      touchStartY =
+      swipeStartY =
         touch.clientY;
 
-      isDragging =
+      dragging =
         true;
 
-      lightboxImage.classList.remove(
+      lightboxTrack.classList.remove(
         "animating"
       );
 
@@ -2619,6 +2852,10 @@
 
   );
 
+
+  /* =========================
+     TOUCH MOVE
+  ========================= */
 
   lightboxStage.addEventListener(
 
@@ -2627,8 +2864,8 @@
     function(event) {
 
       if (
-        !isDragging ||
-        lightboxAnimating
+        !dragging ||
+        sliderAnimating
       ) {
         return;
       }
@@ -2636,47 +2873,63 @@
       const touch =
         event.touches[0];
 
-      touchCurrentX =
+      swipeCurrentX =
         touch.clientX;
 
       const deltaX =
-        touchCurrentX -
-        touchStartX;
+        swipeCurrentX -
+        swipeStartX;
 
       const deltaY =
         touch.clientY -
-        touchStartY;
+        swipeStartY;
+
 
       if (
         Math.abs(deltaY) >
-        Math.abs(deltaX) * 1.25
+        Math.abs(deltaX) * 1.2
       ) {
         return;
       }
 
-      const resistance =
-        .82;
 
-      const translate =
-        deltaX * resistance;
-
-      const screenWidth =
+      const width =
         window.innerWidth || 390;
 
-      const progress =
-        Math.min(
-          Math.abs(deltaX) /
-          screenWidth,
-          .65
+
+      /*
+        33.333% трека = ширина одного экрана.
+
+        Переводим движение пальца
+        в процент от общей ширины track.
+      */
+
+      const deltaPercent =
+        (deltaX / width) *
+        33.333333;
+
+
+      let position =
+        -33.333333 +
+        deltaPercent;
+
+
+      /*
+        Немного ограничиваем перетягивание.
+      */
+
+      position =
+        Math.max(
+          -66.666666,
+          Math.min(
+            0,
+            position
+          )
         );
 
-      lightboxImage.style.transform =
-        `translate3d(${translate}px,0,0)`;
 
-      lightboxImage.style.opacity =
-        String(
-          1 - progress * .45
-        );
+      lightboxTrack.style.transform =
+        `translate3d(${position}%, 0, 0)`;
 
     },
 
@@ -2687,6 +2940,10 @@
   );
 
 
+  /* =========================
+     TOUCH END
+  ========================= */
+
   lightboxStage.addEventListener(
 
     "touchend",
@@ -2694,60 +2951,52 @@
     function() {
 
       if (
-        !isDragging ||
-        lightboxAnimating
+        !dragging ||
+        sliderAnimating
       ) {
         return;
       }
 
-      isDragging =
+      dragging =
         false;
 
+
       const deltaX =
-        touchCurrentX -
-        touchStartX;
+        swipeCurrentX -
+        swipeStartX;
+
 
       const threshold =
         Math.min(
-          75,
-          window.innerWidth * .18
+          70,
+          window.innerWidth * .17
         );
 
+
       if (
-        Math.abs(deltaX) >=
+        Math.abs(deltaX) <
         threshold
       ) {
 
-        if (
-          deltaX < 0
-        ) {
-          animateToImage(1);
-        }
-
-        else {
-          animateToImage(-1);
-        }
+        returnToCenter();
 
         return;
       }
 
-      lightboxImage.classList.add(
-        "animating"
-      );
 
-      lightboxImage.style.transform =
-        "translate3d(0,0,0)";
+      if (
+        deltaX < 0
+      ) {
 
-      lightboxImage.style.opacity =
-        "1";
+        goNext();
 
-      setTimeout(() => {
+      }
 
-        lightboxImage.classList.remove(
-          "animating"
-        );
+      else {
 
-      }, 310);
+        goPrevious();
+
+      }
 
     },
 
@@ -2764,26 +3013,12 @@
 
     function() {
 
-      isDragging =
+      dragging =
         false;
 
-      lightboxImage.classList.add(
-        "animating"
-      );
-
-      lightboxImage.style.transform =
-        "translate3d(0,0,0)";
-
-      lightboxImage.style.opacity =
-        "1";
-
-      setTimeout(() => {
-
-        lightboxImage.classList.remove(
-          "animating"
-        );
-
-      }, 310);
+      if (!sliderAnimating) {
+        returnToCenter();
+      }
 
     },
 
@@ -2794,6 +3029,10 @@
   );
 
 
+  /* =========================
+     ОТПРАВКА ЗАЯВКИ
+  ========================= */
+
   bookingForm.addEventListener(
 
     "submit",
@@ -2802,39 +3041,47 @@
 
       event.preventDefault();
 
+
       if (!selectedBoat) {
         return;
       }
+
 
       const date =
         document.getElementById(
           "date"
         ).value;
 
+
       const time =
         document.getElementById(
           "time"
         ).value;
+
 
       const guests =
         document.getElementById(
           "guests"
         ).value;
 
+
       const name =
         document.getElementById(
           "name"
         ).value.trim();
+
 
       const contact =
         document.getElementById(
           "contact"
         ).value.trim();
 
+
       const comment =
         document.getElementById(
           "comment"
         ).value.trim();
+
 
       const payload = {
 
@@ -2864,17 +3111,20 @@
 
       };
 
+
       submitButton.disabled =
         true;
 
       submitButton.textContent =
         "Отправляем...";
 
+
       formStatus.className =
         "form-status";
 
       formStatus.textContent =
         "";
+
 
       try {
 
@@ -2904,8 +3154,10 @@
 
           );
 
+
         const result =
           await response.json();
+
 
         if (
           !response.ok ||
@@ -2922,15 +3174,19 @@
 
         }
 
+
         formStatus.className =
           "form-status success";
+
 
         formStatus.textContent =
 
           "Заявка отправлена. Менеджер проверит доступность катера и подтвердит дату и время прогулки.";
 
+
         submitButton.textContent =
           "Заявка отправлена ✓";
+
 
         setTimeout(
 
@@ -2966,15 +3222,19 @@
           error
         );
 
+
         formStatus.className =
           "form-status error";
+
 
         formStatus.textContent =
 
           "Не удалось отправить заявку. Попробуйте ещё раз.";
 
+
         submitButton.disabled =
           false;
+
 
         submitButton.textContent =
           "Отправить заявку";
@@ -2985,6 +3245,10 @@
 
   );
 
+
+  /* =========================
+     ДАТА
+  ========================= */
 
   function formatDate(value) {
 
@@ -2999,6 +3263,10 @@
 
   }
 
+
+  /* =========================
+     ЗАКРЫТИЕ ПО ФОНУ
+  ========================= */
 
   boatModal.addEventListener(
 
@@ -3040,24 +3308,9 @@
   );
 
 
-  lightbox.addEventListener(
-
-    "click",
-
-    function(event) {
-
-      if (
-        event.target === lightbox
-      ) {
-
-        closeLightbox();
-
-      }
-
-    }
-
-  );
-
+  /* =========================
+     ЗАПУСК
+  ========================= */
 
   renderCatalog();
 
