@@ -1173,6 +1173,45 @@
         transition: none;
       }
     }
+    /* Центрирование даты и времени на iPhone */
+.field input[type="date"],
+.field input[type="time"] {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 16px !important;
+  line-height: normal !important;
+}
+
+.field input[type="date"]::-webkit-date-and-time-value,
+.field input[type="time"]::-webkit-date-and-time-value {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: normal !important;
+  text-align: left !important;
+}
+
+.field input[type="date"]::-webkit-datetime-edit,
+.field input[type="time"]::-webkit-datetime-edit {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: normal !important;
+}
+
+.field input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.field input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  padding: 0 !important;
+}
   </style>
 </head>
 
