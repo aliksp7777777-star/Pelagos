@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080706">
+  <title>PELAGOS — Яхты и катера Санкт-Петербурга</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preload" as="image" href="./pelagos-hero.png" fetchpriority="high">
+
+  <style>
+    :root {
+      --bg: #080706;
+      --panel: #0f0e0c;
+      --panel-2: #16130f;
+      --line: rgba(222, 190, 139, .18);
+      --line-soft: rgba(255, 255, 255, .07);
+      --text: #f5f0e7;
+      --muted: #a8a198;
+      --muted-2: #766f67;
+      --gold: #d7a85e;
+      --gold-light: #f0cd8d;
+      --success: #85c795;
+      --danger: #e58b82;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: #050504; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      overscroll-behavior-y: none;
+      background: #050504;
+      color: var(--text);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    body.locked { overflow: hidden; }
+    button, input, textarea { color: inherit; font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { border: 0; cursor: pointer; }
+    img { display: block; width: 100%; }
+
+    .app {
+      position: relative;
+      width: 100%;
+      max-width: 760px;
+      min-height: 100vh;
+      margin: 0 auto;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 28% 34%, rgba(129, 79, 28, .09), transparent 35%),
+        var(--bg);
+      box-shadow: 0 0 70px rgba(0, 0, 0, .68);
+    }
+
+    .hero {
+      position: relative;
+      min-height: max(760px, 100svh);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      z-index: -3;
+      inset: 0;
+      background:
+        url("./pelagos-hero.png") center center / cover no-repeat,
+        url("./elchapa-cover.jpg") center center / cover no-repeat,
+        #17100a;
+      transform: scale(1.02);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      z-index: -2;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.68) 0%, rgba(5,3,2,.08) 27%, rgba(8,5,3,.18) 52%, rgba(6,5,3,.76) 83%, var(--bg) 100%),
+        linear-gradient(90deg, rgba(0,0,0,.18), transparent 48%, rgba(0,0,0,.15));
+    }
+    .hero-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      padding: calc(42px + env(safe-area-inset-top)) 23px 34px;
+      flex-direction: column;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      color: var(--gold-light);
+      text-align: center;
+      text-shadow: 0 2px 22px rgba(0,0,0,.52);
+      flex-direction: column;
+    }
+    .brand-name {
+      padding-left: .18em;
+      font-family: var(--serif);
+      font-size: clamp(43px, 12vw, 66px);
+      font-weight: 400;
+      letter-spacing: .18em;
+      line-height: 1;
+    }
+    .brand-tagline {
+      margin-top: 16px;
+      padding-left: .28em;
+      color: rgba(245, 230, 205, .8);
+      font-size: clamp(9px, 2.7vw, 13px);
+      font-weight: 500;
+      letter-spacing: .28em;
+    }
+    .hero-copy { width: 100%; margin-top: auto; text-align: center; }
+    .eyebrow {
+      display: inline-block;
+      color: var(--gold-light);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      max-width: 650px;
+      margin: 20px auto 22px;
+      font-family: var(--serif);
+      font-size: clamp(39px, 10.8vw, 67px);
+      font-weight: 400;
+      letter-spacing: -.035em;
+      line-height: .98;
+      text-shadow: 0 2px 30px rgba(0,0,0,.44);
+    }
+    .hero-description {
+      max-width: 610px;
+      margin: 0 auto;
+      color: rgba(239, 234, 226, .76);
+      font-size: clamp(14px, 4vw, 18px);
+      line-height: 1.55;
+    }
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid rgba(240,205,148,.56);
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .hero-link::after { content: "→"; font-size: 17px; }
+    .scroll-mark {
+      display: flex;
+      justify-content: center;
+      width: 24px;
+      height: 41px;
+      margin-top: 24px;
+      padding-top: 8px;
+      border: 1px solid rgba(255,255,255,.23);
+      border-radius: 20px;
+    }
+    .scroll-mark span {
+      width: 3px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--gold-light);
+      animation: scroll-dot 1.8s ease-in-out infinite;
+    }
+    @keyframes scroll-dot {
+      0%, 100% { transform: translateY(0); opacity: .4; }
+      50% { transform: translateY(13px); opacity: 1; }
+    }
+
+    .catalog-intro { padding: 72px 24px 36px; text-align: center; }
+    .catalog-intro h2,
+    .category-title,
+    .closing h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      letter-spacing: -.03em;
+      line-height: 1.05;
+    }
+    .catalog-intro h2 { margin: 14px 0 12px; font-size: clamp(38px, 10vw, 58px); }
+    .catalog-intro p {
+      max-width: 570px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    .catalog { padding: 0 20px 45px; }
+    .category { padding: 29px 0 35px; }
+    .category-head { margin: 0 5px 23px; }
+    .category-title { max-width: 680px; font-size: clamp(30px, 7.7vw, 46px); }
+    .category-subtitle { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .fleet-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .fleet-card {
+      display: flex;
+      min-width: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(160deg, rgba(24,22,18,.98), rgba(9,9,8,.99));
+      box-shadow: 0 14px 32px rgba(0,0,0,.3);
+      color: var(--text);
+      text-align: left;
+      transform: translateZ(0);
+      transition: transform .15s ease;
+      flex-direction: column;
+    }
+    .fleet-card:active { transform: scale(.985); }
+    .fleet-card-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: .94;
+      overflow: hidden;
+      background: radial-gradient(circle at 30% 20%, #28251f, transparent 58%), linear-gradient(145deg, #1a1815, #0d0d0c);
+    }
+    .fleet-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+    .fleet-card:hover img { transform: scale(1.035); }
+    .fleet-card-image::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 38%;
+      background: linear-gradient(transparent, rgba(5,5,4,.43));
+      pointer-events: none;
+    }
+    .photo-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 14px;
+      color: #756e64;
+      text-align: center;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .photo-placeholder-mark { color: var(--gold); font-family: var(--serif); font-size: 31px; }
+    .photo-placeholder-name { font-size: 9px; line-height: 1.5; letter-spacing: .13em; text-transform: uppercase; }
+    .fleet-card-body { display: flex; min-height: 139px; padding: 15px 15px 17px; flex-direction: column; }
+    .fleet-card-name {
+      overflow: hidden;
+      font-family: var(--serif);
+      font-size: clamp(21px, 5.8vw, 29px);
+      line-height: 1.05;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .fleet-card-guests { margin-top: 9px; color: var(--muted); font-size: 12px; }
+    .fleet-card-price {
+      margin-top: auto;
+      padding-top: 15px;
+      color: var(--gold-light);
+      font-size: clamp(11.5px, 3.3vw, 15px);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .closing {
+      margin: 30px 20px 62px;
+      padding: 63px 25px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(rgba(8,7,6,.64), rgba(8,7,6,.91)),
+        url("./pelagos-hero.png") center / cover,
+        url("./elchapa-cover.jpg") center / cover;
+      text-align: center;
+    }
+    .closing h2 { margin: 15px auto; font-size: clamp(36px, 9vw, 56px); }
+    .closing p { margin: 0 auto 27px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .gold-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 205px;
+      min-height: 56px;
+      padding: 0 23px;
+      border: 1px solid rgba(255,225,170,.25);
+      border-radius: 15px;
+      background: linear-gradient(135deg, #d7aa62, #a87836);
+      box-shadow: 0 11px 30px rgba(171,114,45,.22), inset 0 1px rgba(255,255,255,.25);
+      color: #100c07;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .07em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    footer {
+      padding: 0 24px calc(34px + env(safe-area-inset-bottom));
+      color: #716b63;
+      text-align: center;
+      font-size: 11px;
+    }
+    .footer-brand { margin-bottom: 8px; color: var(--gold); font-family: var(--serif); font-size: 25px; letter-spacing: .2em; }
+
+    .modal {
+      position: fixed;
+      z-index: 10000;
+      inset: 0;
+      display: none;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: rgba(0,0,0,.74);
+      backdrop-filter: blur(8px);
+    }
+    .modal.active { display: block; animation: fade-in .2s ease both; }
+    @keyframes fade-in { from { opacity: 0; } }
+    .boat-modal-card {
+      width: 100%;
+      max-width: 760px;
+      min-height: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+      background: var(--bg);
+      animation: modal-in .35s cubic-bezier(.2,.82,.2,1) both;
+    }
+    @keyframes modal-in { from { transform: translateY(42px); opacity: 0; } }
+    .modal-topbar {
+      position: sticky;
+      z-index: 30;
+      top: 0;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      min-height: calc(59px + env(safe-area-inset-top));
+      padding: env(safe-area-inset-top) 13px 0;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(9,8,7,.88);
+      backdrop-filter: blur(17px);
+    }
+    .modal-topbar-title {
+      overflow: hidden;
+      color: var(--gold-light);
+      font-family: var(--serif);
+      font-size: 16px;
+      letter-spacing: .18em;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .close-btn {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      color: white;
+      font-size: 25px;
+      line-height: 1;
+      place-items: center;
+    }
+    .modal-spacer { width: 42px; }
+    .boat-detail-cover {
+      position: relative;
+      height: min(67vh, 535px);
+      overflow: hidden;
+      background: #171612;
+    }
+    .boat-detail-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .boat-detail-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(4,4,3,.72));
+      pointer-events: none;
+    }
+    .detail-price {
+      position: absolute;
+      z-index: 2;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 14px;
+      border: 1px solid rgba(246,216,164,.22);
+      border-radius: 13px;
+      background: rgba(14,11,7,.76);
+      backdrop-filter: blur(12px);
+      color: var(--gold-light);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .detail-content { padding: 40px 20px calc(70px + env(safe-area-inset-bottom)); }
+    .detail-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; }
+    .detail-name { font-family: var(--serif); font-size: clamp(44px, 12vw, 72px); letter-spacing: -.04em; line-height: .98; }
+    .detail-capacity { flex: 0 0 auto; padding-bottom: 5px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .detail-intro { max-width: 640px; margin-top: 24px; color: #c1bbb2; font-family: var(--serif); font-size: clamp(19px, 5vw, 25px); line-height: 1.45; }
+    .story, .gallery, .amenities, .location { margin-top: 48px; }
+    .story { padding-top: 0; }
+    .block-title { margin-bottom: 17px; font-family: var(--serif); font-size: 30px; font-weight: 400; line-height: 1.1; }
+    .story p, .location p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .gallery-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .gallery-head small { color: var(--muted-2); font-size: 10px; }
+    .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .gallery-grid button {
+      position: relative;
+      aspect-ratio: 1;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #1b1915;
+      cursor: zoom-in;
+    }
+    .gallery-grid button:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+    .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .18s ease, opacity .18s ease; }
+    .gallery-grid button:active img { transform: scale(.98); opacity: .88; }
+    .gallery-zoom-mark {
+      position: absolute;
+      right: 9px;
+      bottom: 9px;
+      display: grid;
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.58);
+      color: #fff;
+      font-size: 15px;
+      place-items: center;
+    }
+    .chips { display: flex; gap: 9px; flex-wrap: wrap; }
+    .chip {
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(217,170,97,.055);
+      color: #d3ccc1;
+      font-size: 12px;
+    }
+    .location {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: var(--panel-2);
+    }
+    .location a { display: inline-block; margin-top: 12px; color: var(--gold-light); font-size: 13px; text-decoration: none; }
+    .booking {
+      margin-top: 52px;
+      padding: 27px 19px 20px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(32,27,19,.9), rgba(13,12,10,.98));
+      text-align: center;
+    }
+    .booking-price { color: var(--gold-light); font-family: var(--serif); font-size: 32px; }
+    .price-disclaimer {
+      max-width: 470px;
+      margin: 13px auto 0;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(216,183,109,.055);
+      color: #aaa59d;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .price-disclaimer strong { color: #d0c9bd; font-weight: 600; }
+    .booking-note { max-width: 440px; margin: 13px auto 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .booking-btn, .submit-btn {
+      width: 100%;
+      min-height: 56px;
+      margin-top: 18px;
+      border: 1px solid rgba(255,225,170,.25);
+      border-radius: 15px;
+      background: linear-gradient(135deg, #d7aa62, #a87836);
+      box-shadow: 0 11px 30px rgba(171,114,45,.2), inset 0 1px rgba(255,255,255,.24);
+      color: #100c07;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .coming-soon { margin-top: 34px; padding: 18px; border: 1px solid var(--line); border-radius: 17px; background: var(--panel-2); color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+    .booking-modal {
+      position: fixed;
+      z-index: 12000;
+      inset: 0;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0,0,0,.82);
+      backdrop-filter: blur(8px);
+    }
+    .booking-modal.active { display: flex; animation: fade-in .2s ease both; }
+    .booking-sheet {
+      width: 100%;
+      max-width: 560px;
+      max-height: calc(100dvh - 54px);
+      overflow-y: auto;
+      padding: 12px 16px calc(24px + env(safe-area-inset-bottom));
+      border: 1px solid var(--line);
+      border-radius: 26px 26px 0 0;
+      background: #0d0c0a;
+      animation: sheet-in .3s cubic-bezier(.2,.82,.2,1) both;
+    }
+    @keyframes sheet-in { from { transform: translateY(35px); opacity: 0; } }
+    .sheet-handle { width: 38px; height: 4px; margin: 0 auto 13px; border-radius: 99px; background: #49443d; }
+    .sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .sheet-title-wrap { min-width: 0; }
+    .sheet-head h2 { font-family: var(--serif); font-size: 31px; font-weight: 400; line-height: 1.05; }
+    .sheet-head p { margin-top: 6px; color: var(--muted); font-size: 12px; }
+    .availability-note {
+      margin-bottom: 18px;
+      padding: 13px;
+      border: 1px solid rgba(216,183,109,.27);
+      border-radius: 13px;
+      background: rgba(216,183,109,.055);
+    }
+    .availability-note-title { color: var(--gold-light); font-size: 13px; font-weight: 700; }
+    .availability-note-text { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .form-grid { display: flex; width: 100%; gap: 14px; flex-direction: column; }
+    .field { width: 100%; }
+    .field label { display: block; margin-bottom: 6px; padding-left: 3px; color: #b7afa4; font-size: 11px; line-height: 1.3; }
+    .field input, .field textarea {
+      display: block;
+      width: 100%;
+      min-height: 56px;
+      margin: 0;
+      padding: 0 15px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 13px;
+      outline: none;
+      background: rgba(255,255,255,.055);
+      color: var(--text);
+      color-scheme: dark;
+      font-size: 14px;
+    }
+    .field input[type="date"], .field input[type="time"] { height: 56px; min-height: 56px; -webkit-appearance: none; appearance: none; }
+    .field textarea { min-height: 95px; padding-top: 14px; line-height: 1.45; resize: vertical; }
+    .field input:focus, .field textarea:focus { border-color: rgba(235,195,127,.7); box-shadow: 0 0 0 3px rgba(217,170,97,.08); }
+    .field-hint { display: block; margin-top: 6px; color: var(--muted-2); font-size: 10px; line-height: 1.4; }
+    .submit-btn:disabled { opacity: .58; }
+    .booking-disclaimer { max-width: 440px; margin: 12px auto 0; color: var(--muted-2); font-size: 10.5px; line-height: 1.5; text-align: center; }
+    .booking-disclaimer strong { color: #aaa399; font-weight: 600; }
+    .form-status { display: none; margin-top: 13px; padding: 12px; border-radius: 13px; font-size: 12px; line-height: 1.5; text-align: center; }
+    .form-status.success { display: block; border: 1px solid rgba(121,200,145,.38); background: rgba(121,200,145,.09); color: var(--success); }
+    .form-status.error { display: block; border: 1px solid rgba(224,122,122,.38); background: rgba(224,122,122,.09); color: var(--danger); }
+
+    .lightbox {
+      position: fixed;
+      z-index: 20000;
+      inset: 0;
+      display: none;
+      overflow: hidden;
+      overscroll-behavior: none;
+      background: #000;
+      color: white;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    .lightbox.active { display: block; animation: fade-in .18s ease both; }
+    .lightbox-stage { position: absolute; inset: 0; display: grid; overflow: hidden; touch-action: none; place-items: center; }
+    .lightbox-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      transform: translate3d(0,0,0) scale(1);
+      transform-origin: center center;
+      will-change: transform;
+      -webkit-user-drag: none;
+    }
+    .lightbox-image.animate { transition: transform .24s cubic-bezier(.22,.61,.36,1), opacity .15s ease; }
+    .lightbox-top {
+      position: absolute;
+      z-index: 8;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: calc(64px + env(safe-area-inset-top));
+      padding: env(safe-area-inset-top) 15px 0 20px;
+      background: linear-gradient(rgba(0,0,0,.75), transparent);
+      pointer-events: none;
+    }
+    .lightbox-counter { color: rgba(255,255,255,.78); font-size: 12px; letter-spacing: .12em; }
+    .lightbox-close { pointer-events: auto; }
+    .lightbox-arrow {
+      position: absolute;
+      z-index: 7;
+      top: 50%;
+      display: grid;
+      width: 42px;
+      height: 42px;
+      margin-top: -21px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      color: white;
+      font-size: 23px;
+      backdrop-filter: blur(8px);
+      place-items: center;
+    }
+    .lightbox-arrow.prev { left: 14px; }
+    .lightbox-arrow.next { right: 14px; }
+    .lightbox-hint {
+      position: absolute;
+      z-index: 7;
+      right: 0;
+      bottom: calc(25px + env(safe-area-inset-bottom));
+      left: 0;
+      color: rgba(255,255,255,.58);
+      font-size: 11px;
+      text-align: center;
+      pointer-events: none;
+    }
+    .lightbox-zoom-badge {
+      position: absolute;
+      z-index: 7;
+      bottom: calc(52px + env(safe-area-inset-bottom));
+      left: 50%;
+      display: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(20,20,20,.58);
+      color: rgba(255,255,255,.8);
+      font-size: 11px;
+      transform: translateX(-50%);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .lightbox.zoomed .lightbox-arrow, .lightbox.zoomed .lightbox-hint { opacity: 0; pointer-events: none; }
+    .lightbox.zoomed .lightbox-zoom-badge { display: block; }
+
+    @media (min-width: 760px) {
+      .booking-modal { align-items: center; }
+      .booking-sheet { max-height: 90dvh; border-radius: 26px; }
+    }
+    @media (max-width: 390px) {
+      .hero-inner { padding-right: 18px; padding-left: 18px; }
+      .catalog { padding-right: 14px; padding-left: 14px; }
+      .fleet-grid { gap: 11px; }
+      .fleet-card-body { min-height: 132px; padding: 13px 12px 15px; }
+      .fleet-card-guests { font-size: 11px; }
+      .fleet-card-price { font-size: 11.5px; }
+      .closing { margin-right: 14px; margin-left: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+
+    /* Исходный компактный дизайн. Из визуальных изменений — только фон на старте. */
+    :root {
+      --bg: #070707;
+      --panel: #101010;
+      --panel-2: #151515;
+      --line: #292929;
+      --line-soft: #202020;
+      --text: #f4efe6;
+      --muted: #9d9992;
+      --muted-2: #77736d;
+      --gold: #d8b76d;
+      --gold-light: #d8b76d;
+    }
+
+    .app {
+      max-width: 980px;
+      background: var(--bg);
+      box-shadow: none;
+    }
+
+    .hero {
+      min-height: 100svh;
+      min-height: 100dvh;
+      height: max(680px, 100svh);
+      background: #11100e;
+    }
+
+    .hero::before {
+      inset: -2px;
+      background:
+        url("./pelagos-hero.png") 50% 42% / cover no-repeat,
+        url("./elchapa-cover.jpg") 50% 42% / cover no-repeat,
+        #17130f;
+      transform: none;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+    }
+
+    .hero::after {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.56) 0%, rgba(0,0,0,.16) 28%, rgba(0,0,0,.10) 48%, rgba(4,4,4,.46) 72%, rgba(7,7,7,.88) 93%, var(--bg) 100%),
+        radial-gradient(circle at 50% 34%, rgba(255,255,255,.03), transparent 48%);
+    }
+
+    .hero-inner {
+      padding: calc(34px + env(safe-area-inset-top)) 28px calc(108px + env(safe-area-inset-bottom));
+    }
+
+    .brand-name {
+      font-size: clamp(40px, 10vw, 55px);
+      letter-spacing: .18em;
+    }
+
+    .brand-tagline {
+      margin-top: 13px;
+      font-size: clamp(9px, 2.4vw, 12px);
+    }
+
+    .hero-copy {
+      margin-top: auto;
+    }
+
+    .hero h1 {
+      margin: 15px auto 18px;
+      font-size: clamp(32px, 8.2vw, 54px);
+      line-height: 1.04;
+    }
+
+    .hero-description {
+      max-width: 610px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .catalog {
+      position: relative;
+      z-index: 2;
+      margin-top: -105px;
+      padding: 4px 14px 56px;
+    }
+
+    .category {
+      margin-top: 42px;
+      padding: 0;
+    }
+
+    .category:first-child {
+      margin-top: 0;
+    }
+
+    .category-head {
+      margin: 0 0 17px;
+    }
+
+    .category-title {
+      max-width: 700px;
+      font-size: clamp(22px, 5.5vw, 29px);
+      line-height: 1.18;
+    }
+
+    .category-subtitle {
+      max-width: 640px;
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .fleet-grid {
+      gap: 11px;
+    }
+
+    .fleet-card {
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #101010;
+      box-shadow: none;
+    }
+
+    .fleet-card-image {
+      aspect-ratio: 4 / 3;
+      background: radial-gradient(circle at 30% 20%, #262626, transparent 58%), linear-gradient(145deg, #191919, #0d0d0d);
+    }
+
+    .fleet-card-image::after {
+      display: none;
+    }
+
+    .fleet-card-body {
+      min-height: 112px;
+      padding: 12px 12px 13px;
+    }
+
+    .fleet-card-name {
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .fleet-card-guests {
+      margin-top: 6px;
+      font-size: 12px;
+    }
+
+    .fleet-card-price {
+      margin-top: 8px;
+      padding-top: 0;
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    footer {
+      padding: 29px 14px 42px;
+      border-top: 1px solid var(--line-soft);
+      font-size: 12px;
+    }
+
+    .footer-brand {
+      display: none;
+    }
+
+    .modal {
+      background: rgba(0,0,0,.82);
+    }
+
+    .modal.active {
+      animation: none;
+    }
+
+    .boat-modal-card {
+      max-width: 720px;
+      animation: none;
+    }
+
+    .modal-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 58px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(7,7,7,.94);
+    }
+
+    .modal-topbar-title {
+      padding-right: 15px;
+      color: var(--text);
+      font-size: 20px;
+      letter-spacing: 0;
+      text-align: left;
+    }
+
+    .close-btn {
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      font-size: 22px;
+    }
+
+    .boat-detail-cover {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      background: #101010;
+    }
+
+    .boat-detail-cover::after {
+      display: none;
+    }
+
+    .detail-price {
+      bottom: 14px;
+      left: 14px;
+      padding: 9px 13px;
+      border: 1px solid rgba(216,183,109,.5);
+      border-radius: 999px;
+      background: rgba(5,5,5,.84);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .detail-content {
+      padding: 22px 14px 44px;
+    }
+
+    .detail-content > .eyebrow {
+      display: none;
+    }
+
+    .detail-head {
+      align-items: flex-start;
+    }
+
+    .detail-name {
+      font-size: 34px;
+      letter-spacing: 0;
+      line-height: 1.05;
+    }
+
+    .detail-capacity {
+      padding-top: 7px;
+      padding-bottom: 0;
+      color: var(--gold);
+      font-size: 13px;
+    }
+
+    .detail-intro {
+      margin-top: 16px;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .story,
+    .gallery,
+    .amenities,
+    .location {
+      margin-top: 29px;
+    }
+
+    .story {
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .block-title {
+      margin-bottom: 13px;
+      font-size: 24px;
+    }
+
+    .story p,
+    .location p {
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    .gallery-head small,
+    .gallery-zoom-mark {
+      display: none;
+    }
+
+    .gallery-grid {
+      gap: 7px;
+    }
+
+    .gallery-grid button {
+      border-radius: 11px;
+    }
+
+    .chips {
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: var(--panel-2);
+      color: #d5d1ca;
+      font-size: 12px;
+    }
+
+    .location {
+      padding: 18px;
+      border-radius: 17px;
+      background: var(--panel-2);
+    }
+
+    .location a {
+      color: var(--gold);
+    }
+
+    .booking {
+      margin-top: 29px;
+      padding: 22px;
+      border: 1px solid rgba(216,183,109,.35);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(216,183,109,.08), rgba(216,183,109,.02));
+    }
+
+    .booking-price {
+      color: var(--gold);
+      font-size: 29px;
+    }
+
+    .booking-btn,
+    .submit-btn {
+      height: 54px;
+      min-height: 54px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--gold);
+      box-shadow: none;
+      color: #080808;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .booking-sheet {
+      max-width: 520px;
+      max-height: calc(100dvh - 72px);
+      padding: 12px 14px calc(24px + env(safe-area-inset-bottom));
+      border-radius: 24px 24px 0 0;
+      background: #0d0d0d;
+      animation: none;
+    }
+
+    .sheet-head h2 {
+      font-size: 27px;
+    }
+
+    .field label {
+      margin-bottom: 6px;
+      padding-left: 0;
+      color: #d7d2ca;
+      font-size: 12px;
+    }
+
+    .field input {
+      height: 48px;
+      min-height: 48px;
+      padding: 0 13px;
+      border: 1px solid #303030;
+      border-radius: 13px;
+      background: #151515;
+      font-size: 15px;
+    }
+
+    .field input[type="date"],
+    .field input[type="time"] {
+      height: 48px;
+      min-height: 48px;
+    }
+
+    .field textarea {
+      height: 92px;
+      min-height: 92px;
+      padding: 12px 13px;
+      border: 1px solid #303030;
+      background: #151515;
+      font-size: 15px;
+    }
+
+    .lightbox-top {
+      display: block;
+      min-height: 0;
+      padding: 0;
+      background: none;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: calc(14px + env(safe-area-inset-top));
+      right: 14px;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(20,20,20,.72);
+      font-size: 26px;
+    }
+
+    .lightbox-counter {
+      position: absolute;
+      top: calc(27px + env(safe-area-inset-top));
+      left: 50%;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(20,20,20,.38);
+      font-size: 12px;
+      transform: translateX(-50%);
+      backdrop-filter: blur(8px);
+    }
+
+    .lightbox-arrow,
+    .lightbox-hint,
+    .lightbox-zoom-badge {
+      display: none !important;
+    }
+
+    @media (min-width: 760px) {
+      .fleet-grid { grid-template-columns: repeat(3, 1fr); }
+      .boat-modal-card { min-height: auto; margin: 30px auto; border: 1px solid var(--line); border-radius: 24px; }
+      .booking-modal { align-items: center; }
+      .booking-sheet { max-height: 90dvh; border-radius: 25px; }
+    }
+
+    @media (max-width: 390px) {
+      .hero {
+        min-height: 100svh;
+        height: max(650px, 100svh);
+      }
+      .hero::before {
+        background-position: 50% 40%, 50% 40%, center;
+      }
+      .hero-inner { padding-right: 20px; padding-left: 20px; }
+      .catalog { padding-right: 14px; padding-left: 14px; }
+      .fleet-card-body { min-height: 112px; padding: 12px 12px 13px; }
+      .fleet-card-price { font-size: 13px; }
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      .hero { min-height: -webkit-fill-available; }
+      .hero::before { transform: translateZ(0); }
+    }
+
+    /* Сдержанные премиальные анимации */
+    @keyframes luxe-logo-in {
+      from {
+        opacity: 0;
+        filter: blur(6px);
+        letter-spacing: .27em;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+        letter-spacing: .18em;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes luxe-text-in {
+      from {
+        opacity: 0;
+        filter: blur(5px);
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+      }
+    }
+
+    .brand-name {
+      animation: luxe-logo-in .9s cubic-bezier(.22,.61,.36,1) .05s both;
+    }
+
+    .brand-tagline {
+      animation: luxe-text-in .7s cubic-bezier(.22,.61,.36,1) .22s both;
+    }
+
+    .hero-copy .eyebrow {
+      animation: luxe-text-in .65s cubic-bezier(.22,.61,.36,1) .38s both;
+    }
+
+    .hero-copy h1 {
+      animation: luxe-text-in .8s cubic-bezier(.22,.61,.36,1) .52s both;
+    }
+
+    .hero-description {
+      animation: luxe-text-in .75s cubic-bezier(.22,.61,.36,1) .68s both;
+    }
+
+    .reveal-item {
+      opacity: 0;
+      translate: 0 16px;
+      transition:
+        opacity .58s cubic-bezier(.22,.61,.36,1) var(--reveal-delay, 0ms),
+        translate .58s cubic-bezier(.22,.61,.36,1) var(--reveal-delay, 0ms);
+      will-change: opacity, translate;
+    }
+
+    .reveal-item.is-visible {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .modal.active .modal-topbar-title {
+      animation: luxe-text-in .42s cubic-bezier(.22,.61,.36,1) both;
+    }
+
+    .modal.active .detail-head {
+      animation: luxe-text-in .55s cubic-bezier(.22,.61,.36,1) .05s both;
+    }
+
+    .modal.active .detail-intro {
+      animation: luxe-text-in .55s cubic-bezier(.22,.61,.36,1) .14s both;
+    }
+
+    .booking-modal.active .sheet-title-wrap,
+    .booking-modal.active .availability-note {
+      animation: luxe-text-in .45s cubic-bezier(.22,.61,.36,1) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand-name,
+      .brand-tagline,
+      .hero-copy .eyebrow,
+      .hero-copy h1,
+      .hero-description,
+      .modal.active .modal-topbar-title,
+      .modal.active .detail-head,
+      .modal.active .detail-intro,
+      .booking-modal.active .sheet-title-wrap,
+      .booking-modal.active .availability-note {
+        animation: none !important;
+      }
+
+      .reveal-item {
+        opacity: 1;
+        translate: none;
+        transition: none;
+      }
+    }
+    /* Центрирование даты и времени на iPhone */
+.field input[type="date"],
+.field input[type="time"] {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 16px !important;
+  line-height: normal !important;
+}
+
+.field input[type="date"]::-webkit-date-and-time-value,
+.field input[type="time"]::-webkit-date-and-time-value {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: normal !important;
+  text-align: left !important;
+}
+
+.field input[type="date"]::-webkit-datetime-edit,
+.field input[type="time"]::-webkit-datetime-edit {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: normal !important;
+}
+
+.field input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.field input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  padding: 0 !important;
+}
+  
+
+    /* PELAGOS 2.0 — компактный каталог и свайпы */
+    .hero { height: max(620px, 100svh); min-height: 620px; }
+    .hero::before { background-position: 50% 38%, 50% 38%, center; }
+    .hero-inner { justify-content: flex-start; padding: calc(52px + env(safe-area-inset-top)) 22px 80px; }
+    .brand { margin-top: 8vh; }
+    .hero-copy { margin-top: clamp(80px, 15vh, 150px); }
+    .hero h1 { margin-top: 12px; font-size: clamp(31px, 8vw, 50px); }
+    .hero-description { max-width: 520px; font-size: 14px; line-height: 1.55; }
+    .catalog { margin-top: -54px; padding-top: 0; }
+
+    .price-menu { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+    .price-tile { position:relative; min-height:148px; padding:18px 16px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(155deg,#151515,#0d0d0d); color:var(--text); text-align:left; overflow:hidden; }
+    .price-tile::after { content:'→'; position:absolute; right:15px; bottom:14px; color:var(--gold); font-size:23px; }
+    .price-tile-kicker { color:var(--muted-2); font-size:10px; letter-spacing:.13em; text-transform:uppercase; }
+    .price-tile-title { margin-top:10px; font-family:var(--serif); font-size:24px; line-height:1.05; }
+    .price-tile-count { margin-top:9px; color:var(--muted); font-size:12px; }
+    .price-tile.premium { border-color:rgba(216,183,109,.42); background:linear-gradient(155deg,rgba(216,183,109,.12),#0d0d0d 65%); }
+    .collection-head { display:flex; align-items:center; gap:12px; margin:4px 0 18px; }
+    .collection-back { flex:0 0 auto; width:40px; height:40px; border:1px solid var(--line); border-radius:50%; background:#121212; color:var(--text); font-size:20px; }
+    .collection-title { font-family:var(--serif); font-size:27px; font-weight:400; }
+    .collection-subtitle { margin-top:4px; color:var(--muted); font-size:12px; }
+    .fleet-card-body { min-height:96px; padding:10px 11px 11px; }
+    .fleet-card-name { font-size:17px; }
+    .fleet-card-guests { margin-top:5px; font-size:11px; }
+    .fleet-card-price { margin-top:7px; font-size:12px; }
+
+    .boat-modal-card { transition:transform .24s ease; will-change:transform; }
+    .boat-detail-cover { position:relative; aspect-ratio:4/3; touch-action:pan-y; }
+    .boat-detail-cover img { width:100%; height:100%; object-fit:cover; transition:opacity .12s ease, transform .22s ease; user-select:none; -webkit-user-drag:none; }
+    .cover-counter { position:absolute; right:12px; bottom:12px; z-index:3; padding:5px 9px; border-radius:999px; background:rgba(0,0,0,.58); color:white; font-size:11px; backdrop-filter:blur(8px); }
+    .cover-dots { position:absolute; z-index:3; left:50%; bottom:14px; display:flex; gap:5px; transform:translateX(-50%); }
+    .cover-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.42); transition:width .18s ease,background .18s ease; }
+    .cover-dot.active { width:16px; border-radius:99px; background:white; }
+    .cover-swipe-hint { position:absolute; z-index:3; left:12px; bottom:12px; color:rgba(255,255,255,.75); font-size:10px; text-shadow:0 1px 7px #000; }
+    .detail-content { padding-top:18px; }
+    .detail-head { display:block; }
+    .detail-name { font-size:34px; }
+    .detail-meta { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
+    .detail-inline-price { color:var(--gold); font-size:17px; font-weight:700; }
+    .detail-capacity { padding:0; color:var(--muted); font-size:13px; }
+    .detail-intro { margin-top:17px; }
+    .amenities { margin-top:24px; }
+    .route-note { margin-top:24px; padding:15px 16px; border:1px solid var(--line); border-radius:15px; background:#111; color:#d7d2ca; font-size:13px; line-height:1.55; }
+    .story-toggle { width:100%; margin-top:22px; padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:transparent; color:var(--text); text-align:left; font-size:14px; font-weight:650; }
+    .story-toggle span { float:right; color:var(--gold); transition:transform .2s ease; }
+    .story-toggle.open span { transform:rotate(180deg); }
+    .story-collapsible { display:grid; grid-template-rows:0fr; transition:grid-template-rows .28s ease; }
+    .story-collapsible.open { grid-template-rows:1fr; }
+    .story-collapsible-inner { overflow:hidden; }
+    .story-collapsible p { padding-top:16px; color:var(--muted); font-size:14px; line-height:1.7; }
+    .location.compact-location { margin-top:22px; }
+    .booking { margin-top:24px; }
+    .booking-price { display:none; }
+    .price-disclaimer { margin-top:0; }
+    .gallery { display:none !important; }
+
+    @media (max-width:390px) {
+      .brand { margin-top:6vh; }
+      .hero-copy { margin-top:12vh; }
+      .price-menu { gap:9px; }
+      .price-tile { min-height:138px; padding:16px 14px; }
+      .price-tile-title { font-size:22px; }
+    }
+</style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="brand">
+          <div class="brand-name">PELAGOS</div>
+          <div class="brand-tagline">ЯХТЫ И КАТЕРА САНКТ-ПЕТЕРБУРГА</div>
+        </div>
+        <div class="hero-copy">
+          <div class="eyebrow">Подборка PELAGOS</div>
+          <h1>Проверенный флот.<br>Хороший сервис.</h1>
+          <p class="hero-description">Выберите подходящую подборку по стоимости. Каждый катер в каталоге лично просмотрен и отобран командой PELAGOS.</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="catalog" id="catalogGrid"></div>
+    </main>
+
+    <footer>
+      <div class="footer-brand">PELAGOS</div>
+      <div>Яхты и катера Санкт-Петербурга · © 2026</div>
+    </footer>
+  </div>
+
+  <div class="modal" id="boatModal" aria-hidden="true">
+    <article class="boat-modal-card" role="dialog" aria-modal="true" aria-labelledby="detailName">
+      <div class="modal-topbar">
+        <div class="modal-topbar-title" id="modalTopTitle"></div>
+        <button class="close-btn" type="button" id="closeBoatButton" aria-label="Закрыть">×</button>
+      </div>
+      <div class="boat-detail-cover" id="detailCover"></div>
+      <div class="detail-content">
+        <div class="detail-head">
+          <h2 class="detail-name" id="detailName"></h2>
+          <div class="detail-meta">
+            <div class="detail-inline-price" id="detailInlinePrice"></div>
+            <div class="detail-capacity" id="detailCapacity"></div>
+          </div>
+        </div>
+        <p class="detail-intro" id="detailIntro"></p>
+        <div id="dynamicDetails"></div>
+        <section class="booking">
+          <div class="booking-price" id="detailBookingPrice"></div>
+          <div class="price-disclaimer">Стоимость может меняться в зависимости от дня недели, времени суток, праздничных дней и повышенного тарифа. <strong>Актуальную стоимость подтвердит менеджер PELAGOS.</strong></div>
+          <div class="booking-note">Укажите желаемую дату и примерное время. Менеджер проверит доступность катера.</div>
+          <button class="booking-btn" type="button" id="bookingButton">Оставить заявку</button>
+        </section>
+      </div>
+    </article>
+  </div>
+
+  <div class="booking-modal" id="bookingModal" aria-hidden="true">
+    <section class="booking-sheet" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+      <div class="sheet-handle"></div>
+      <div class="sheet-head">
+        <div class="sheet-title-wrap">
+          <h2 id="bookingTitle">Оставить заявку</h2>
+          <p id="bookingBoatInfo"></p>
+        </div>
+        <button class="close-btn" type="button" id="closeBookingButton" aria-label="Закрыть">×</button>
+      </div>
+      <div class="availability-note">
+        <div class="availability-note-title">Время подтверждает менеджер</div>
+        <div class="availability-note-text">Выберите удобное примерное время старта. После отправки менеджер проверит расписание и подтвердит свободный слот или предложит ближайший.</div>
+      </div>
+      <form id="bookingForm">
+        <div class="form-grid">
+          <div class="field"><label for="date">Желаемая дата *</label><input id="date" type="date" required></div>
+          <div class="field"><label for="time">Примерное время старта *</label><input id="time" type="time" required><span class="field-hint">Время предварительное — менеджер подтвердит свободный слот.</span></div>
+          <div class="field"><label for="guests">Количество гостей *</label><input id="guests" type="number" min="1" placeholder="Например, 6" required></div>
+          <div class="field"><label for="name">Ваше имя *</label><input id="name" type="text" placeholder="Как к вам обращаться?" autocomplete="name" required></div>
+          <div class="field"><label for="contact">Телефон или Telegram *</label><input id="contact" type="text" placeholder="+7... или @username" autocomplete="tel" required></div>
+          <div class="field"><label for="comment">Пожелания</label><textarea id="comment" placeholder="Например: хотим встретить закат в заливе"></textarea></div>
+        </div>
+        <button class="submit-btn" id="submitButton" type="submit">Отправить заявку</button>
+        <div class="booking-disclaimer"><strong>Отправка заявки не подтверждает бронирование.</strong> Катер, дата, время и стоимость считаются подтверждёнными только после ответа менеджера PELAGOS.</div>
+        <div class="form-status" id="formStatus"></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-top">
+      <div class="lightbox-counter" id="lightboxCounter"></div>
+      <button class="close-btn lightbox-close" type="button" id="closeLightboxButton" aria-label="Закрыть галерею">×</button>
+    </div>
+    <div class="lightbox-stage" id="lightboxStage">
+      <img class="lightbox-image" id="lightboxImage" alt="" draggable="false">
+    </div>
+    <button class="lightbox-arrow prev" type="button" id="lightboxPrevButton" aria-label="Предыдущее фото">‹</button>
+    <button class="lightbox-arrow next" type="button" id="lightboxNextButton" aria-label="Следующее фото">›</button>
+    <div class="lightbox-zoom-badge" id="lightboxZoomBadge">100%</div>
+    <div class="lightbox-hint">Разведите два пальца, чтобы увеличить · двойной тап — быстрый зум</div>
+  </div>
+
+  <script>
+    const WORKER_URL = "https://pelagos-booking.aliks-p7777777.workers.dev/";
+
+    const boats = [
+      {
+        id:"francesco", category:"budget", name:"Франческо", price:"от 7 500 ₽ / час", guests:6, cover:"./francesco-cover.jpg",
+        intro:"Компактный, быстрый и очень стильный Chaparral для прогулок по Петербургу.",
+        story:"«Франческо» — про скорость, лёгкость и красивые выходы по воде без лишнего шума. Он отлично подходит для прогулок вдвоём или небольшой компанией, когда хочется просто включить музыку, уйти от городского ритма и посмотреть на Петербург с другой стороны. Благодаря своему характеру и динамике этот катер особенно приятно чувствует себя на вечерней Неве и открытой воде в хорошую погоду.",
+        amenities:["Музыка Bluetooth","Пледы","Зонты","Бокалы","Тент от дождя"],
+        pier:"Санкт-Петербург, набережная канала Грибоедова, 61", map:"https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./francesco-cover.jpg","./francesco-aerial-rear.jpg","./francesco-aerial-front.jpg","./francesco-aerial-side.jpg","./francesco-bow.jpg","./francesco-side.jpg"]
+      },
+      {
+        id:"celeste", category:"budget", name:"Селесте", price:"от 7 500 ₽ / час", guests:6, cover:"./celeste-cover.jpg",
+        intro:"Небольшой и очень уютный катер для спокойных прогулок по Петербургу в красивой компании.",
+        story:"«Селесте» — про мягкий свет вечернего города, бокалы на столике, любимую музыку и ощущение полного отдыха на воде. Компактный формат делает его особенно уютным для прогулок вдвоём или небольшой компанией. Здесь приятно неспешно идти по рекам и каналам, разговаривать, слушать музыку и просто смотреть на Петербург с воды.",
+        amenities:["Туалет","Всепогодный тент","Бокалы","Тёплые пледы","Холодильник","Музыка Bluetooth","Столик","Отопление","Зарядные устройства"],
+        pier:"Набережная реки Мойки, 97", map:"https://yandex.ru/maps/org/244096886574?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./celeste-cover.jpg","./celeste-aerial.jpg","./celeste-interior.jpg","./celeste-side.jpg","./celeste-top.jpg","./celeste-side-2.jpg"]
+      },
+      {
+        id:"magnum", category:"budget", name:"Магнум", price:"от 7 500 ₽ / час", guests:5, cover:"./magnum-cover.jpg",
+        intro:"Компактный и очень стильный катер для прогулок по Петербургу в хорошей компании.",
+        story:"«Магнум» — про лёгкость, красивую музыку, вечерний город и спокойные прогулки без спешки. Он отлично подходит для небольших компаний и уютных выходов по каналам и Неве. Отдельную атмосферу здесь создаёт капитан — душевный, внимательный и умеющий сделать прогулку по-настоящему комфортной и живой.",
+        amenities:["Музыка Bluetooth","Пледы","Зонты","Бокалы","Тент от дождя"],
+        pier:"Санкт-Петербург, набережная канала Грибоедова, 61", map:"https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./magnum-cover.jpg","./magnum-top.jpg","./magnum-rear.jpg","./magnum-aerial.jpg","./magnum-side.jpg","./magnum-city.jpg"]
+      },
+      {
+        id:"ladoga", category:"budget", name:"Ладога", price:"от 8 500 ₽ / час", guests:11, cover:"./ladoga-cover.jpg",
+        intro:"Уютный прогулочный теплоход с просторным салоном и панорамной крышей для отдыха на воде в любую погоду.",
+        story:"«Ладога» — формат для тех случаев, когда хочется не просто прокатиться по Петербургу, а собраться за большим столом и провести время вместе. Просторный салон, панорамная крыша и большие сдвижные окна позволяют смотреть на город практически из любой точки теплохода. Здесь комфортно проводить семейные праздники, дни рождения, встречи с друзьями или просто неспешно гулять по рекам и каналам большой компанией. А в хорошую погоду можно выйти на открытую кормовую палубу и смотреть на Петербург прямо с воды.",
+        amenities:["Панорамная крыша","Просторный салон","Сдвижные окна","Отопление","Туалет с раковиной","Холодильник","Чайник","Большой стол","Стол на палубе","Посуда","Фужеры и стаканы","Bluetooth-аудиосистема","Телевизор","Микрофон","Розетка 220 В","Пледы","Место для курения","Мангал +2 000 ₽"],
+        pier:"Санкт-Петербург, набережная реки Мойки, 11", map:"https://yandex.ru/maps/org/98351377075?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./ladoga-cover.jpg","./ladoga-deck.jpg","./ladoga-side-city.jpg","./ladoga-salon.jpg","./ladoga-interior.jpg","./ladoga-toilet.jpg"]
+      },
+      {
+        id:"motomoto", category:"budget", name:"МотоМото", price:"от 10 000 ₽ / час", guests:8, cover:"./motomoto-cover.jpg",
+        intro:"Катер, который особенно хорош для выходов в Финский залив.",
+        story:"Когда город остаётся позади, вода становится шире, музыка громче, а прогулка — совсем другой по ощущениям. «МотоМото» создан именно для таких маршрутов: закаты в заливе, длинные летние вечера, спокойный дрейф под музыку и отдых без спешки. На борту — мощная аудиосистема Bluetooth, уютный салон с обогревом, каюта и всё необходимое, чтобы комфортно проводить на воде несколько часов подряд в любую петербургскую погоду.",
+        amenities:["Качественная музыка Bluetooth","Пледы","Зонты","Бокалы","Просторный стол","Каюта","Туалет","Тент","Холодильник","Обогрев салона"],
+        pier:"Набережная реки Фонтанки, 51/53", map:"https://yandex.ru/maps/org/11364047852?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./motomoto-cover.jpg","./motomoto-table.jpg","./motomoto-aerial.jpg","./motomoto-interior.jpg","./motomoto-cabin.jpg","./motomoto-toilet.jpg"]
+      },
+      {
+        id:"theodor", category:"budget", name:"Теодор", price:"от 10 000 ₽ / час", guests:7, cover:"./theodor-cover.jpg",
+        intro:"Стильный и динамичный катер с характером настоящего Cobalt.",
+        story:"«Теодор» отлично чувствует себя и на спокойных прогулках по каналам, и на вечерней Неве под хорошую музыку и огни города. Это катер для тех, кто любит красивую подачу, комфорт и ощущение лёгкости на воде. Отдельное удовольствие здесь — мощная аудиосистема Bluetooth. Музыка на «Теодоре» становится частью самой прогулки: от спокойного заката в центре Петербурга до ночного выхода на развод мостов.",
+        amenities:["Качественная музыка Bluetooth","Пледы","Зонты","Тент от дождя","Бокалы"],
+        pier:"Набережная канала Грибоедова, 61", map:"https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./theodor-cover.jpg","./theodor-interior.jpg","./theodor-aerial.jpg","./theodor-sunbed.jpg","./theodor-action.jpg","./theodor-top.jpg"]
+      },
+      {
+        id:"hollander", category:"budget", name:"Голландец", price:"от 11 000 ₽ / час", guests:11, cover:"./hollander-cover.jpg",
+        intro:"Катер с атмосферой старого Петербурга на воде.",
+        story:"Тёмное дерево, тихий ход, мягкие диваны, тёплый салон и ощущение, будто прогулка происходит где-то между современным городом и европейским кино. «Голландец» особенно хорош для спокойных прогулок по каналам, разговоров под музыку, семейных выходов и длинных вечеров на воде. Внутри — уютный отапливаемый салон с большим столом, а снаружи — открытая палуба, чтобы наблюдать за городом с воды в любую погоду.",
+        amenities:["Мягкие тёплые пледы","Бокалы","Отапливаемый салон","Музыка Bluetooth","Туалетная комната","Открытая палуба"],
+        pier:"Набережная канала Грибоедова, 61", map:"https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./hollander-cover.jpg","./hollander-deck.jpg","./hollander-salon.jpg","./hollander-toilet.jpg","./hollander-side.jpg","./hollander-top.jpg"]
+      },
+      {
+        id:"jerry", category:"budget", name:"Джерри", price:"от 11 000 ₽ / час", guests:9, cover:"./jerry-cover.jpg",
+        intro:"Стильный прогулочный катер для тех, кто любит Петербург в эстетике солнца, воды и красивых кадров.",
+        story:"«Джерри» особенно хорош для фотосессий, свиданий, прогулок с друзьями и вечерних выходов по Неве и каналам города. Светлый салон, тиковая палуба, мягкие линии корпуса и спокойная атмосфера делают этот катер очень кинематографичным — особенно на закате и во время золотого часа.",
+        amenities:["Палуба из натурального тика","Качественная музыка Bluetooth","Мягкие тёплые пледы","Обогрев салона","Тент от дождя","Зонты","Бокалы","Зарядные устройства"],
+        pier:"Набережная канала Грибоедова, 61", map:"https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./jerry-cover.jpg","./jerry-bow.jpg","./jerry-aerial.jpg","./jerry-deck.jpg","./jerry-city.jpg","./jerry-blankets.jpg"]
+      },
+      {
+        id:"amigo", category:"budget", name:"Амиго", price:"от 11 000 ₽ / час", guests:8, cover:"./amigo-cover.jpg",
+        intro:"Уютный катер с открытым носом, мягким U-образным диваном и атмосферой настоящего летнего Петербурга на воде.",
+        story:"«Амиго» идеально подходит для прогулок по центру города и выходов в Финский залив — особенно на закате, когда Петербург начинает отражаться в воде совсем по-другому. За штурвалом — очень опытный капитан: покажет лучшие локации, расскажет интересные истории о городе и поможет поймать самые живые кадры с прогулки.",
+        amenities:["Туалет","Столик","Обогрев салона","Тент для любой погоды","Аудиосистема Bluetooth","Тёплые пледы","Бокалы","Зарядные устройства"],
+        pier:"Набережная реки Мойки, 11", map:"https://yandex.ru/maps/org/98351377075?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./amigo-cover.jpg","./amigo-bow.jpg","./amigo-aerial.jpg","./amigo-toilet.jpg","./amigo-deck.jpg","./amigo-city.jpg"]
+      },
+      {
+        id:"hector", category:"budget", name:"Гектор", price:"от 12 000 ₽ / час", guests:9, cover:"./hector-cover.jpg",
+        intro:"Стильный и лёгкий катер для прогулок по центру Петербурга.",
+        story:"Идеально подходит для спокойных выходов по каналам, вечернего города, встреч с друзьями и прогулок без суеты. На «Гекторе» особенная атмосфера — музыка, вода, огни города и ощущение, будто Петербург становится совсем другим, когда смотришь на него с катера. Отдельный вайб здесь задаёт и капитан — спокойный стиль, хорошая музыка и правильное настроение прогулки.",
+        amenities:["Музыка Bluetooth","Мягкие тёплые пледы","Зонты","Бокалы","Туалетная комната","Стол","Холодильник"],
+        pier:"Набережная канала Грибоедова, 61", map:"https://yandex.ru/maps/org/228184991618?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./hector-cover.jpg","./hector-top.jpg","./hector-cockpit.jpg","./hector-deck.jpg","./hector-toilet.jpg","./hector-aerial.jpg"]
+      },
+      {
+        id:"venecia", category:"middle", name:"Венеция", price:"от 13 000 ₽ / час", guests:11, cover:"./venecia-cover.jpg",
+        intro:"Комфортный катер с панорамным салоном для красивых прогулок по рекам и каналам Санкт-Петербурга.",
+        story:"«Венеция» — спокойный и просторный катер для тех, кто хочет провести время на воде с комфортом и без суеты. Панорамный салон позволяет наблюдать за Петербургом даже в прохладную погоду, а открытая верхняя палуба отлично подходит для летних прогулок, фотографий и неспешного отдыха. На борту может находиться до 11 гостей, комфортнее всего — компанией до 9 человек. У гостей есть отдельная зона отдыха, поэтому капитан не находится рядом с компанией во время прогулки. Выход в Финский залив возможен при благоприятных погодных условиях.",
+        amenities:["Панорамный салон","Отопление","Открытая палуба","Отдельная зона отдыха","Фуршетный стол","Стеклянные бокалы","Музыка Bluetooth","AUX"],
+        pier:"Конногвардейская пристань, Большая Морская улица, 65", map:"https://yandex.ru/maps/org/pristan/9704067438?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./venecia-cover.jpg","./venecia-salon.jpg","./venecia-upper-deck.jpg","./venecia-aerial.jpg","./venecia-toilet.jpg","./venecia-table.jpg"]
+      },
+      {
+        id:"elchapa", category:"middle", name:"Эль Чапа", price:"от 14 000 ₽ / час", guests:11, cover:"./elchapa-cover.jpg",
+        intro:"Американский Chaparral — большой, комфортный и созданный для прогулок по Петербургу и Финскому заливу.",
+        story:"Эль Чапа — мой катер и место, с которого началась вся эта история. На нём одинаково хорошо идти по солнечной Неве, уходить в залив на закате или встречать вечерний город в тумане и огнях. Я сам капитан этого катера и веду прогулки лично. Для меня это не просто аренда, а возможность показать Петербург таким, каким его редко видят с берега.",
+        amenities:["Просторная палуба","Кожаные сиденья","Hertz Bluetooth","Отопление","Тент","Пледы","Бокалы","Туалет"],
+        pier:"Набережная реки Фонтанки, 51/53", map:"https://yandex.ru/maps/org/pristan_naberezhnaya_reki_fontanki_51_53/11364047852?si=crh6zat8bvqdkku7ryp9104xdg",
+        gallery:["./elchapa-aerial.jpg","./elchapa-bow.jpg","./elchapa-table.jpg","./elchapa-details.jpg","./elchapa-toilet.jpg"]
+      },
+      {
+        id:"monro", category:"middle", name:"Монро", price:"от 14 000 ₽ / час", guests:11, cover:"./monro-cover.jpg",
+        intro:"Большой и комфортный катер для компаний, красивых встреч и долгих прогулок по Петербургу.",
+        story:"«Монро» сразу ощущается просторным: большой стол, удобная посадка, музыка, мягкий свет вечернего города и атмосфера, в которой легко провести несколько часов подряд — за разговорами, ужином, бокалами и видами на воду. Катер отлично подходит для дней рождений, компаний друзей, семейных прогулок и выходов в залив. А харизматичный капитан делает прогулку не просто комфортной, а по-настоящему живой и запоминающейся.",
+        amenities:["Музыка","Пледы","Зонты","Стеклянные бокалы","Просторный стол","Тент от дождя","Зарядные устройства","Отопление","Туалет"],
+        pier:"Набережная реки Фонтанки, 133", map:"https://yandex.ru/maps?ol=geo&text=%D0%BD%D0%B0%D0%B1%D0%B5%D1%80%D0%B5%D0%B6%D0%BD%D0%B0%D1%8F%20%D1%80%D0%B5%D0%BA%D0%B8%20%D0%A4%D0%BE%D0%BD%D1%82%D0%B0%D0%BD%D0%BA%D0%B8,%20133",
+        gallery:["./monro-cover.jpg","./monro-cruise.jpg","./monro-toilet.jpg","./monro-front.jpg","./monro-interior.jpg","./monro-guests.jpg"]
+      },
+      {
+  id: "byzantium",
+  category: "middle",
+
+  name: "Византия",
+  price: "от 15 000 ₽ / час",
+  guests: 10,
+
+  cover: "./byzantium-cover.jpg",
+
+  intro:
+    "Премиальный катер с панорамной крышей, просторным салоном и интерьером из благородного дерева.",
+
+  story:
+    "«Византия» — элегантный катер для романтических прогулок, семейных праздников, деловых встреч и особенных событий. Классический интерьер выполнен из шпона красного дерева и резного дуба, а панорамная крыша наполняет салон светом и позволяет любоваться Петербургом в любую погоду. На борту комфортно в прохладные и тёплые дни благодаря отоплению и кондиционеру. Просторный салон, большая открытая палуба и профессиональный дипломированный экипаж создают спокойную и красивую атмосферу для отдыха на воде.",
+
+  amenities: [
+    "Панорамная крыша",
+    "Кондиционер",
+    "Отопление",
+    "Туалет с раковиной",
+    "Винный шкаф",
+    "Микроволновая печь",
+    "Чайник",
+    "Посуда и бокалы",
+    "Большой стол в салоне",
+    "Столик на палубе",
+    "Телевизор",
+    "Микрофон",
+    "Музыка Bluetooth",
+    "Генератор 4 кВт",
+    "Пледы",
+    "Место для курения"
+  ],
+
+  pier:
+    "Набережная реки Мойки, 11",
+
+  map:
+    "https://yandex.ru/maps/org/pristan/98351377075?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./byzantium-cover.jpg",
+    "./byzantium-deck.jpg",
+    "./byzantium-salon.jpg",
+    "./byzantium-aerial-front.jpg",
+    "./byzantium-aerial-rear.jpg",
+    "./byzantium-toilet.jpg"
+  ]
+},
+     {
+  id: "silver",
+  category: "middle",
+
+  name: "Силвер",
+  price: "от 15 000 ₽ / час",
+  guests: 10,
+
+  cover: "./silver-cover.jpg",
+
+  intro:
+    "Премиальный катер с просторной палубой и закрытой каютой для комфортных прогулок по Петербургу.",
+
+  story:
+    "«Силвер» — светлый и уютный катер для романтических встреч, семейного отдыха, фотосессий и прогулок небольшой компанией. На открытой палубе удобно любоваться городом, отдыхать за фуршетным столом и делать красивые фотографии, а закрытая каюта и тент сохраняют комфорт в прохладную или дождливую погоду. Катер принимает до 10 гостей, комфортнее всего — компанией до 8 человек. Во время разводки мостов на борту может находиться не более 8 гостей. Для детей старше трёх лет спасательные жилеты подготовят заранее — укажите количество детей при оформлении заявки.",
+
+  amenities: [
+    "Закрытая каюта",
+    "Тент от дождя",
+    "Туалет",
+    "Холодильник",
+    "Фуршетный стол",
+    "Стеклянные бокалы",
+    "Пледы",
+    "Wi-Fi",
+    "Музыка Bluetooth",
+    "AUX и USB",
+    "FM-радио",
+    "Микрофон",
+    "Аудиогид",
+    "Детские жилеты по запросу"
+  ],
+
+  pier:
+    "Конногвардейская пристань, Большая Морская улица, 65",
+
+  map:
+    "https://yandex.ru/maps/org/pristan/9704067438?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./silver-cover.jpg",
+    "./silver-deck.jpg",
+    "./silver-cockpit.jpg",
+    "./silver-cabin.jpg",
+    "./silver-aerial.jpg",
+    "./silver-toilet.jpg"
+  ]
+},
+      {
+  id: "atlantica",
+  category: "middle",
+
+  name: "Атлантика",
+  price: "от 16 000 ₽ / час",
+  guests: 11,
+
+  cover: "./atlantica-cover.jpg",
+
+  intro:
+    "Просторный катер в стиле VanDutch для больших компаний, вечеринок и долгих прогулок по Петербургу.",
+
+  story:
+    "«Атлантика» — катер с характером красивой яхтенной вечеринки посреди Петербурга. Длинный силуэт, глубокая посадка, просторная палуба и качественный звук создают атмосферу где-то между Лазурным берегом и вечерним Финским заливом. Это один из лучших вариантов для больших компаний, дней рождения, встреч с друзьями и долгих прогулок под музыку, закат и огни города. Главная особенность катера — пространство: здесь удобно двигаться, отдыхать, танцевать, собираться за большим столом и проводить на воде целый вечер без ощущения тесноты. Минимальная продолжительность прогулки — 1,5 часа.",
+
+  amenities: [
+    "Просторная палуба",
+    "Hertz Bluetooth",
+    "Мини-бар",
+    "Стеклянные бокалы",
+    "Большой стол",
+    "Туалетная комната",
+    "Тент от дождя",
+    "Отопление",
+    "Тёплые пледы",
+    "Прогулка от 1,5 часов"
+  ],
+
+  pier:
+    "Набережная реки Фонтанки, 133",
+
+  map:
+    "https://yandex.ru/maps?ol=geo&text=%D0%BD%D0%B0%D0%B1%D0%B5%D1%80%D0%B5%D0%B6%D0%BD%D0%B0%D1%8F%20%D1%80%D0%B5%D0%BA%D0%B8%20%D0%A4%D0%BE%D0%BD%D1%82%D0%B0%D0%BD%D0%BA%D0%B8,%20133&sll=30.304379,59.919108&sspn=0.002000,0.002000&si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./atlantica-cover.jpg",
+    "./atlantica-deck.jpg",
+    "./atlantica-city.jpg",
+    "./atlantica-aerial-front.jpg",
+    "./atlantica-aerial-rear.jpg",
+    "./atlantica-toilet.jpg"
+  ]
+},
+      {
+  id: "blueberry",
+  category: "middle",
+
+  name: "Blueberry",
+  price: "от 17 000 ₽ / час",
+  guests: 11,
+
+  cover: "./blueberry-cover.jpg",
+
+  intro:
+    "Стильный и уютный катер с тёплым салоном для прогулок по рекам и каналам Петербурга.",
+
+  story:
+    "Blueberry — катер для спокойного и красивого отдыха на воде: романтических свиданий, семейных прогулок, встреч с друзьями и небольших праздников. Светлый салон, деревянная палуба и просторные зоны отдыха создают уютную атмосферу, а отопитель Planar и тент позволяют комфортно гулять даже в прохладную или дождливую погоду. На борту удобно провести несколько часов подряд, наблюдая за городом, отдыхая за столом и слушая любимую музыку. Катер принимает до 11 гостей и одинаково хорошо подходит для дневных, вечерних и ночных прогулок.",
+
+  amenities: [
+    "Тёплый салон",
+    "Отопитель Planar",
+    "Тент от солнца и дождя",
+    "Туалет",
+    "Холодильник",
+    "Посуда и блюда",
+    "Стеклянные бокалы",
+    "Пледы",
+    "Музыка Bluetooth"
+  ],
+
+  pier:
+    "Пристань «Мост Ломоносова», набережная реки Фонтанки, 64",
+
+  map:
+    "https://yandex.ru/maps/org/52495584393?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./blueberry-cover.jpg",
+    "./blueberry-bow.jpg",
+    "./blueberry-table.jpg",
+    "./blueberry-aerial-front.jpg",
+    "./blueberry-aerial-rear.jpg",
+    "./blueberry-city.jpg"
+  ]
+},
+      {
+  id: "blackberry",
+  category: "middle",
+
+  name: "BlackBerry",
+  price: "от 17 000 ₽ / час",
+  guests: 11,
+
+  cover: "./blackberry-cover.jpg",
+
+  intro:
+    "Стильный чёрный катер с просторными зонами отдыха и тёплым салоном для прогулок по Петербургу.",
+
+  story:
+    "BlackBerry — элегантный и уютный катер для романтических свиданий, семейных прогулок, встреч с друзьями и небольших праздников. Чёрный корпус, светлая мягкая обивка и отделка из дерева создают выразительный современный образ, а просторные зоны отдыха на носу и корме позволяют удобно разместиться всей компанией. Тёплый салон с отопителем Planar и тент сохраняют комфорт в прохладную или дождливую погоду. Катер принимает до 11 гостей. Дневные прогулки — 17 000 ₽/час, ночные — 18 000 ₽/час.",
+
+  amenities: [
+    "Тёплый салон",
+    "Отопитель Planar",
+    "Тент от солнца и дождя",
+    "Туалет",
+    "Холодильник",
+    "Посуда и блюда",
+    "Стеклянные бокалы",
+    "Пледы",
+    "Музыка Bluetooth"
+  ],
+
+  pier:
+    "Пристань «Мост Ломоносова», набережная реки Фонтанки, 64",
+
+  map:
+    "https://yandex.ru/maps/org/52495584393?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./blackberry-cover.jpg",
+    "./blackberry-deck.jpg",
+    "./blackberry-bow.jpg",
+    "./blackberry-table.jpg",
+    "./blackberry-aerial.jpg",
+    "./blackberry-tent.jpg"
+  ]
+},
+      {
+
+  id: "venissa",
+
+  category: "middle",
+
+  name: "Venissa",
+
+  price: "от 18 000 ₽ / час",
+
+  guests: 11,
+
+  cover: "./venissa-cover.jpg",
+
+  intro:
+
+    "Элегантный катер с панорамной крышей, тёплым салоном и открытой зоной отдыха.",
+
+  story:
+
+    "Venissa — стильный катер для прогулок по Санкт-Петербургу, романтических встреч, семейного отдыха и небольших праздников. Панорамная крыша и большие окна наполняют салон светом и позволяют любоваться городом даже в прохладную или дождливую погоду. В тёплом салоне расположен большой стол, а открытая кормовая зона подходит для отдыха на свежем воздухе. На борту есть кофемашина, вода, чай, кофе и всё необходимое для красивой сервировки. Катер принимает до 11 гостей, прогулку проводит профессиональный дипломированный экипаж. Оплата возможна картой или наличными на борту, а также безналичным переводом без комиссии.",
+
+  amenities: [
+
+    "Панорамная крыша",
+
+    "Тёплый салон",
+
+    "Открытая кормовая зона",
+
+    "Тент от дождя",
+
+    "Туалет и раковина",
+
+    "Большой стол",
+
+    "Кофемашина, чай и кофе",
+
+    "Питьевая вода",
+
+    "Холодильник",
+
+    "Бокалы и ведро для шампанского",
+
+    "Посуда для фруктов",
+
+    "Пледы",
+
+    "Музыка Bluetooth"
+
+  ],
+
+  pier:
+
+    "Пристань «Набережная реки Фонтанки, 51/53», Санкт-Петербург",
+
+  map:
+
+    "https://yandex.ru/maps/org/11364047852?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+
+    "./venissa-cover.jpg",
+
+    "./venissa-deck.jpg",
+
+    "./venissa-salon.jpg",
+
+    "./venissa-coffee.jpg",
+
+    "./venissa-toilet.jpg",
+
+    "./venissa-aerial.jpg"
+
+  ]
+
+},
+      {
+  id: "modena",
+  category: "premium",
+
+  name: "Modena",
+  price: "от 20 000 ₽ / час",
+  guests: 10,
+
+  cover: "./modena-cover.jpg",
+
+  intro:
+    "Современный премиальный катер с высоким уровнем сервиса, просторными зонами отдыха и матросом-стюардом.",
+
+  story:
+    "Modena — катер для тех, кто ценит комфорт, персональный сервис и красивые виды Санкт-Петербурга. Он отлично подходит для романтических прогулок, семейного отдыха, дней рождения, фотосессий и деловых встреч. На борту расположены тёплый закрытый салон, открытый задний кокпит и просторная носовая зона с панорамным видом. Полноценный тент со стеклянными вставками защищает от дождя, не закрывая обзор. Матрос-стюард поможет с сервировкой и позаботится о комфорте гостей. Катер принимает до 10 человек. Стоимость с понедельника по четверг — 20 000 ₽/час, с пятницы по воскресенье — 25 000 ₽/час. Оплата возможна картой или наличными на борту, а также безналичным переводом без комиссии.",
+
+  amenities: [
+    "Матрос-стюард",
+    "Тёплый закрытый салон",
+    "Открытый задний кокпит",
+    "Панорамная носовая зона",
+    "Полноценный тент",
+    "Туалет и раковина",
+    "Кофемашина, чай и кофе",
+    "Питьевая вода",
+    "Холодильник и лёд",
+    "Бокалы для разных напитков",
+    "Посуда и столовые приборы",
+    "Ведро для шампанского",
+    "Винница для бутылок",
+    "Пледы",
+    "Музыка Bluetooth"
+  ],
+
+  pier:
+    "Пристань «Набережная реки Фонтанки, 51/53», Санкт-Петербург",
+
+  map:
+    "https://yandex.ru/maps/org/11364047852?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./modena-cover.jpg",
+    "./modena-cockpit.jpg",
+    "./modena-aerial.jpg",
+    "./modena-top.jpg",
+    "./modena-coffee.jpg",
+    "./modena-toilet.jpg"
+  ]
+},
+      {
+  id: "yalta",
+  category: "premium",
+
+  name: "Ялта",
+  price: "от 20 000 ₽ / час",
+  guests: 10,
+
+  cover: "./yalta-cover.jpg",
+
+  intro:
+    "Элегантная яхта премиум-класса с панорамным салоном для приватных прогулок по Петербургу и Финскому заливу.",
+
+  story:
+    "«Ялта» — элегантная яхта премиум-класса для тех, кто ценит тишину, приватность и высокий уровень комфорта. Благодаря компактным размерам она проходит по рекам и каналам, недоступным большинству крупных яхт, а также подходит для выходов в Финский залив. Панорамный салон с обзором 360°, открытая кормовая палуба и отдельная носовая зона позволяют менять атмосферу прогулки — от уютного отдыха внутри до красивых видов под открытым небом. При аренде от двух часов стоимость составляет 20 000 ₽/час с понедельника по четверг и 25 000 ₽/час с пятницы по воскресенье. Аренда на один час — 26 000 ₽.",
+
+  amenities: [
+    "Панорамный салон 360°",
+    "Открытая кормовая палуба",
+    "Носовая зона отдыха",
+    "Климат-контроль",
+    "Полноценный санузел",
+    "Мини-кухня",
+    "Кофемашина",
+    "Холодильник",
+    "Стеклянная посуда",
+    "Профессиональная аудиосистема",
+    "Наушники для экскурсий",
+    "Пледы"
+  ],
+
+  pier:
+    "Конногвардейская пристань, Большая Морская улица, 65 (река Мойка)",
+
+  map:
+    "https://yandex.ru/maps/org/pristan/9704067438?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./yalta-cover.jpg",
+    "./yalta-aerial-rear.jpg",
+    "./yalta-salon-sunset.jpg",
+    "./yalta-toilet.jpg",
+    "./yalta-panoramic-salon.jpg",
+    "./yalta-aft-deck.jpg",
+    "./yalta-kitchen.jpg",
+    "./yalta-bow-lounge.jpg",
+    "./yalta-top.jpg",
+    "./yalta-helm.jpg"
+  ]
+},
+      {
+  id: "beluga",
+  category: "premium",
+
+  name: "Белуга",
+  price: "от 21 000 ₽ / час",
+  guests: 10,
+
+  cover: "./beluga-cover.jpg",
+
+  intro:
+    "Просторная моторная яхта с панорамной крышей, современным интерьером и премиальным оснащением.",
+
+  story:
+    "«Белуга» создана для комфортного отдыха в любую погоду: просторный салон с панорамной крышей, климат-контроль, большая палуба и несколько зон для общения позволяют свободно провести на воде несколько часов. Яхта отлично подходит для романтических прогулок, семейных праздников, дней рождения, корпоративов и деловых встреч. Прогулки проводит профессиональный дипломированный экипаж. Стоимость зависит от дня и времени: пн–чт с 06:00 до 23:59 — 21 000 ₽/час, с 00:00 до 05:59 — 23 000 ₽/час; пт–вс с 06:00 до 23:59 — 23 000 ₽/час, с 00:00 до 05:59 — 25 000 ₽/час. В праздничные дни действует тариф выходного дня.",
+
+  amenities: [
+    "Просторный салон с панорамной крышей",
+    "Кондиционер",
+    "Отопление",
+    "Туалет с горячей водой и душем",
+    "Холодильник",
+    "Микроволновая печь",
+    "Кофемашина",
+    "Чайник",
+    "Лёдогенератор",
+    "Посуда и столовые приборы",
+    "Бокалы и фужеры",
+    "Большой стол в салоне",
+    "Столики на палубе",
+    "Телевизор 50″",
+    "Аудиосистема 7.1 с микрофоном",
+    "Купальная платформа",
+    "Пледы",
+    "Генератор 8 кВт"
+  ],
+
+  pier:
+    "Набережная реки Мойки, 17",
+
+  map:
+    "https://yandex.ru/maps/org/63107606991?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./beluga-cover.jpg",
+    "./beluga-city.jpg",
+    "./beluga-salon.jpg",
+    "./beluga-deck.jpg",
+    "./beluga-panoramic-salon.jpg",
+    "./beluga-table.jpg",
+    "./beluga-top.jpg",
+    "./beluga-wheelhouse.jpg",
+    "./beluga-smoking-area.jpg",
+    "./beluga-aerial.jpg"
+  ]
+},
+
+      {
+  id: "cloudberry",
+  category: "premium",
+
+  name: "Cloudberry",
+  price: "от 25 000 ₽ / час",
+  guests: 11,
+
+  cover: "./cloudberry-cover.jpg",
+
+  intro:
+    "Просторная 20-метровая городская яхта премиум-класса с шестью зонами отдыха для больших компаний.",
+
+  story:
+    "Cloudberry («Морошка») создана для вечеринок, дней рождения, корпоративов, романтических вечеров и долгих прогулок по акватории Петербурга. На 20-метровой яхте шесть отдельных зон отдыха: салон, каюта, носовая зона со столом, барная стойка, кормовой лежак и лаунж-зона над каютой. Пространства достаточно, чтобы свободно перемещаться по борту и менять атмосферу в течение всей прогулки. Три автономных отопителя Planar и тент обеспечивают комфорт в переменчивую петербургскую погоду. Дневная аренда — 25 000 ₽/час, ночная — 28 000 ₽/час.",
+
+  amenities: [
+    "6 зон отдыха",
+    "Три отопителя Planar",
+    "Тент от солнца и дождя",
+    "Туалет",
+    "Холодильник",
+    "Ледогенератор",
+    "Посуда и блюда",
+    "Бокалы для напитков",
+    "Пледы",
+    "Bluetooth-аудиосистема"
+  ],
+
+  pier:
+    "Набережная Профессора Попова, 2М (Аптекарская набережная)",
+
+  map:
+    "https://yandex.ru/maps/org/pristan/159399620806?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./cloudberry-cover.jpg",
+    "./cloudberry-aurora.jpg",
+    "./cloudberry-main-deck.jpg",
+    "./cloudberry-aerial.jpg",
+    "./cloudberry-top.jpg",
+    "./cloudberry-bar-deck.jpg",
+    "./cloudberry-lounge.jpg",
+    "./cloudberry-toilet.jpg",
+    "./cloudberry-bar.jpg"
+  ]
+},      
+{
+  id: "livadia",
+  category: "premium",
+
+  name: "Ливадия",
+  price: "от 25 000 ₽ / час",
+  guests: 10,
+
+  cover: "./livadia-cover.jpg",
+
+  intro:
+    "Флагманская яхта премиум-класса для мероприятий высокого уровня, деловых встреч и приватного отдыха.",
+
+  story:
+    "«Ливадия» сочетает просторные зоны, панорамный салон и высокий уровень сервиса. Здесь комфортно проводить деловые встречи, семейные торжества, приватные прогулки, фуршеты и банкеты. Практически бесшумный ход и минимальная качка делают отдых особенно спокойным, а стюард на борту позаботится о гостях. Минимальная продолжительность аренды — 2 часа. Стоимость: пн–чт — 25 000 ₽/час, пт–вс — 30 000 ₽/час; в праздничные дни действует тариф выходного дня. Отмена без неустойки возможна не позднее чем за 2 суток до рейса.",
+
+  amenities: [
+    "Просторная открытая палуба",
+    "Панорамный салон",
+    "Обеденная зона на 10 персон",
+    "Климат-контроль",
+    "Мини-кухня",
+    "Полноценный санузел",
+    "Кофемашина",
+    "Холодильник",
+    "Микроволновая печь",
+    "Хрустальные бокалы",
+    "Фарфоровая посуда",
+    "Профессиональная аудиосистема",
+    "Микрофон",
+    "Наушники для экскурсий",
+    "Пледы",
+    "Стюард на борту",
+    "Фуршет, банкет и кейтеринг",
+    "Практически бесшумный ход",
+    "Минимальная качка"
+  ],
+
+  pier:
+    "Конногвардейская пристань, Большая Морская улица, 65",
+
+  map:
+    "https://yandex.ru/maps/org/pristan/9704067438?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./livadia-cover.jpg",
+    "./livadia-side.jpg",
+    "./livadia-aerial-rear.jpg",
+    "./livadia-top.jpg",
+    "./livadia-aerial-front.jpg",
+    "./livadia-salon.jpg",
+    "./livadia-dining.jpg",
+    "./livadia-kitchen.jpg",
+    "./livadia-wheelhouse.jpg",
+    "./livadia-toilet.jpg"
+  ]
+},
+      {
+  id: "montferrand",
+  category: "premium",
+
+  name: "Montferrand",
+  price: "от 28 000 ₽ / час",
+  guests: 10,
+
+  cover: "./montferrand-cover.jpg",
+
+  intro:
+    "Изысканный классический катер с панорамной крышей, просторным салоном и безупречным сервисом.",
+
+  story:
+    "Montferrand — премиальный катер для романтических прогулок, семейного отдыха, деловых встреч, дней рождения, свадеб и фотосессий. Просторный салон с панорамной крышей наполнен светом, а высота позволяет свободно стоять в полный рост. Большой деревянный стол подходит для ужина и общения, а уютная кормовая зона — для отдыха с видом на Петербург. На борту есть всё необходимое для комфортной прогулки: чай, кофе, пледы, музыка и внимательный профессиональный экипаж. Катер принимает до 10 гостей. Оплата возможна картой или наличными на борту.",
+
+  amenities: [
+    "Панорамная крыша",
+    "Можно стоять в полный рост",
+    "Большой деревянный стол",
+    "Кормовая зона отдыха",
+    "Холодильник",
+    "Бокалы для напитков",
+    "Чай и кофе",
+    "Пледы",
+    "Музыка",
+    "Туалет",
+    "Профессиональный экипаж"
+  ],
+
+  pier:
+    "Набережная реки Мойки, 78, Санкт-Петербург",
+
+  map:
+    "https://yandex.ru/maps?ol=geo&text=%D0%BD%D0%B0%D0%B5%D1%80%D0%B5%D0%B6%D0%BD%D0%B0%D1%8F%20%D1%80%D0%B5%D0%BA%D0%B8%20%D0%9C%D0%BE%D0%B9%D0%BA%D0%B8,%2078&sll=30.305106,59.930358&sspn=0.004121,0.008211&si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./montferrand-cover.jpg",
+    "./montferrand-side.jpg",
+    "./montferrand-deck.jpg",
+    "./montferrand-salon.jpg",
+    "./montferrand-table.jpg",
+    "./montferrand-salon-rear.jpg",
+    "./montferrand-coffee.jpg",
+    "./montferrand-aft-deck.jpg",
+    "./montferrand-aerial.jpg",
+    "./montferrand-toilet.jpg"
+  ]
+},
+      {
+  id: "venezia-nord",
+  category: "premium",
+
+  name: "Venezia Nord",
+  price: "от 28 000 ₽ / час",
+  guests: 10,
+
+  cover: "./venezia-nord-cover.jpg",
+
+  intro:
+    "Элегантный премиальный катер с тёплым закрытым салоном и просторной открытой палубой.",
+
+  story:
+    "Venezia Nord — элегантный катер для романтических прогулок, семейного отдыха, праздников и деловых встреч. Просторный тёплый салон позволяет комфортно отдыхать в прохладную погоду, а открытая палуба сохраняет атмосферу прогулки по рекам и каналам Петербурга. Матрос-стюард поможет с сервировкой и позаботится о гостях. В салоне расположен большой стол, а на открытую палубу по запросу устанавливается съёмный стол. На борту есть кофемашина, холодильник, вода, чай, кофе и всё необходимое для красивой подачи напитков и фруктов. Катер принимает до 10 гостей.",
+
+  amenities: [
+    "Матрос-стюард",
+    "Тёплый закрытый салон",
+    "Просторная открытая палуба",
+    "Туалет и раковина",
+    "Стол в салоне",
+    "Съёмный стол на палубе",
+    "Кофемашина, чай и кофе",
+    "Питьевая вода",
+    "Холодильник",
+    "Бокалы и ведро для шампанского",
+    "Посуда для фруктов",
+    "Пледы",
+    "Музыка Bluetooth"
+  ],
+
+  pier:
+    "Пристань «Набережная реки Фонтанки, 51/53», Санкт-Петербург",
+
+  map:
+    "https://yandex.ru/maps/org/11364047852?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./venezia-nord-cover.jpg",
+    "./venezia-nord-deck.jpg",
+    "./venezia-nord-salon.jpg",
+    "./venezia-nord-table.jpg",
+    "./venezia-nord-toilet.jpg",
+    "./venezia-nord-aerial.jpg",
+    "./venezia-nord-sunset.jpg"
+  ]
+},
+      {
+  id: "viaggio",
+  category: "premium",
+
+  name: "Viaggio",
+  price: "от 28 000 ₽ / час",
+  guests: 10,
+
+  cover: "./viaggio-cover.jpg",
+
+  intro:
+    "Современный премиальный катер с панорамной крышей, тёплым салоном и просторными зонами отдыха.",
+
+  story:
+    "Viaggio — современный премиальный катер для романтических прогулок, семейного отдыха, дней рождения, фотосессий и деловых встреч. Тёплый салон с панорамной крышей позволяет любоваться Петербургом в любую погоду, а открытый задний кокпит со съёмным столом подходит для отдыха на свежем воздухе. Матрос-стюард поможет с сервировкой и позаботится о комфорте гостей. На борту есть кофемашина, чайник, холодильник, вода, чай и всё необходимое для красивой подачи напитков и фруктов. Катер принимает до 10 гостей. Оплата возможна картой или наличными на борту, а также безналичным переводом без комиссии.",
+
+  amenities: [
+    "Матрос-стюард",
+    "Тёплый салон",
+    "Панорамная крыша",
+    "Открытый задний кокпит",
+    "Съёмный стол",
+    "Туалет и раковина",
+    "Кофемашина и чайник",
+    "Чай и питьевая вода",
+    "Холодильник",
+    "Бокалы для напитков",
+    "Посуда для фруктов",
+    "Столовые приборы",
+    "Ведро для шампанского",
+    "Посуда по запросу",
+    "Пледы",
+    "Музыка Bluetooth"
+  ],
+
+  pier:
+    "Пристань «Набережная реки Фонтанки, 51/53», Санкт-Петербург",
+
+  map:
+    "https://yandex.ru/maps/org/11364047852?si=crh6zat8bvqdkku7ryp9104xdg",
+
+  gallery: [
+    "./viaggio-cover.jpg",
+    "./viaggio-side.jpg",
+    "./viaggio-salon.jpg",
+    "./viaggio-cockpit.jpg",
+    "./viaggio-aft-deck.jpg",
+    "./viaggio-helm.jpg",
+    "./viaggio-coffee.jpg",
+    "./viaggio-city.jpg"
+  ]
+},
+      {
+  id: "bangkok",
+  category: "premium",
+
+  name: "Бангкок",
+  price: "от 30 000 ₽ / час",
+  guests: 10,
+
+  cover: "./bangkok-cover.jpg",
+
+  intro:
+    "Премиальная речная яхта с панорамным салоном, открытым кокпитом и высоким уровнем сервиса.",
+
+  story:
+    "«Бангкок» — современная речная яхта для романтических вечеров, семейных праздников, деловых встреч и частных мероприятий в Санкт-Петербурге. Панорамная стеклянная крыша наполняет салон светом и открывает виды на город, а открытый кокпит и носовая зона позволяют проводить время на свежем воздухе. На борту работает матрос-стюард, который поможет с сервировкой и позаботится о комфорте гостей. Яхта принимает до 10 человек и отлично подходит для фуршетов, ужинов, дней рождения и переговоров. Прогулку проводит профессиональный дипломированный экипаж на лицензированном судне. Стоимость с понедельника по четверг — 30 000 ₽/час, с пятницы по воскресенье — 35 000 ₽/час. Доступны наличные, QR-код, банковская карта и безналичный расчёт; способ оплаты необходимо согласовать заранее.",
+
+  amenities: [
+    "Панорамная стеклянная крыша",
+    "Открытый кокпит",
+    "Носовая зона отдыха",
+    "Отопление",
+    "Уборная",
+    "Профессиональная аудиосистема",
+    "Пледы",
+    "Матрос-стюард",
+    "Фуршеты и ужины",
+    "Оплата картой, QR и безналично"
+  ],
+
+  pier:
+    "Набережная реки Мойки, 56",
+
+  map:
+    "https://yandex.ru/maps/-/CDSIrQKt",
+
+  gallery: [
+    "./bangkok-cover.jpg",
+    "./bangkok-aerial-rear.jpg",
+    "./bangkok-aerial-front.jpg",
+    "./bangkok-cockpit.jpg",
+    "./bangkok-toilet.jpg",
+    "./bangkok-salon.jpg",
+    "./bangkok-deck.jpg",
+    "./bangkok-kitchen.jpg",
+    "./bangkok-salon-wide.jpg",
+    "./bangkok-dining.jpg"
+  ]
+},
+      {
+  id: "amsterdam",
+  category: "premium",
+
+  name: "Амстердам",
+  price: "от 30 000 ₽ / час",
+  guests: 10,
+
+  cover: "./amsterdam-cover.jpg",
+
+  intro:
+    "Премиальная речная яхта с панорамным салоном, открытым кокпитом и высоким уровнем сервиса.",
+
+  story:
+    "«Амстердам» — премиальная речная яхта для прогулок по Санкт-Петербургу, романтических вечеров, семейных праздников, деловых встреч и частных мероприятий. Просторный панорамный салон с большой стеклянной крышей позволяет любоваться городом в любую погоду, а открытый кокпит и отдельная зона отдыха дают возможность проводить время на свежем воздухе. На борту работает матрос-стюард, который поможет с сервировкой и позаботится о комфорте гостей. Яхта принимает до 10 человек и отлично подходит для фуршетов, ужинов, дней рождения и переговоров. Прогулку проводит профессиональный дипломированный экипаж на лицензированном судне. Стоимость с понедельника по четверг — 30 000 ₽/час, с пятницы по воскресенье — 35 000 ₽/час. Доступны наличные, QR-код, банковская карта и безналичный расчёт; способ оплаты необходимо согласовать заранее.",
+
+  amenities: [
+    "Панорамная стеклянная крыша",
+    "Открытый кокпит",
+    "Носовая зона отдыха",
+    "Отопление",
+    "Уборная",
+    "Профессиональная аудиосистема",
+    "Пледы",
+    "Матрос-стюард",
+    "Фуршеты и ужины",
+    "Профессиональный экипаж",
+    "Лицензированное судно",
+    "Оплата наличными, QR, картой и безналично"
+  ],
+
+  pier:
+    "Набережная реки Мойки, 62/2",
+
+  map:
+    "https://yandex.ru/maps/-/CDSIrInI",
+
+  gallery: [
+    "./amsterdam-cover.jpg",
+    "./amsterdam-aerial-front.jpg",
+    "./amsterdam-aerial-side.jpg",
+    "./amsterdam-side.jpg",
+    "./amsterdam-cockpit.jpg",
+    "./amsterdam-aft-deck.jpg",
+    "./amsterdam-salon.jpg",
+    "./amsterdam-salon-panoramic.jpg",
+    "./amsterdam-kitchen.jpg",
+    "./amsterdam-toilet.jpg"
+  ]
+},
+      {
+  id: "monaco",
+  category: "premium",
+
+  name: "Монако",
+  price: "от 30 000 ₽ / час",
+  guests: 10,
+
+  cover: "./monaco-cover.jpg",
+
+  intro:
+    "Премиальная речная яхта с панорамным салоном, открытым кокпитом и высоким уровнем сервиса.",
+
+  story:
+    "«Монако» — премиальная речная яхта для прогулок по Санкт-Петербургу, романтических вечеров, семейных праздников, деловых встреч и частных мероприятий. Просторный панорамный салон со стеклянной крышей позволяет любоваться городом в любую погоду, а открытый кокпит и носовая зона отдыха создают несколько отдельных пространств для гостей. На борту работает матрос-стюард, есть отопление, уборная, профессиональная аудиосистема и пледы. Яхта принимает до 10 человек и отлично подходит для фуршетов, ужинов, дней рождения и переговоров. Прогулку проводит профессиональный дипломированный экипаж на лицензированном судне. Стоимость с понедельника по четверг — 30 000 ₽/час, с пятницы по воскресенье — 35 000 ₽/час. Доступны наличные, QR-код, банковская карта и безналичный расчёт; способ оплаты необходимо согласовать заранее.",
+
+  amenities: [
+    "Панорамная стеклянная крыша",
+    "Открытый кокпит",
+    "Носовая зона отдыха",
+    "Отопление",
+    "Уборная",
+    "Профессиональная аудиосистема",
+    "Пледы",
+    "Матрос-стюард",
+    "Фуршеты и ужины",
+    "Профессиональный экипаж",
+    "Лицензированное судно",
+    "Оплата наличными, QR, картой и безналично"
+  ],
+
+  pier:
+    "Набережная реки Мойки, 62/2",
+
+  map:
+    "https://yandex.ru/maps/-/CDSIrInI",
+
+  gallery: [
+    "./monaco-cover.jpg",
+    "./monaco-aerial.jpg",
+    "./monaco-cockpit-wide.jpg",
+    "./monaco-cockpit.jpg",
+    "./monaco-salon-day.jpg",
+    "./monaco-salon-panoramic.jpg",
+    "./monaco-salon-evening.jpg",
+    "./monaco-kitchen.jpg",
+    "./monaco-toilet.jpg",
+    "./monaco-stern.jpg"
+  ]
+},
+    ];
+
+    const priceCollections = [
+      {id:"select7500", title:"Подборка от 7 500 ₽", kicker:"PELAGOS SELECT", min:0, max:9999},
+      {id:"select10000", title:"Подборка от 10 000 ₽", kicker:"PELAGOS SELECT", min:10000, max:12999},
+      {id:"select13000", title:"Подборка от 13 000 ₽", kicker:"PELAGOS SELECT", min:13000, max:17999},
+      {id:"premium", title:"Premium Collection", kicker:"PELAGOS PREMIUM", min:18000, max:Infinity, premium:true}
+    ];
+
+    const $ = id => document.getElementById(id);
+    const tg = window.Telegram?.WebApp;
+    const catalog = $("catalogGrid");
+    const boatModal = $("boatModal");
+    const bookingModal = $("bookingModal");
+    const bookingForm = $("bookingForm");
+    const submitButton = $("submitButton");
+    const formStatus = $("formStatus");
+    const dateInput = $("date");
+    const guestsInput = $("guests");
+    const lightbox = $("lightbox");
+    const lightboxStage = $("lightboxStage");
+    const lightboxImage = $("lightboxImage");
+    const lightboxCounter = $("lightboxCounter");
+    const lightboxZoomBadge = $("lightboxZoomBadge");
+
+    let selectedBoat = null;
+    let currentCollection = null;
+    let coverImages = [];
+    let coverIndex = 0;
+    let lightboxImages = [];
+    let lightboxIndex = 0;
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      tg.setHeaderColor?.("#080706");
+      tg.setBackgroundColor?.("#080706");
+    }
+
+    const today = new Date();
+    dateInput.min = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+
+    function createPlaceholder(name) {
+      return `<div class="photo-placeholder"><div class="photo-placeholder-mark">P</div><div class="photo-placeholder-name">${name}<br>фото скоро</div></div>`;
+    }
+
+    function numericPrice(boat) {
+      const match = String(boat.price || "").replace(/\s/g, "").match(/(\d{4,6})/);
+      return match ? Number(match[1]) : 0;
+    }
+
+    function boatsForCollection(collection) {
+      return boats.filter(boat => { const price = numericPrice(boat); return price >= collection.min && price <= collection.max; }).sort((a,b) => numericPrice(a)-numericPrice(b));
+    }
+
+    function renderCatalog() {
+      currentCollection = null;
+      catalog.innerHTML = `<div class="price-menu">${priceCollections.map(collection => {
+        const count = boatsForCollection(collection).length;
+        return `<button class="price-tile ${collection.premium ? "premium" : ""}" type="button" data-collection="${collection.id}">
+          <div class="price-tile-kicker">${collection.kicker}</div>
+          <div class="price-tile-title">${collection.title}</div>
+          <div class="price-tile-count">${count} ${count === 1 ? "катер" : count < 5 ? "катера" : "катеров"}</div>
+        </button>`;
+      }).join("")}</div>`;
+      catalog.querySelectorAll("[data-collection]").forEach(button => button.addEventListener("click", () => renderCollection(button.dataset.collection)));
+    }
+
+    function renderCollection(id) {
+      const collection = priceCollections.find(item => item.id === id);
+      if (!collection) return;
+      currentCollection = collection;
+      const list = boatsForCollection(collection);
+      catalog.innerHTML = `<div class="collection-head"><button class="collection-back" type="button" aria-label="Назад">‹</button><div><h2 class="collection-title">${collection.title}</h2><div class="collection-subtitle">Отобранный флот PELAGOS · по возрастанию стоимости</div></div></div>
+        <div class="fleet-grid">${list.map(boat => `<button class="fleet-card" type="button" data-boat="${boat.id}" aria-label="Открыть катер ${boat.name}">
+          <div class="fleet-card-image">${boat.cover ? `<img src="${boat.cover}" alt="${boat.name}" loading="lazy">` : createPlaceholder(boat.name)}</div>
+          <div class="fleet-card-body"><div class="fleet-card-name">${boat.name}</div><div class="fleet-card-guests">до ${boat.guests} гостей</div><div class="fleet-card-price">${boat.price}</div></div>
+        </button>`).join("")}</div>`;
+      catalog.querySelector(".collection-back")?.addEventListener("click", renderCatalog);
+      catalog.querySelectorAll("[data-boat]").forEach(card => card.addEventListener("click", () => openBoat(card.dataset.boat)));
+      window.scrollTo({top: Math.max(0, catalog.getBoundingClientRect().top + window.scrollY - 18), behavior:"smooth"});
+    }
+
+    function syncBodyLock() {
+      const locked = boatModal.classList.contains("active") || bookingModal.classList.contains("active") || lightbox.classList.contains("active");
+      document.body.classList.toggle("locked", locked);
+    }
+
+    function openBoat(id) {
+      selectedBoat = boats.find(boat => boat.id === id);
+      if (!selectedBoat) return;
+      tg?.HapticFeedback?.impactOccurred?.("light");
+      $("modalTopTitle").textContent = selectedBoat.name;
+      $("detailName").textContent = selectedBoat.name;
+      $("detailCapacity").textContent = `до ${selectedBoat.guests} гостей`;
+      $("detailInlinePrice").textContent = selectedBoat.price;
+      $("detailBookingPrice").textContent = selectedBoat.price;
+      $("bookingButton").textContent = `Оставить заявку`;
+      $("detailIntro").textContent = selectedBoat.intro || `Катер ${selectedBoat.name}. До ${selectedBoat.guests} гостей.`;
+      coverImages = (selectedBoat.gallery?.length ? selectedBoat.gallery : [selectedBoat.cover]).filter(Boolean);
+      coverIndex = 0;
+      renderCoverSlider();
+      renderBoatDetails(selectedBoat);
+      boatModal.classList.add("active");
+      boatModal.setAttribute("aria-hidden", "false");
+      boatModal.scrollTop = 0;
+      setupBoatSwipeClose();
+      syncBodyLock();
+    }
+
+    function renderCoverSlider() {
+      const cover = $("detailCover");
+      if (!coverImages.length) { cover.innerHTML = createPlaceholder(selectedBoat?.name || "PELAGOS"); return; }
+      cover.innerHTML = `<img id="coverSliderImage" src="${coverImages[coverIndex]}" alt="${selectedBoat.name}, фото ${coverIndex+1}" draggable="false">
+        <div class="cover-swipe-hint">свайп по фото</div>
+        <div class="cover-dots">${coverImages.slice(0,8).map((_,i)=>`<span class="cover-dot ${i===coverIndex ? "active" : ""}"></span>`).join("")}</div>
+        <div class="cover-counter">${coverIndex+1} / ${coverImages.length}</div>`;
+      setupCoverSwipe();
+    }
+
+    function changeCover(direction) {
+      if (coverImages.length < 2) return;
+      coverIndex = (coverIndex + direction + coverImages.length) % coverImages.length;
+      renderCoverSlider();
+    }
+
+    function setupCoverSwipe() {
+      const cover = $("detailCover");
+      let startX = 0, startY = 0, active = false;
+      cover.ontouchstart = event => { const t = event.touches[0]; startX=t.clientX; startY=t.clientY; active=true; };
+      cover.ontouchend = event => {
+        if (!active || !event.changedTouches[0]) return; active=false;
+        const dx=event.changedTouches[0].clientX-startX, dy=event.changedTouches[0].clientY-startY;
+        if (Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.25) changeCover(dx<0 ? 1 : -1);
+      };
+    }
+
+    function renderBoatDetails(boat) {
+      let html = "";
+      if (boat.amenities?.length) html += `<section class="amenities"><h3 class="block-title">На борту</h3><div class="chips">${boat.amenities.map(item => `<div class="chip">${item}</div>`).join("")}</div></section>`;
+      html += `<div class="route-note">Маршрут прогулки согласовывается с менеджером PELAGOS.</div>`;
+      if (boat.story) html += `<button class="story-toggle" type="button" id="storyToggle">Подробнее о катере <span>⌄</span></button><div class="story-collapsible" id="storyCollapsible"><div class="story-collapsible-inner"><p>${boat.story}</p></div></div>`;
+      if (boat.pier) html += `<section class="location compact-location"><h3 class="block-title">Место посадки</h3><p>${boat.pier}</p>${boat.map ? `<a href="${boat.map}" target="_blank" rel="noopener">Открыть на карте →</a>` : ""}</section>`;
+      $("dynamicDetails").innerHTML = html;
+      const toggle=$("storyToggle"), body=$("storyCollapsible");
+      toggle?.addEventListener("click", () => { const open=body.classList.toggle("open"); toggle.classList.toggle("open",open); toggle.firstChild.textContent=open ? "Свернуть описание " : "Подробнее о катере "; });
+    }
+
+    let swipeCloseBound = false;
+    function setupBoatSwipeClose() {
+      if (swipeCloseBound) return; swipeCloseBound=true;
+      const card = boatModal.querySelector(".boat-modal-card");
+      let startX=0,startY=0,tracking=false;
+      card.addEventListener("touchstart", event => {
+        if (event.target.closest("#detailCover")) return;
+        const touch=event.touches[0];
+        if (touch.clientX>34) return;
+        startX=touch.clientX; startY=touch.clientY; tracking=true;
+      }, {passive:true});
+      card.addEventListener("touchmove", event => {
+        if (!tracking) return; const touch=event.touches[0]; const dx=Math.max(0,touch.clientX-startX); const dy=Math.abs(touch.clientY-startY);
+        if (dy>dx) { tracking=false; card.style.transform=""; return; }
+        card.style.transition="none"; card.style.transform=`translateX(${Math.min(dx,window.innerWidth)}px)`;
+      }, {passive:true});
+      card.addEventListener("touchend", event => {
+        if (!tracking) return; tracking=false; const touch=event.changedTouches[0]; const dx=touch.clientX-startX;
+        card.style.transition="transform .22s ease";
+        if (dx>90) { card.style.transform=`translateX(${window.innerWidth}px)`; setTimeout(()=>{ closeBoat(); card.style.transition=""; card.style.transform=""; },190); }
+        else { card.style.transform=""; setTimeout(()=>card.style.transition="",230); }
+      }, {passive:true});
+    }
+
+    function closeBoat() {
+      boatModal.classList.remove("active");
+      boatModal.setAttribute("aria-hidden", "true");
+      syncBodyLock();
+    }
+
+    function openBooking() {
+      if (!selectedBoat) return;
+      $("bookingBoatInfo").textContent = `${selectedBoat.name} · ${selectedBoat.price}`;
+      guestsInput.max = selectedBoat.guests;
+      formStatus.className = "form-status";
+      formStatus.textContent = "";
+      bookingModal.classList.add("active");
+      bookingModal.setAttribute("aria-hidden", "false");
+      syncBodyLock();
+    }
+
+    function closeBooking() {
+      bookingModal.classList.remove("active");
+      bookingModal.setAttribute("aria-hidden", "true");
+      syncBodyLock();
+    }
+
+    const zoom = {
+      scale: 1, x: 0, y: 0, swipeX: 0,
+      mode: "", startX: 0, startY: 0, baseX: 0, baseY: 0,
+      startDistance: 0, baseScale: 1, centerX: 0, centerY: 0,
+      moved: false, lastTapTime: 0, lastTapX: 0, lastTapY: 0
+    };
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    function touchDistance(touches) {
+      return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+    }
+
+    function touchCenter(touches) {
+      return {x:(touches[0].clientX + touches[1].clientX)/2, y:(touches[0].clientY + touches[1].clientY)/2};
+    }
+
+    function fitImageSize() {
+      const stageWidth = lightboxStage.clientWidth || window.innerWidth;
+      const stageHeight = lightboxStage.clientHeight || window.innerHeight;
+      const naturalWidth = lightboxImage.naturalWidth || stageWidth;
+      const naturalHeight = lightboxImage.naturalHeight || stageHeight;
+      const ratio = Math.min(stageWidth/naturalWidth, stageHeight/naturalHeight);
+      return {width:naturalWidth*ratio, height:naturalHeight*ratio, stageWidth, stageHeight};
+    }
+
+    function clampPan() {
+      if (zoom.scale <= 1) { zoom.x = 0; zoom.y = 0; return; }
+      const size = fitImageSize();
+      const maxX = Math.max(0, (size.width*zoom.scale - size.stageWidth)/2);
+      const maxY = Math.max(0, (size.height*zoom.scale - size.stageHeight)/2);
+      zoom.x = clamp(zoom.x, -maxX, maxX);
+      zoom.y = clamp(zoom.y, -maxY, maxY);
+    }
+
+    function applyZoom(animate = false) {
+      lightboxImage.classList.toggle("animate", animate);
+      lightboxImage.style.transform = `translate3d(${zoom.x + zoom.swipeX}px, ${zoom.y}px, 0) scale(${zoom.scale})`;
+      lightbox.classList.toggle("zoomed", zoom.scale > 1.01);
+      lightboxZoomBadge.textContent = `${Math.round(zoom.scale*100)}%`;
+      if (animate) setTimeout(() => lightboxImage.classList.remove("animate"), 260);
+    }
+
+    function resetZoom(animate = false) {
+      zoom.scale = 1; zoom.x = 0; zoom.y = 0; zoom.swipeX = 0; zoom.mode = "";
+      applyZoom(animate);
+    }
+
+    function renderLightboxImage() {
+      if (!lightboxImages.length) return;
+      lightboxIndex = (lightboxIndex + lightboxImages.length) % lightboxImages.length;
+      lightboxImage.style.opacity = ".35";
+      lightboxImage.src = lightboxImages[lightboxIndex];
+      lightboxImage.alt = `Фото ${lightboxIndex+1}`;
+      lightboxCounter.textContent = `${lightboxIndex+1} / ${lightboxImages.length}`;
+      lightboxImage.onload = () => { lightboxImage.style.opacity = "1"; };
+      resetZoom(false);
+    }
+
+    function openLightbox(images, index, boatName) {
+      if (!Array.isArray(images) || !images.length) return;
+      lightboxImages = images;
+      lightboxIndex = Number(index) || 0;
+      lightboxImage.alt = boatName || "Фото катера";
+      renderLightboxImage();
+      lightbox.classList.add("active");
+      lightbox.setAttribute("aria-hidden", "false");
+      syncBodyLock();
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("active");
+      lightbox.setAttribute("aria-hidden", "true");
+      resetZoom(false);
+      syncBodyLock();
+    }
+
+    function changeLightbox(direction) {
+      if (zoom.scale > 1.01 || lightboxImages.length < 2) return;
+      lightboxIndex += direction;
+      renderLightboxImage();
+      tg?.HapticFeedback?.impactOccurred?.("light");
+    }
+
+    function zoomAt(targetScale, clientX, clientY) {
+      const previous = zoom.scale;
+      targetScale = clamp(targetScale, 1, 5);
+      if (targetScale === 1) { resetZoom(true); return; }
+      const centerX = lightboxStage.clientWidth/2;
+      const centerY = lightboxStage.clientHeight/2;
+      const factor = targetScale/previous;
+      zoom.x = (zoom.x - (clientX-centerX)) * factor + (clientX-centerX);
+      zoom.y = (zoom.y - (clientY-centerY)) * factor + (clientY-centerY);
+      zoom.scale = targetScale;
+      clampPan();
+      applyZoom(true);
+    }
+
+    lightboxStage.addEventListener("touchstart", event => {
+      if (event.touches.length === 2) {
+        event.preventDefault();
+        const center = touchCenter(event.touches);
+        zoom.mode = "pinch";
+        zoom.startDistance = touchDistance(event.touches);
+        zoom.baseScale = zoom.scale;
+        zoom.baseX = zoom.x;
+        zoom.baseY = zoom.y;
+        zoom.centerX = center.x;
+        zoom.centerY = center.y;
+        zoom.moved = true;
+        return;
+      }
+      const touch = event.touches[0];
+      zoom.mode = zoom.scale > 1.01 ? "pan" : "swipe";
+      zoom.startX = touch.clientX;
+      zoom.startY = touch.clientY;
+      zoom.baseX = zoom.x;
+      zoom.baseY = zoom.y;
+      zoom.swipeX = 0;
+      zoom.moved = false;
+      lightboxImage.classList.remove("animate");
+    }, {passive:false});
+
+    lightboxStage.addEventListener("touchmove", event => {
+      if (event.touches.length === 2) {
+        event.preventDefault();
+        if (zoom.mode !== "pinch") {
+          const center = touchCenter(event.touches);
+          zoom.mode = "pinch";
+          zoom.startDistance = touchDistance(event.touches);
+          zoom.baseScale = zoom.scale;
+          zoom.baseX = zoom.x;
+          zoom.baseY = zoom.y;
+          zoom.centerX = center.x;
+          zoom.centerY = center.y;
+        }
+        const center = touchCenter(event.touches);
+        zoom.scale = clamp(zoom.baseScale * touchDistance(event.touches)/zoom.startDistance, 1, 5);
+        zoom.x = zoom.baseX + (center.x - zoom.centerX);
+        zoom.y = zoom.baseY + (center.y - zoom.centerY);
+        zoom.swipeX = 0;
+        applyZoom(false);
+        return;
+      }
+      const touch = event.touches[0];
+      if (!touch) return;
+      const dx = touch.clientX - zoom.startX;
+      const dy = touch.clientY - zoom.startY;
+      if (Math.hypot(dx,dy) > 6) zoom.moved = true;
+      if (zoom.mode === "pan" || zoom.scale > 1.01) {
+        event.preventDefault();
+        zoom.mode = "pan";
+        zoom.x = zoom.baseX + dx;
+        zoom.y = zoom.baseY + dy;
+        applyZoom(false);
+      } else if (zoom.mode === "swipe") {
+        event.preventDefault();
+        zoom.swipeX = dx * .72;
+        applyZoom(false);
+      }
+    }, {passive:false});
+
+    lightboxStage.addEventListener("touchend", event => {
+      if (event.touches.length === 1 && zoom.mode === "pinch") {
+        const touch = event.touches[0];
+        zoom.mode = "pan";
+        zoom.startX = touch.clientX; zoom.startY = touch.clientY;
+        zoom.baseX = zoom.x; zoom.baseY = zoom.y;
+        return;
+      }
+      if (event.touches.length) return;
+      if (zoom.mode === "pinch" || zoom.mode === "pan") {
+        if (zoom.scale < 1.04) resetZoom(true);
+        else { clampPan(); applyZoom(true); }
+      } else if (zoom.mode === "swipe") {
+        const delta = zoom.swipeX;
+        zoom.swipeX = 0;
+        if (Math.abs(delta) > 52) changeLightbox(delta < 0 ? 1 : -1);
+        else applyZoom(true);
+      }
+
+      const changedTouch = event.changedTouches[0];
+      const now = Date.now();
+      if (!zoom.moved && changedTouch) {
+        if (now - zoom.lastTapTime < 310 && Math.hypot(changedTouch.clientX-zoom.lastTapX, changedTouch.clientY-zoom.lastTapY) < 30) {
+          zoomAt(zoom.scale > 1.01 ? 1 : 2.5, changedTouch.clientX, changedTouch.clientY);
+          zoom.lastTapTime = 0;
+        } else {
+          zoom.lastTapTime = now;
+          zoom.lastTapX = changedTouch.clientX;
+          zoom.lastTapY = changedTouch.clientY;
+        }
+      }
+      zoom.mode = "";
+    }, {passive:false});
+
+    lightboxStage.addEventListener("touchcancel", () => { clampPan(); zoom.swipeX = 0; applyZoom(true); zoom.mode = ""; });
+    lightboxStage.addEventListener("wheel", event => {
+      event.preventDefault();
+      zoomAt(zoom.scale - event.deltaY*.002, event.clientX, event.clientY);
+    }, {passive:false});
+
+    $("lightboxPrevButton").addEventListener("click", () => changeLightbox(-1));
+    $("lightboxNextButton").addEventListener("click", () => changeLightbox(1));
+    $("closeLightboxButton").addEventListener("click", closeLightbox);
+    $("closeBoatButton").addEventListener("click", closeBoat);
+    $("closeBookingButton").addEventListener("click", closeBooking);
+    $("bookingButton").addEventListener("click", openBooking);
+
+    boatModal.addEventListener("click", event => { if (event.target === boatModal) closeBoat(); });
+    bookingModal.addEventListener("click", event => { if (event.target === bookingModal) closeBooking(); });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        if (lightbox.classList.contains("active")) closeLightbox();
+        else if (bookingModal.classList.contains("active")) closeBooking();
+        else if (boatModal.classList.contains("active")) closeBoat();
+      }
+      if (lightbox.classList.contains("active") && zoom.scale <= 1.01) {
+        if (event.key === "ArrowRight") changeLightbox(1);
+        if (event.key === "ArrowLeft") changeLightbox(-1);
+      }
+    });
+
+    bookingForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!selectedBoat) return;
+      const payload = {
+        boat:selectedBoat.name,
+        price:selectedBoat.price,
+        date:formatDate($("date").value),
+        time:`${$("time").value} (желаемое время)`,
+        guests:$("guests").value,
+        name:$("name").value.trim(),
+        contact:$("contact").value.trim(),
+        comment:$("comment").value.trim()
+      };
+      submitButton.disabled = true;
+      submitButton.textContent = "Отправляем...";
+      formStatus.className = "form-status";
+      formStatus.textContent = "";
+      try {
+        const response = await fetch(WORKER_URL, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
+        const result = await response.json();
+        if (!response.ok || !result.success) throw new Error(result.error || "Не удалось отправить заявку");
+        formStatus.className = "form-status success";
+        formStatus.textContent = "Заявка отправлена. Менеджер проверит доступность катера, актуальную стоимость, дату и время прогулки.";
+        submitButton.textContent = "Заявка отправлена ✓";
+        tg?.HapticFeedback?.notificationOccurred?.("success");
+        setTimeout(() => {
+          bookingForm.reset(); closeBooking(); closeBoat();
+          submitButton.disabled = false; submitButton.textContent = "Отправить заявку"; formStatus.className = "form-status";
+        }, 2200);
+      } catch (error) {
+        console.error("PELAGOS booking error:", error);
+        formStatus.className = "form-status error";
+        formStatus.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+        submitButton.disabled = false;
+        submitButton.textContent = "Отправить заявку";
+        tg?.HapticFeedback?.notificationOccurred?.("error");
+      }
+    });
+
+    function formatDate(value) {
+      if (!value) return "";
+      const parts = value.split("-");
+      return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+
+    function setupRevealAnimations() {
+      const items = [...document.querySelectorAll(".category-head, .fleet-card")];
+      const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+      items.forEach((item, index) => {
+        item.classList.add("reveal-item");
+        if (item.classList.contains("fleet-card")) {
+          item.style.setProperty("--reveal-delay", `${(index % 2) * 70}ms`);
+        }
+      });
+
+      if (reducedMotion || !("IntersectionObserver" in window)) {
+        items.forEach(item => item.classList.add("is-visible"));
+        return;
+      }
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      }, {
+        threshold: .08,
+        rootMargin: "0px 0px -5% 0px"
+      });
+
+      items.forEach(item => observer.observe(item));
+    }
+
+    renderCatalog();
+  </script>
+</body>
+</html>
